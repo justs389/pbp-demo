@@ -42,7 +42,8 @@ window.PbDemo = {
       node.port.postMessage(msg);
     }
     async function clip(id) {
-      const file = cfg.clips[id] || cfg.clips[Object.keys(cfg.clips)[0]];
+      const file = cfg.clips[id] || ('clips/' + id + '.m4a');   // never silently substitute another clip
+      if (!cfg.clips[id]) console.warn('[pbp demo] clip not in config, trying', file);
       if (!decoded[id]) {
         const r = await fetch(new URL(file, base));
         if (!r.ok) throw new Error('clip ' + r.status);
