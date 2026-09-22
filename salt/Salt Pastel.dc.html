@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&amp;family=Patrick+Hand+SC&amp;family=Patrick+Hand&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #14161c; }
+  a { color: #9db3d6; text-decoration: none; }
+  a:hover { color: #f0c25c; }
+</style>
+</helmet>
+
+<div ref="{{ wrapRef }}" style="min-height: {{ wrapMinH }}; background: {{ wrapBg }}; padding: {{ wrapPad }}; display: flex; flex-direction: column; align-items: center; gap: 40px; font-family: 'Patrick Hand', cursive;">
+
+  <sc-if value="{{ chrome }}" hint-placeholder-val="{{ true }}">
+  <div style="font-size: 14px; letter-spacing: .04em; color: #7a8090;">Salt — enhancer — kosher &amp; pink — 620 × 480 (2× of 310 × 240)</div>
+  </sc-if>
+
+  <div style="width: {{ frameW }}px; height: {{ frameH }}px;">
+  <div style="transform: scale({{ scale }}); transform-origin: top left;">
+    <div style="position: relative; width: 620px; height: 480px; overflow: hidden; box-shadow: 0 24px 50px -14px rgba(0,0,0,.78);">
+
+      <div style="position: absolute; inset: 0; background: {{ wash }};"></div>
+      <div style="position: absolute; inset: 0; opacity: .16; background-image: radial-gradient({{ speck }} .5px, rgba(0,0,0,0) .6px); background-size: 3px 3px;"></div>
+      <div style="position: absolute; left: 0; top: 0; width: 620px; height: 74px; background: {{ band }};"></div>
+      <div style="position: absolute; left: 0; top: 74px; width: 620px; height: 4px; background: {{ ink }};"></div>
+      <div style="position: absolute; left: 0; bottom: 0; width: 620px; height: 8px; background: {{ ink }};"></div>
+
+      <svg width="620" height="480" viewBox="0 0 620 480" style="position: absolute; inset: 0;">
+        <g stroke-linecap="round" stroke-linejoin="round">
+          <sc-for list="{{ paths }}" as="p" hint-placeholder-count="40">
+            <path d="{{ p.d }}" transform="{{ p.t }}" stroke="{{ p.s }}" stroke-width="{{ p.w }}" opacity="{{ p.o }}" fill="{{ p.f }}"></path>
+          </sc-for>
+        </g>
+      </svg>
+
+      <div style="position: absolute; left: 28px; top: 8px; display: flex; align-items: baseline; gap: 13px;">
+        <div style="font-family: 'Caveat Brush', cursive; font-size: 42px; color: {{ titleColor }}; line-height: 1.3;">Salt</div>
+        <div style="white-space: nowrap; font-size: 16px; color: {{ bandText }}; line-height: 1.3;">enhancer</div>
+      </div>
+      <div style="position: absolute; right: 196px; top: 23px; height: 30px; display: flex; align-items: center; gap: 6px; z-index: 9; user-select: none;">
+        <div onClick="{{ undo }}" onMouseEnter="{{ tipUndo }}" onMouseLeave="{{ tipOut }}" style="width: 26px; height: 26px; box-sizing: border-box; border: 3px solid {{ bandText }}; border-radius: 50%; background: transparent; opacity: {{ undoOp }}; display: flex; align-items: center; justify-content: center; cursor: pointer; color: {{ bandText }}; line-height: 1;"><svg width="18" height="18" viewBox="0 0 16 16" style="display: block;"><path d="M 5.2 6.3 A 4.2 4.2 0 1 1 8.6 12.1" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path><path d="M 3.2 3.6 L 3.6 7.4 L 7.3 6.6" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+        <div onClick="{{ toggleTips }}" onMouseEnter="{{ tipTips }}" onMouseLeave="{{ tipOut }}" style="width: 26px; height: 26px; box-sizing: border-box; border: 3px solid {{ bandText }}; border-radius: 50%; background: {{ tipsBg }}; display: flex; align-items: center; justify-content: center; cursor: pointer; font-family: 'Caveat Brush', cursive; font-size: 18px; color: {{ tipsColor }}; line-height: 1;">?</div>
+        <div onMouseEnter="{{ tipAB }}" onMouseLeave="{{ tipOut }}" style="display: flex; height: 30px; box-sizing: border-box; border: 3px solid {{ ink }}; background: {{ plate }}; cursor: pointer; font-family: 'Patrick Hand SC', cursive; font-size: 14px; letter-spacing: .1em; line-height: 1;">
+          <div onClick="{{ setA }}" style="width: 23px; display: flex; align-items: center; justify-content: center; background: {{ aBg }}; color: {{ aFg }};">A</div>
+          <div onClick="{{ setB }}" style="width: 23px; display: flex; align-items: center; justify-content: center; background: {{ bBg }}; color: {{ bFg }};">B</div>
+        </div>
+        <div id="bypass" role="switch" aria-label="Bypass" aria-checked="{{ bypassStr }}" data-value="{{ bypassStr }}" onClick="{{ toggleBypass }}" onMouseEnter="{{ tipBypass }}" onMouseLeave="{{ tipOut }}" style="display: flex; align-items: center; gap: 6px; height: 30px; box-sizing: border-box; padding: 0 8px; border: 3px solid {{ ink }}; background: {{ bypassBg }}; cursor: pointer;">
+          <div style="width: 8px; height: 8px; border-radius: 50%; border: 2px solid {{ ink }}; background: {{ bypassLamp }};"></div>
+          <div style="white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 14px; letter-spacing: .1em; color: {{ bypassFg }}; line-height: 1;">BYPASS</div>
+        </div>
+      </div>
+      <div style="position: absolute; right: 28px; top: 23px; width: 160px; height: 30px; box-sizing: border-box; display: flex; align-items: stretch; border: 3px solid {{ ink }}; background: {{ plate }}; user-select: none; z-index: 9;">
+        <div onClick="{{ presetPrev }}" style="width: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-right: 1.5px solid {{ hairline }}; font-family: 'Caveat Brush', cursive; font-size: 17px; color: {{ legend }}; line-height: 1;">‹</div>
+        <div onClick="{{ presetToggle }}" onContextMenu="{{ presetContext }}" onMouseEnter="{{ tipPreset }}" onMouseLeave="{{ tipOut }}" style="flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; cursor: pointer; font-family: 'Patrick Hand SC', cursive; font-size: 14px; letter-spacing: .06em; color: {{ ink }}; line-height: 1;">{{ presetName }}</div>
+        <div onClick="{{ presetNext }}" style="width: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-left: 1.5px solid {{ hairline }}; font-family: 'Caveat Brush', cursive; font-size: 17px; color: {{ legend }}; line-height: 1;">›</div>
+      </div>
+
+      <sc-if value="{{ presetOpen }}" hint-placeholder-val="{{ false }}">
+        <div ref="{{ pbBox }}" onClick="{{ pbClose }}" style="position: absolute; right: 28px; top: 60px; width: 232px; box-sizing: border-box; padding: 9px 0 8px; background: {{ plate }}; border: 3px solid {{ ink }}; box-shadow: 5px 6px 0 rgba(20,26,44,.28); z-index: 20; font-family: 'Patrick Hand', cursive;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; padding: 0 12px 6px; font-family: 'Patrick Hand SC', cursive; font-size: 11px; letter-spacing: .16em; color: {{ dim }};">
+            <div style="white-space: nowrap;">PRESET FOLDERS</div>
+            <div onClick="{{ presetToggle }}" style="white-space: nowrap; cursor: pointer; color: {{ legend }};">CLOSE</div>
+          </div>
+          <div ref="{{ pbList }}" style="max-height: 300px; overflow-y: auto; overflow-x: hidden; scrollbar-width: thin; scrollbar-color: {{ legend }} transparent; border-top: 1px solid {{ hairline }}; border-bottom: 1px solid {{ hairline }}; padding: 3px 0;">
+            <sc-for list="{{ pbRows }}" as="r" hint-placeholder-count="8">
+              <div data-pb-key="{{ r.key }}" onClick="{{ r.onClick }}" onContextMenu="{{ r.onContext }}" onMouseEnter="{{ r.onEnter }}" onMouseLeave="{{ r.onLeave }}" style="display: flex; align-items: center; gap: 6px; padding: {{ r.pad }}; font-family: {{ r.font }}; font-size: {{ r.size }}; letter-spacing: {{ r.ls }}; color: {{ r.color }}; background: {{ r.bg }}; cursor: {{ r.cursor }}; white-space: nowrap; user-select: none; line-height: 1.25;">
+                <div style="width: {{ r.triW }}; flex: none; font-size: 12px; color: {{ legend }};">{{ r.tri }}</div>
+                <div style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;">{{ r.label }}</div>
+                <div style="flex: none; font-family: 'Patrick Hand SC', cursive; font-size: 11px; letter-spacing: .08em; color: {{ legend }};">{{ r.count }}</div>
+                <sc-if value="{{ r.dots }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ r.onDots }}" style="flex: none; width: 20px; height: 16px; display: flex; align-items: center; justify-content: center; font-family: 'Caveat Brush', cursive; font-size: 16px; line-height: 1; color: {{ ink }}; cursor: pointer; border: 1.5px solid {{ ink }};" style-hover="background: {{ hoverTone }};">⋯</div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display: flex; gap: 5px; padding: 8px 11px 0; font-family: 'Patrick Hand SC', cursive; font-size: 11px; letter-spacing: .1em;">
+            <div onClick="{{ savePreset }}" onMouseEnter="{{ tipSave }}" onMouseLeave="{{ tipOut }}" style="flex: 1; text-align: center; padding: 4px 0; border: 2px solid {{ ink }}; background: {{ hoverTone }}; color: {{ ink }}; cursor: pointer;">SAVE</div>
+            <div onClick="{{ saveAsPreset }}" onMouseEnter="{{ tipSaveAs }}" onMouseLeave="{{ tipOut }}" style="flex: 1.3; text-align: center; padding: 4px 0; border: 2px solid {{ ink }}; background: {{ hoverTone }}; color: {{ ink }}; cursor: pointer;">SAVE AS</div>
+            <div onClick="{{ delPreset }}" onMouseEnter="{{ tipDel }}" onMouseLeave="{{ tipOut }}" style="flex: 1; text-align: center; padding: 4px 0; border: 2px solid {{ ink }}; background: {{ hoverTone }}; color: {{ ink }}; cursor: {{ delCursor }}; opacity: {{ delOp }};">DELETE</div>
+          </div>
+          <sc-if value="{{ pbMenuOpen }}" hint-placeholder-val="{{ false }}">
+            <div onClick="{{ pbStop }}" style="position: absolute; right: 12px; top: {{ pbMenuY }}; transform: {{ pbMenuT }}; width: 164px; box-sizing: border-box; padding: 5px 0; background: {{ plate }}; border: 2px solid {{ ink }}; box-shadow: 4px 4px 0 rgba(20,26,44,.25); z-index: 5;">
+              <sc-for list="{{ pbMenuItems }}" as="m" hint-placeholder-count="3">
+                <div onClick="{{ m.onClick }}" style="padding: {{ m.pad }}; height: {{ m.h }}; font-family: {{ m.font }}; font-size: {{ m.size }}; letter-spacing: {{ m.ls }}; color: {{ m.color }}; cursor: {{ m.cursor }}; white-space: nowrap; line-height: 1.2;" style-hover="background: {{ m.hoverBg }};">{{ m.label }}</div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <div style="position: absolute; left: 30px; top: 92px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 14px; letter-spacing: .16em; color: {{ legend }}; line-height: 1;">CURVE</div>
+      <div style="position: absolute; left: 30px; top: 178px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 14px; letter-spacing: .16em; color: {{ legend }}; line-height: 1;">MODE</div>
+
+      <div id="curve" data-value="{{ curveVal }}" style="display: none;"></div>
+      <div id="mode" data-value="{{ modeVal }}" style="display: none;"></div>
+      <sc-for list="{{ cells }}" as="c" hint-placeholder-count="4">
+        <div role="radio" aria-checked="{{ c.onStr }}" data-param="{{ c.param }}" data-value="{{ c.val }}" onClick="{{ c.onClick }}" onMouseEnter="{{ c.onEnter }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: {{ c.left }}px; top: {{ c.top }}px; width: 140px; height: 54px; display: flex; align-items: center; justify-content: center; padding-left: 42px; box-sizing: border-box; cursor: pointer; user-select: none;">
+          <div style="white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 19px; letter-spacing: .1em; color: {{ c.color }}; line-height: 1;">{{ c.label }}</div>
+        </div>
+      </sc-for>
+
+      <div style="position: absolute; left: 30px; top: 258px; width: 292px; font-family: 'Caveat Brush', cursive; font-size: 20px; color: {{ accentInk }}; line-height: 1.2;">{{ modeHint }}</div>
+      <div style="position: absolute; left: 30px; top: 282px; width: 292px; font-size: 15px; color: {{ dim }}; line-height: 1.2;">{{ curveHint }}</div>
+
+      <div style="position: absolute; left: 34px; top: 308px; width: 120px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .16em; color: {{ legend }}; line-height: 1;">MIX</div>
+      <div id="mix" role="slider" aria-label="Mix" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ mixVal }}" data-value="{{ mixVal }}" onPointerDown="{{ mixDown }}" onWheel="{{ mixWheel }}" onDoubleClick="{{ mixReset }}" onMouseEnter="{{ mixTip }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 58px; top: 338px; width: 72px; height: 72px; border-radius: 50%; cursor: ns-resize; touch-action: none;"></div>
+      <div style="position: absolute; left: 34px; top: 424px; width: 120px; text-align: center; white-space: nowrap; font-family: 'Caveat Brush', cursive; font-size: 21px; color: {{ ink }}; line-height: 1;">{{ mixReadout }}</div>
+
+      <div style="position: absolute; left: 172px; top: 308px; width: 120px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .16em; color: {{ legend }}; line-height: 1;">OUTPUT</div>
+      <div id="output" role="slider" aria-label="Output" aria-valuemin="-24" aria-valuemax="24" aria-valuenow="{{ outVal }}" data-value="{{ outVal }}" onPointerDown="{{ outDown }}" onWheel="{{ outWheel }}" onDoubleClick="{{ outReset }}" onMouseEnter="{{ outTip }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 196px; top: 338px; width: 72px; height: 72px; border-radius: 50%; cursor: ns-resize; touch-action: none;"></div>
+      <div style="position: absolute; left: 172px; top: 424px; width: 120px; text-align: center; white-space: nowrap; font-family: 'Caveat Brush', cursive; font-size: 21px; color: {{ ink }}; line-height: 1;">{{ outReadout }}</div>
+
+      <div style="position: absolute; left: 340px; top: 92px; width: 254px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 16px; letter-spacing: .2em; color: {{ legend }}; line-height: 1;">FLAVOR<br></div>
+      <div id="heat" role="slider" aria-label="Flavor" aria-valuemin="-10" aria-valuemax="10" aria-valuenow="{{ heatVal }}" data-value="{{ heatVal }}" onPointerDown="{{ heatDown }}" onWheel="{{ heatWheel }}" onDoubleClick="{{ heatReset }}" onMouseEnter="{{ heatTip }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 373px; top: 138px; width: 188px; height: 188px; border-radius: 50%; cursor: ns-resize; touch-action: none;"></div>
+      <div style="position: absolute; left: 340px; top: 354px; width: 254px; text-align: center; white-space: nowrap; font-family: 'Caveat Brush', cursive; font-size: 40px; color: {{ ink }}; line-height: 1;">{{ heatReadout }}</div>
+      <div style="position: absolute; left: 340px; top: 398px; width: 254px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: {{ legend }}; line-height: 1;">{{ heatWord }}</div>
+      <sc-if value="{{ bypass }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; left: 0; top: 78px; width: 620px; height: 394px; background: {{ bypassWash }}; pointer-events: none; z-index: 8;"></div>
+      </sc-if>
+      <sc-if value="{{ tip }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; left: {{ tipX }}px; top: {{ tipY }}px; transform: {{ tipShift }}; width: 185px; box-sizing: border-box; padding: 5px 9px; background: {{ plate }}; border: 3px solid {{ ink }}; font-family: 'Patrick Hand', cursive; font-size: 13px; line-height: 1.16; color: {{ ink }}; pointer-events: none; z-index: 30; box-shadow: 4px 5px 0 rgba(20,26,44,.28);">{{ tip }}</div>
+      </sc-if>
+
+      <div style="position: absolute; left: 28px; bottom: 14px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: {{ legend }}; line-height: 1;">PIZZA BAGEL PLUGINS</div>
+      <div style="position: absolute; right: 28px; bottom: 14px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: {{ legend }}; line-height: 1;">V1.0.0</div>
+    </div>
+  </div>
+  </div>
+
+  <sc-if value="{{ chrome }}" hint-placeholder-val="{{ true }}">
+  <div style="width: 100%; max-width: 620px; display: flex; flex-direction: column; gap: 14px;">
+    <div style="height: 1px; background: #2a2f3b;"></div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; font-size: 14px; line-height: 1.3; color: #8d95a8;">
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #9db3d6;">KOSHER — ACID / FAT</div>
+        <div style="display: flex; gap: 5px; margin: 7px 0;">
+          <div style="flex: 1; height: 26px; background: #f0c25c;"></div>
+          <div style="flex: 1; height: 26px; background: #eaf0fb;"></div>
+          <div style="flex: 1; height: 26px; background: #26355f;"></div>
+          <div style="flex: 1; height: 26px; background: #1a2749;"></div>
+          <div style="flex: 1; height: 26px; background: #131c36;"></div>
+        </div>
+        <div>Acid: the box front — deep navy body (223163 → 131c36) under a yellow band f0c25c, salt-white line work. Fat swaps them: the same yellow f0c25c becomes the whole panel and the navy shrinks to the band, arcs and active cells. No new hues, just reversed weights.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #f0b096;">PINK — ACID / FAT</div>
+        <div style="display: flex; gap: 5px; margin: 7px 0;">
+          <div style="flex: 1; height: 26px; background: #fdf1ea;"></div>
+          <div style="flex: 1; height: 26px; background: #f6cdb8;"></div>
+          <div style="flex: 1; height: 26px; background: #f0b096;"></div>
+          <div style="flex: 1; height: 26px; background: #e0785c;"></div>
+          <div style="flex: 1; height: 26px; background: #4a2119;"></div>
+        </div>
+        <div>Acid: daylight rock — warm ink 4a2119 on pale peach f6cdb8 / fdf1ea, with the dish and both knob faces in the band's own salmon e79a7c so the hardware matches the top banner. Fat swaps them: the peach band e79a7c becomes the whole panel and the pale paper fdf1ea becomes the band, arcs and active cells. Four themes — curve picks the salt, mode swaps band and body.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #9db3d6;">HEAT = THE PINCH DISH</div>
+        <div>Heat is the only big object on the panel: a salt dish seen top-down. The salt bed is fixed — a full pinch at every setting — and the value is carried by the arc, which reads from 12 o'clock, growing right for + and left for −. Kosher holds coarse flakes, Pink fine rose grains, so the curve choice is visible in the salt itself. Mix and Output are quarter-size siblings; Output also anchors at 12.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #9db3d6;">MODE &amp; CURVE</div>
+        <div>Two cell pairs, not two dropdowns. Curve cells carry their own salt sample (three chunky flakes vs a fine drift); Mode cells carry mirrored arrows — Acid lifts, Fat sinks — and the active mode's sentence sits right under them in ink. Tooltips on all five controls.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #9db3d6;">TYPE</div>
+        <div>Caveat Brush for the wordmark and every numeral, Patrick Hand SC for painted caps legends, Patrick Hand for prose — same pair as Capsaicin and Schmear.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #9db3d6;">JUCE NOTES</div>
+        <div>620 × 480 base, uniform scale. Flat fills and 2–3.4px strokes only, no gradients or bevels. Dish = 2 wobbly ellipses + one arc Path + a seeded crystal loop (seed fixed, so grains never dance). Cells = 4 wobbly rounded Paths; only the active cell's fill changes. Values stay live text.</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:700,&quot;height&quot;:700},&quot;scale&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[1,1.5,2],&quot;default&quot;:1,&quot;tsType&quot;:&quot;number&quot;},&quot;grainTint&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Look&quot;}}">
+const PAL = {
+  // ACID = bright, thin, lifted. FAT = the same salt seen warm, heavy and dulled:
+  // each curve's world flips inside out when the mode does.
+  kosher_acid: {
+    ink: '#eaf0fb', band: '#f0c25c', bandText: '#4a3a10', titleColor: '#1b2440', legend: '#a9bce0', dim: '#8496bb',
+    accent: '#f0c25c', accentInk: '#f5d68b', onText: '#1b2440', plate: '#26355f', dish: '#202e55',
+    hairline: 'rgba(234,240,251,.22)', hoverTone: '#2f4070', speck: 'rgba(246,249,255,.5)', tipFill: '#1b2440', tipGlyph: '#f0c25c',
+    wash: 'linear-gradient(158deg, #223163 0%, #1a2749 56%, #131c36 100%)',
+    grain: ['#f6f9ff', '#dde7f8', '#bacbe9'], grainEdge: '#8ba3ca', bypassWash: 'rgba(19,28,54,.5)'
+  },
+  // Fat is the Acid theme swapped: the band colour becomes the panel and the
+  // panel colour becomes the band. Same two hues, opposite weights.
+  kosher_fat: {
+    ink: '#1b2440', band: '#1a2749', bandText: '#eaf0fb', titleColor: '#f6f9ff', legend: '#2e3a5e', dim: '#2c3a63',
+    accent: '#1a2749', accentInk: '#22305c', onText: '#f6f9ff', plate: '#f9e7bd', dish: '#f7e3b3',
+    hairline: 'rgba(27,36,64,.22)', hoverTone: '#f2d698', speck: 'rgba(27,36,64,.5)', tipFill: '#eaf0fb', tipGlyph: '#1a2749',
+    wash: 'linear-gradient(158deg, #f5cf7c 0%, #f0c25c 56%, #e2ae45 100%)',
+    grain: ['#ffffff', '#f2f6ff', '#dbe6f8'], grainEdge: '#94a6c9', bypassWash: 'rgba(240,194,92,.5)'
+  },
+  pink_acid: {
+    ink: '#4a2119', band: '#e79a7c', bandText: '#6d3020', titleColor: '#3f1b14', legend: '#8a4c39', dim: '#8a5c4a',
+    accent: '#e0785c', accentInk: '#8a3a26', onText: '#3f1b14', plate: '#f4bda1', dish: '#e79a7c',
+    hairline: 'rgba(74,33,25,.22)', hoverTone: '#fadfd0', speck: 'rgba(74,33,25,.5)', tipFill: '#4a2119', tipGlyph: '#fdf1ea',
+    wash: 'linear-gradient(158deg, #fdf1ea 0%, #fadfd0 56%, #f6cdb8 100%)',
+    grain: ['#f6c6ae', '#eeaa8b', '#fbdccb'], grainEdge: '#bd7455', bypassWash: 'rgba(253,241,234,.55)'
+  },
+  pink_fat: {
+    ink: '#4a2119', band: '#fdf1ea', bandText: '#7d3a27', titleColor: '#3f1b14', legend: '#6d3020', dim: '#5e2a1c',
+    accent: '#c9704b', accentInk: '#6d2b1a', onText: '#fff3ec', plate: '#fdf1ea', dish: '#fdf1ea',
+    hairline: 'rgba(74,33,25,.22)', hoverTone: '#f7d8c7', speck: 'rgba(74,33,25,.5)', tipFill: '#c9704b', tipGlyph: '#fff3ec',
+    wash: 'linear-gradient(158deg, #eda78b 0%, #e79a7c 56%, #dc8a68 100%)',
+    grain: ['#f7cfb8', '#eeb193', '#fce4d5'], grainEdge: '#b06c4d', bypassWash: 'rgba(231,154,124,.5)'
+  }
+};
+const BIG = { kosher: true, pink: false };
+const CW = 140, CH = 54, CX1 = 30, CX2 = 182, CY_CURVE = 114, CY_MODE = 198;
+const HX = 467, HY = 232, HR = 94;
+const MX = 94, OX = 232, KY = 374, KR = 34;
+
+const rndf = (seed) => { let a = ((seed + 7) * 2654435761) >>> 0; return () => { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; }; };
+
+// golden-angle lattice: even coverage at every count, fixed placement so nothing dances
+const lattice = (n, seed) => {
+  const r = rndf(seed);
+  return Array.from({ length: n }, (_, i) => ({
+    rad: Math.sqrt((i + 0.62) / n), ang: i * 137.508,
+    rot: r() * 360, s: 0.82 + r() * 0.3, tone: i % 3, sq: r() > 0.5
+  }));
+};
+const COARSE = lattice(78, 31), FINE = lattice(230, 47);
+const CELL_COARSE = lattice(9, 5), CELL_FINE = lattice(26, 8);
+
+const PRESETS = [
+  { name: 'Init', folder: 0, curve: 'kosher', mode: 'acid', heat: 0, mix: 1, out: 0 },
+  { name: 'A Pinch', folder: 0, curve: 'kosher', mode: 'acid', heat: 3.5, mix: 1, out: 0 },
+  { name: 'Coarse Finish', folder: 0, curve: 'kosher', mode: 'acid', heat: 7, mix: 0.8, out: -1.5 },
+  { name: 'Fat Hand', folder: 0, curve: 'kosher', mode: 'fat', heat: 5, mix: 1, out: 0 },
+  { name: 'Rock Lamp', folder: 0, curve: 'pink', mode: 'acid', heat: 8.5, mix: 1, out: -3 },
+  { name: 'Brined Low', folder: 0, curve: 'pink', mode: 'fat', heat: -6, mix: 1, out: 1.5 },
+  { name: 'Vocal Sheen', folder: 1, curve: 'pink', mode: 'acid', heat: 6, mix: 0.7, out: 0 },
+  { name: 'Drum Glue', folder: 1, curve: 'kosher', mode: 'fat', heat: 4, mix: 0.55, out: -1 }
+];
+
+class Component extends DCLogic {
+  state = { curve: 'kosher', mode: 'acid', heat: 3.5, mix: 1, out: 0, preset: 1, presetOpen: false, folded: {}, pbHover: null, pbMenu: null, tips: false, tip: null, tipX: 0, tipY: 0, tipBelow: false,
+    bypass: false, hist: [], user: [
+      { name: 'Lead vox lift', group: 'Mixes', curve: 'kosher', mode: 'acid', heat: 2.5, mix: 1, out: 0 },
+      { name: 'Drum bus glue', group: 'Mixes', curve: 'pink', mode: 'acid', heat: 5, mix: .7, out: -1 },
+      { name: 'Bass thicken', curve: 'pink', mode: 'acid', heat: 4, mix: 1, out: 0 },
+    ], folders: [], ab: 'A', abOther: null, abDiff: [], t: 0 };
+  snap = (s = this.state) => ({ curve: s.curve, mode: s.mode, heat: s.heat, mix: s.mix, out: s.out });
+  commit = (patch) => this.setState(st => ({ ...(typeof patch === 'function' ? patch(st) : patch), hist: [...st.hist.slice(-39), this.snap(st)] }));
+  undo = () => this.setState(st => { const hh = st.hist; if (!hh.length) return null; return { ...hh[hh.length - 1], hist: hh.slice(0, -1) }; });
+  allPresets = () => [...PRESETS, ...this.state.user];
+  savePreset = () => { if (!this.pbAct) return; if (this.state.preset < PRESETS.length) this.pbAct.saveAs(); else this.pbAct.save(this.state.preset); };
+  saveAsPreset = () => this.pbAct && this.pbAct.saveAs();
+  delPreset = () => { if (this.pbAct && this.state.preset >= PRESETS.length) this.pbAct.del(this.state.preset); };
+  diffKeys = (a, b) => ['heat', 'mix', 'out'].filter(k => Math.abs(a[k] - b[k]) > 1e-6).concat(a.curve !== b.curve ? ['curve'] : [], a.mode !== b.mode ? ['mode'] : []);
+  setAB = (slot) => this.setState(st => {
+    if (st.ab === slot) return null;
+    const cur = this.snap(st), other = st.abOther || cur, diff = this.diffKeys(cur, other);
+    clearTimeout(this.abT); this.abT = setTimeout(() => this.setState({ abDiff: [] }), 1800);
+    return { ...other, ab: slot, abOther: cur, abDiff: diff, hist: [...st.hist.slice(-39), cur] };
+  });
+  wrapRef = React.createRef();
+  // engine seam: parameter changes out, controlled bypass in
+  paramOf = { curve: ['curve', v => v], mode: ['mode', v => v], heat: ['heat', v => +v.toFixed(2)], mix: ['mix', v => Math.round(v * 100)], output: ['out', v => +v.toFixed(1)], bypass: ['bypass', v => v] };
+  pumpParams() {
+    const f = this.props.onParam; if (!f) return;
+    const now = {};
+    Object.entries(this.paramOf).forEach(([id, [k, fn]]) => { now[id] = fn(this.state[k]); });
+    const prev = this._lastParams;
+    this._lastParams = now;
+    if (!prev) return;
+    const moved = Object.keys(now).filter(id => now[id] !== prev[id]);
+    if (moved.length) queueMicrotask(() => moved.forEach(id => f({ id, value: now[id] })));
+  }
+  componentDidMount() {
+    if (this.props.initHeat != null) this.setState({ heat: this.props.initHeat });
+    import(new URL('preset-browser.js', document.baseURI).href).then(m => { m.installPB(this, { factory: () => PRESETS, snap: (st) => this.snap(st), commit: this.commit }); this.forceUpdate(); });
+    if (this.props.fit && this.wrapRef.current && window.ResizeObserver) {
+      this.ro = new ResizeObserver(([e]) => { const w = e.contentRect.width; if (w > 0) this.setState({ fitScale: Math.min(1, w / 620) }); });
+      this.ro.observe(this.wrapRef.current);
+    }
+    this.timer = setInterval(() => this.setState(s => ({ t: s.t + 0.08 })), 80);
+    this.onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); this.undo(); return; }
+      if (e.key === 'Escape') { this.setState(st => st.pbMenu ? { pbMenu: null } : { presetOpen: false }); return; }
+      const d = e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' ? -1 : 0;
+      if (d && this.state.presetOpen) { e.preventDefault(); const n = this.allPresets().length; this.applyPreset((this.state.preset + d + n) % n); this.setState({ presetOpen: true }); }
+    };
+    window.addEventListener('keydown', this.onKey);
+  }
+  componentWillUnmount() { if (this.ro) this.ro.disconnect(); clearInterval(this.timer); window.removeEventListener('keydown', this.onKey); clearTimeout(this.tipT); clearTimeout(this.abT); }
+
+  showTip = (text, force) => (e) => {
+    if (!this.state.tips && !force) return;
+    const el = e.currentTarget, r = el.getBoundingClientRect();
+    let n = el;
+    while (n && !(n.style && n.style.width === '620px')) n = n.parentElement;
+    const f = n ? n.getBoundingClientRect() : { left: 0, top: 0, width: 620 };
+    const sc = f.width / 620;
+    const cx = (r.left - f.left + r.width / 2) / sc, top = (r.top - f.top) / sc;
+    const below = top < 120;
+    clearTimeout(this.tipT);
+    this.tipT = setTimeout(() => this.setState({ tip: text, tipX: Math.max(118, Math.min(502, cx)), tipY: below ? top + r.height / sc + 8 : top - 8, tipBelow: below }), 400);
+  };
+  hideTip = () => { clearTimeout(this.tipT); this.setState(st => (st.tip ? { tip: null } : null)); };
+
+  applyPreset = (i) => {
+    const p = this.allPresets()[i]; if (!p) return;
+    this.commit({ preset: i, presetOpen: false, curve: p.curve, mode: p.mode, heat: p.heat, mix: p.mix, out: p.out });
+  };
+  presetStep = (d) => () => { const n = this.allPresets().length; this.applyPreset((this.state.preset + d + n) % n); };
+  presetToggle = () => this.setState(s => ({ presetOpen: !s.presetOpen, pbMenu: null }));
+
+  pt(deg, r, cx, cy) { const a = deg * Math.PI / 180; return [cx + Math.sin(a) * r, cy - Math.cos(a) * r]; }
+
+  smooth(pts, closed) {
+    const n = pts.length, at = i => pts[closed ? (i + n) % n : Math.max(0, Math.min(n - 1, i))];
+    let d = 'M ' + pts[0][0].toFixed(2) + ' ' + pts[0][1].toFixed(2);
+    const last = closed ? n : n - 1;
+    for (let i = 0; i < last; i++) {
+      const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+      const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      d += ` C ${c1[0].toFixed(2)} ${c1[1].toFixed(2)}, ${c2[0].toFixed(2)} ${c2[1].toFixed(2)}, ${p2[0].toFixed(2)} ${p2[1].toFixed(2)}`;
+    }
+    return closed ? d + ' Z' : d;
+  }
+
+  blob(x, y, r, seed, wob) {
+    const rr = rndf(seed), n = 15, pts = [];
+    for (let i = 0; i < n; i++) pts.push(this.pt(i * 360 / n, r + (rr() - 0.5) * (wob ?? r * 0.05), x, y));
+    return this.smooth(pts, true);
+  }
+
+  dot(x, y, r, seed) {
+    const rr = rndf(seed), n = 8, pts = [];
+    for (let i = 0; i < n; i++) pts.push(this.pt(i * 360 / n, r + (rr() - 0.5) * r * 0.32, x, y));
+    return this.smooth(pts, true);
+  }
+
+  chip(r, seed, sides) {
+    const rr = rndf(seed), n = sides ?? 5, pts = [];
+    for (let i = 0; i < n; i++) pts.push(this.pt(i * 360 / n + rr() * 20, r * (0.7 + rr() * 0.5), 0, 0));
+    return 'M ' + pts.map(p => p[0].toFixed(2) + ' ' + p[1].toFixed(2)).join(' L ') + ' Z';
+  }
+
+  arcPath(cx, cy, r, a1, a2, seed, amp) {
+    const rr = rndf(seed ?? r), span = Math.abs(a2 - a1);
+    const n = Math.max(3, Math.round(span / 12)), pts = [];
+    for (let i = 0; i <= n; i++) {
+      const t = a1 + (a2 - a1) * i / n;
+      pts.push(this.pt(t, r + (rr() - 0.5) * (amp ?? 1.4), cx, cy));
+    }
+    return this.smooth(pts, false);
+  }
+
+  rrect(x, y, w, h, seed, amp) {
+    const rr = rndf(seed), a = amp ?? 1, pts = [], step = 15;
+    const edge = (x1, y1, x2, y2, nx, ny) => {
+      const len = Math.hypot(x2 - x1, y2 - y1), n = Math.max(2, Math.round(len / step));
+      for (let i = 0; i < n; i++) {
+        const t = i / n, o = (rr() - 0.5) * 2 * a;
+        pts.push([x1 + (x2 - x1) * t + nx * o, y1 + (y2 - y1) * t + ny * o]);
+      }
+    };
+    edge(x, y, x + w, y, 0, -1);
+    edge(x + w, y, x + w, y + h, 1, 0);
+    edge(x + w, y + h, x, y + h, 0, 1);
+    edge(x, y + h, x, y, -1, 0);
+    return this.smooth(pts, true);
+  }
+
+  drag = (key, min, max, span) => (e) => {
+    e.preventDefault();
+    const y0 = e.clientY, v0 = this.state[key];
+    this.commit({});
+    const move = ev => {
+      const v = v0 + (y0 - ev.clientY) / (span * (ev.shiftKey || ev.metaKey || ev.ctrlKey ? 10 : 1)) * (max - min);
+      this.setState({ [key]: Math.max(min, Math.min(max, v)) });
+    };
+    const up = () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  wheel = (key, min, max) => (e) => {
+    const now = Date.now(); if (!this.lastWheel || now - this.lastWheel > 1200) this.commit({}); this.lastWheel = now;
+    const d = (e.deltaY < 0 ? 1 : -1) * (max - min) / (e.shiftKey || e.metaKey || e.ctrlKey ? 400 : 60);
+    this.setState(s => ({ [key]: Math.max(min, Math.min(max, s[key] + d)) }));
+  };
+
+  // small knob: rim, ticks, arc (centre-anchored or sweep), pointer
+  knob(P, cx, cy, r, frac, centred, C) {
+    const add = (d, w, f, s, o, t) => P.push({ d, t: t ?? '', w: w ?? 2.4, f: f || 'none', s: s || C.ink, o: o ?? 1 });
+    add(this.blob(cx, cy, r, cx + 3, 2.2), 2.8, C.dish);
+    add(this.blob(cx, cy, r - 6, cx + 9, 1.8), 1.4, 'none', C.grainEdge, 0.5);
+    for (let j = 0; j <= 8; j++) {
+      const a = -135 + j * 33.75, p = this.pt(a, r + 11, cx, cy);
+      add(this.dot(p[0], p[1], j === 4 ? 2.6 : 1.7, cx + j), 0, C.ink, C.ink, j === 4 ? 1 : 0.5);
+    }
+    const ang = -135 + frac * 270;
+    const from = centred ? 0 : -135;
+    if (Math.abs(ang - from) > 2) add(this.arcPath(cx, cy, r + 5, Math.min(from, ang), Math.max(from, ang), cx + 41, 1), 5, 'none', C.accent, 1);
+    const a1 = this.pt(ang, r * 0.3, cx, cy), a2 = this.pt(ang, r - 4, cx, cy);
+    add(`M ${a1[0].toFixed(2)} ${a1[1].toFixed(2)} L ${a2[0].toFixed(2)} ${a2[1].toFixed(2)}`, 3.2, 'none', C.ink, 1);
+    add(this.dot(cx, cy, 3.4, cx + 77), 0, C.ink, C.ink, 1);
+  }
+
+  renderVals() {
+    const s = this.state;
+    this.pumpParams();
+    if (this.props.bypass !== undefined && this.props.bypass !== this._pBypass) {
+      this._pBypass = this.props.bypass;
+      if (this.props.bypass !== s.bypass) queueMicrotask(() => this.setState({ bypass: this.props.bypass }));
+    }
+    if (this.props.heat !== undefined && this.props.heat !== this._pHeat) {
+      this._pHeat = this.props.heat;
+      if (this.props.heat !== s.heat) queueMicrotask(() => this.setState({ heat: this.props.heat }));
+    }
+    const C = PAL[s.curve + '_' + s.mode];
+    const big = BIG[s.curve];
+    const grainTint = this.props.grainTint ?? true;
+    const P = [];
+    const add = (d, w, f, st, o, t) => P.push({ d, t: t ?? '', w: w ?? 2.4, f: f || 'none', s: st || C.ink, o: o ?? 1 });
+
+    // ── selector cells ────────────────────────────────────────────────
+    const CELLS = [
+      { key: 'curve', val: 'kosher', label: 'KOSHER', x: CX1, y: CY_CURVE, tip: 'Kosher — a single wide shelf from 2 kHz. Gentle on transients; safe on a whole mix.' },
+      { key: 'curve', val: 'pink', label: 'PINK', x: CX2, y: CY_CURVE, tip: 'Pink — low shelf pulls down as the air shelf pushes up, ±20 dB total. Vocals and cymbals.' },
+      { key: 'mode', val: 'acid', label: 'ACID', x: CX1, y: CY_MODE, tip: 'Acid — the lift follows level downward: soft parts get the most salt.' },
+      { key: 'mode', val: 'fat', label: 'FAT', x: CX2, y: CY_MODE, tip: 'Fat — inverted: soft parts dull and thicken, loud parts stay crisp.' }
+    ];
+
+    if (s.abDiff.includes('curve')) add(this.rrect(CX1 - 6, CY_CURVE - 6, CX2 + CW - CX1 + 12, CH + 12, 901, 1), 3, 'none', C.accentInk, .9);
+    if (s.abDiff.includes('mode')) add(this.rrect(CX1 - 6, CY_MODE - 6, CX2 + CW - CX1 + 12, CH + 12, 902, 1), 3, 'none', C.accentInk, .9);
+    CELLS.forEach((cl, i) => {
+      const on = s[cl.key] === cl.val;
+      add(this.rrect(cl.x, cl.y, CW, CH, 100 + i * 17, 1), on ? 3.2 : 2.4, on ? C.accent : C.plate);
+      const gx = cl.x + 28, gy = cl.y + CH / 2;
+      if (cl.key === 'curve') {
+        // the salt sample itself: coarse flakes vs a fine drift
+        const coarse = cl.val === 'kosher';
+        const SP = PAL[cl.val + '_' + s.mode];
+        (coarse ? CELL_COARSE : CELL_FINE).forEach((G, k) => {
+          const px = gx + Math.sin(G.ang * Math.PI / 180) * G.rad * 17;
+          const py = gy - Math.cos(G.ang * Math.PI / 180) * G.rad * 12;
+          const t = `translate(${px.toFixed(1)} ${py.toFixed(1)}) rotate(${G.rot.toFixed(1)})`;
+          const gfill = (!on && s.mode === 'fat') ? SP.grainEdge : SP.grain[G.tone];
+          add(this.chip((coarse ? 5 : 2.5) * G.s, 500 + i * 40 + k, G.sq ? 4 : 5), coarse ? 1.9 : 1.2, gfill, SP.grainEdge, on ? 1 : 0.85, t);
+        });
+      } else {
+        // mirrored arrows: Acid lifts, Fat sinks
+        const up = cl.val === 'acid', d = up ? 1 : -1;
+        const col = on ? C.onText : C.legend;
+        add(`M ${gx} ${gy + 13 * d} L ${gx} ${gy - 13 * d}`, 3.2, 'none', col, 1);
+        add(`M ${gx - 8} ${gy - 5 * d} L ${gx} ${gy - 13 * d} L ${gx + 8} ${gy - 5 * d}`, 3.2, 'none', col, 1);
+        add(`M ${gx - 13} ${gy + 13 * d} L ${gx + 13} ${gy + 13 * d}`, 2.4, 'none', col, on ? 0.55 : 0.4);
+      }
+    });
+
+    // ── HEAT: the pinch dish ──────────────────────────────────────────
+    const lvl = 0.855;                              // dish is always a full pinch; only the arc moves
+    add(this.blob(HX, HY, HR, 11, 3.2), 3.4, C.dish);
+    add(this.blob(HX, HY, HR - 9, 17, 2.6), 1.6, 'none', C.grainEdge, 0.55);
+
+    const pileR = HR * 0.3 + lvl * (HR * 0.62);
+    const pileOp = 0.55 + lvl * 0.45;
+    add(this.blob(HX, HY, pileR, 23, 3.4), 2.2, C.grain[2], C.grainEdge, pileOp);
+
+    const LAT = big ? COARSE : FINE;
+    const count = Math.round(lvl * LAT.length);
+    const baseS = big ? 7.6 : 3.6;
+    for (let i = 0; i < count; i++) {
+      const G = LAT[i];
+      const p = this.pt(G.ang, G.rad * (pileR - 5), HX, HY);
+      const t = `translate(${p[0].toFixed(1)} ${p[1].toFixed(1)}) rotate(${G.rot.toFixed(1)})`;
+      const tone = grainTint ? C.grain[G.tone] : C.grain[0];
+      add(this.chip(baseS * G.s, 1200 + i, G.sq ? 4 : 5), big ? 2 : 1.3, tone, C.grainEdge, pileOp, t);
+    }
+
+    // dial ring: ticks, centre-anchored arc from 12 o'clock, pointer
+    for (let j = 0; j <= 10; j++) {
+      const a = -135 + j * 27, p = this.pt(a, HR + 14, HX, HY);
+      add(this.dot(p[0], p[1], j === 5 ? 3.6 : 2.2, 60 + j), 0, C.ink, C.ink, j === 5 ? 1 : 0.5);
+    }
+    const hAng = (s.heat / 10) * 135;
+    // activity: the arc breathes with programme level while the box is in circuit
+    const act = s.bypass ? 0 : 0.55 + 0.45 * Math.sin(s.t * 1.7) * Math.sin(s.t * 0.41 + 1.2);
+    if (Math.abs(hAng) > 1.5) add(this.arcPath(HX, HY, HR + 6, Math.min(0, hAng), Math.max(0, hAng), 88, 1.6), 7, 'none', C.accent, s.bypass ? .35 : .55 + .45 * act);
+    if (!s.bypass && Math.abs(hAng) > 1.5) add(this.arcPath(HX, HY, HR + 6, Math.min(0, hAng * act), Math.max(0, hAng * act), 88, 1.6), 7, 'none', C.accent, 1);
+    if (s.abDiff.includes('heat')) add(this.blob(HX, HY, HR + 26, 903, 2), 3, 'none', C.accentInk, .9);
+    if (s.abDiff.includes('mix')) add(this.blob(MX, KY, KR + 20, 904, 2), 3, 'none', C.accentInk, .9);
+    if (s.abDiff.includes('out')) add(this.blob(OX, KY, KR + 20, 905, 2), 3, 'none', C.accentInk, .9);
+    const t1 = this.pt(hAng, pileR * 0.35, HX, HY), t2 = this.pt(hAng, HR - 5, HX, HY);
+    add(`M ${t1[0].toFixed(2)} ${t1[1].toFixed(2)} L ${t2[0].toFixed(2)} ${t2[1].toFixed(2)}`, 4, 'none', C.ink, 1);
+    add(this.dot(t2[0], t2[1], 5.2, 94), 2.4, C.plate, C.ink, 1);
+
+    this.knob(P, MX, KY, KR, s.mix, false, C);
+    this.knob(P, OX, KY, KR, (s.out + 24) / 48, true, C);
+
+    const sign = v => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(1);
+    const ALL = this.allPresets(), curP = ALL[s.preset] || ALL[0];
+    const modified = JSON.stringify(this.snap(s)) !== JSON.stringify({ curve: curP.curve, mode: curP.mode, heat: curP.heat, mix: curP.mix, out: curP.out });
+    const NAMES = { heat: 'FLAVOR', mix: 'MIX', out: 'OUTPUT', curve: 'CURVE', mode: 'MODE' };
+    const otherSlot = s.ab === 'A' ? 'B' : 'A', abDiffNow = s.abOther ? this.diffKeys(this.snap(s), s.abOther) : [];
+    const abText = !s.abOther ? 'A / B — two full states. Click ' + otherSlot + ' to start a second one from here.' : abDiffNow.length ? otherSlot + ' differs: ' + abDiffNow.map(k => NAMES[k]).join(', ') + '.' : otherSlot + ' is identical to ' + s.ab + '.';
+    const pItem = (p, i) => ({ name: p.name, folder: p.folder, color: i === s.preset ? C.accentInk : C.ink, onClick: () => this.applyPreset(i) });
+    const ka = s.curve === 'kosher' && s.mode === 'acid', abOn = ka ? '#2f4f9e' : C.ink, abOnText = ka ? '#f6f9ff' : C.plate, abOff = ka ? '#f9e7bd' : 'transparent', abOffText = ka ? '#1b2440' : C.ink;
+
+    const embed = !!this.props.embed;
+    const scale = this.props.fit ? (s.fitScale ?? Math.min(1, (this.wrapRef.current?.clientWidth || 620) / 620)) : (this.props.scale ?? 1);
+    return {
+      scale, frameW: 620 * scale, frameH: 480 * scale, wrapRef: this.wrapRef,
+      chrome: !embed, wrapBg: embed ? 'transparent' : '#14161c', wrapPad: embed ? '0' : '52px 24px 64px', wrapMinH: embed ? '0' : '100vh',
+      paths: P,
+      ink: C.ink, band: C.band, bandText: C.bandText, titleColor: C.titleColor, legend: C.legend, dim: C.dim,
+      plate: C.plate, hairline: C.hairline, hoverTone: C.hoverTone,
+      speck: C.speck,
+      presetName: (modified ? '• ' : '') + curP.name,
+      presetOpen: !embed && s.presetOpen,
+      tipPreset: this.showTip(modified ? 'PRESET — • means you\'ve moved off the saved state. ‹ › step, click to browse, ↑↓ while open.' : 'PRESET — ‹ › step, click to browse, ↑↓ while open.'),
+      undo: this.undo, undoOp: s.hist.length ? 1 : .4, tipUndo: this.showTip(s.hist.length ? 'UNDO the last change (⌘/Ctrl-Z).' : 'Nothing to undo yet.'),
+      savePreset: embed ? null : this.savePreset, saveAsPreset: this.saveAsPreset, delPreset: this.delPreset,
+      tipSave: this.showTip(s.preset >= PRESETS.length ? 'SAVE — overwrite this user preset.' : 'SAVE — factory presets stay put; this stores a new user preset.'),
+      tipSaveAs: this.showTip('SAVE AS — store the current state as a new user preset.'),
+      tipDel: this.showTip(s.preset >= PRESETS.length ? 'DELETE this user preset.' : 'DELETE — only user presets can be deleted.'),
+      setA: () => this.setAB('A'), setB: () => this.setAB('B'), tipAB: this.showTip(abText),
+      aBg: s.ab === 'A' ? abOn : abOff, aFg: s.ab === 'A' ? abOnText : abOffText, bBg: s.ab === 'B' ? abOn : abOff, bFg: s.ab === 'B' ? abOnText : abOffText,
+      bypass: s.bypass, toggleBypass: () => this.setState(st => ({ bypass: !st.bypass })),
+      bypassBg: s.bypass ? C.accent : C.plate, bypassFg: s.bypass ? C.onText : C.ink, bypassLamp: s.bypass ? C.ink : 'transparent', bypassWash: C.bypassWash || 'rgba(0,0,0,.28)',
+      tipBypass: this.showTip('BYPASS — the whole box out of circuit. The panel dims and the arc stops breathing.'),
+      heatWord: s.heat === 0 ? 'FLAT' : (s.heat > 0 ? 'OF +10' : 'OF −10'),
+      presetPrev: embed ? null : this.presetStep(-1),
+      presetNext: embed ? null : this.presetStep(1),
+      presetToggle: embed ? null : this.presetToggle,
+      delOp: s.preset >= PRESETS.length ? 1 : .4, delCursor: s.preset >= PRESETS.length ? 'pointer' : 'default',
+      ...(this.pbVals ? this.pbVals({ ink: C.ink, loaded: C.accentInk, muted: C.legend, section: C.accentInk, hoverBg: C.hoverTone, font: "'Patrick Hand', cursive", fontSC: "'Patrick Hand SC', cursive", size: 15, secSize: 11, menuSize: 14, padX: 12, indent: 16, rowPad: '2px', secPad: '4px' }) : {}),
+      accentInk: C.accentInk, wash: C.wash,
+      curveVal: s.curve, modeVal: s.mode, heatVal: +s.heat.toFixed(2), mixVal: Math.round(s.mix * 100), outVal: +s.out.toFixed(1), bypassStr: s.bypass ? 'true' : 'false',
+      cells: CELLS.map(cl => ({
+        label: cl.label, left: cl.x, top: cl.y, onEnter: this.showTip(cl.tip),
+        param: cl.key, val: cl.val, onStr: s[cl.key] === cl.val ? 'true' : 'false',
+        color: s[cl.key] === cl.val ? C.onText : C.legend,
+        onClick: () => this.commit({ [cl.key]: cl.val })
+      })),
+      modeHint: s.mode === 'acid' ? 'Acid — quiet passages brighten.' : 'Fat — quiet passages dull and thicken.',
+      curveHint: s.curve === 'kosher' ? 'Kosher: one gentle band, ~10 dB of lift.' : 'Pink: darkens low, brightens hard up top.',
+      heatReadout: sign(s.heat),
+      mixReadout: Math.round(s.mix * 100) + '%',
+      outReadout: sign(s.out) + ' dB',
+      heatDown: this.drag('heat', -10, 10, 220),
+      mixDown: this.drag('mix', 0, 1, 180),
+      outDown: this.drag('out', -24, 24, 200),
+      heatReset: () => this.commit({ heat: 0 }),
+      mixReset: () => this.commit({ mix: 1 }),
+      outReset: () => this.commit({ out: 0 }),
+      heatWheel: this.wheel('heat', -10, 10), mixWheel: this.wheel('mix', 0, 1), outWheel: this.wheel('out', -24, 24),
+      heatTip: this.showTip('FLAVOR −10 to +10 — how hard the enhancer works. Drag or scroll · ⌘/shift fine · double-click resets to 0.'),
+      mixTip: this.showTip('MIX 0–100%. Blend against dry; 100% is the salted signal alone. Double-click resets to 100.'),
+      outTip: this.showTip('OUTPUT ±24 dB, centred at 0. Drag or scroll · ⌘/shift fine · double-click resets.'),
+      tipsColor: s.tips ? C.tipGlyph : C.bandText,
+      tipsBg: s.tips ? C.tipFill : 'transparent',
+      tipTips: this.showTip(s.tips ? 'Tooltips are on. Click to switch these little notes off.' : 'Tooltips are off. Click to switch them on; this one always shows.', true),
+      toggleTips: () => this.setState(st => ({ tips: !st.tips, tip: st.tip ? (st.tips ? 'Tooltips are off. Click to switch them on; this one always shows.' : 'Tooltips are on. Click to switch these little notes off.') : null })),
+      tip: s.tip,
+      tipX: s.tipX, tipY: s.tipY,
+      tipShift: s.tipBelow ? 'translate(-50%, 0) rotate(-.6deg)' : 'translate(-50%, -100%) rotate(-.6deg)',
+      tipOut: this.hideTip
+    };
+  }
+}
+</script>
+</body>
+</html>

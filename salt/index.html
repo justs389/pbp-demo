@@ -5,7 +5,7 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Schmear · try it in your browser</title>
+<title>Salt · try it in your browser</title>
 <meta name="robots" content="noindex">
 <script>window.__resources={"https://unpkg.com/react@18.3.1/umd/react.production.min.js":"./vendor/react.production.min.js","https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js":"./vendor/react-dom.production.min.js"};</script>
 <script src="./support.js"></script>
@@ -24,21 +24,21 @@
 
   <sc-if value="{{ chrome }}" hint-placeholder-val="{{ false }}">
     <div style="width: 100%; max-width: 680px; display: flex; flex-direction: column; gap: 6px;">
-      <div style="font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .14em; color: #8a8378;">SCHMEAR · TRY IT PLAYER</div>
-      <div style="font-family: 'Caveat Brush', cursive; font-size: 40px; line-height: 1;">Hear it before you download it</div>
-      <div style="font-size: 17px; line-height: 1.45; color: #4a443d; text-wrap: pretty;">This block sits at the top of the Schmear page, in place of the static panel. <a href="Pizza Bagel Site.dc.html#schmear" style="border-bottom: 2px solid #2a2622;">See it in place</a>.</div>
+      <div style="font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .14em; color: #8a8378;">SALT · TRY IT PLAYER</div>
+      <div style="font-family: 'Caveat Brush', cursive; font-size: 40px; line-height: 1;">Hear it on fifteen sources</div>
+      <div style="font-size: 17px; line-height: 1.45; color: #4a443d; text-wrap: pretty;">This block sits at the top of the Salt page, in place of the static panel. <a href="Pizza Bagel Site.dc.html#salt" style="border-bottom: 2px solid #2a2622;">See it in place</a>.</div>
     </div>
   </sc-if>
 
-  <div ref="{{ root }}" id="schmear-try-it" data-status="{{ status }}" data-clip="{{ clip }}" style="width: 100%; max-width: 680px; box-sizing: border-box; border: 3px solid #2a2622; background: #f3e3c6; padding: clamp(10px, 3vw, 18px); display: flex; flex-direction: column; gap: clamp(10px, 3vw, 16px);">
+  <div ref="{{ root }}" id="salt-try-it" data-status="{{ status }}" data-clip="{{ clip }}" style="width: 100%; max-width: 680px; box-sizing: border-box; border: 3px solid #2a2622; background: #e6dcc4; padding: clamp(10px, 3vw, 18px); display: flex; flex-direction: column; gap: clamp(10px, 3vw, 16px);">
 
     <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .14em;">
       <div style="color: #e0785c;">TRY IT IN YOUR BROWSER</div>
-      <div style="color: #8a8378;">{{ statusLine }}</div>
+      <div style="color: #6e675c;">{{ statusLine }}</div>
     </div>
 
-    <div style="position: relative; border: 2px solid #2a2622; box-shadow: 0 18px 40px -18px rgba(42,38,34,.7); line-height: 0; background: #f2dcb6;">
-      <dc-import name="Schmear Pastel" embed="{{ true }}" fit="{{ true }}" bypass="{{ bypass }}" on-param="{{ onParam }}" hint-size="100%,380px"></dc-import>
+    <div style="position: relative; border: 2px solid #2a2622; box-shadow: 0 18px 40px -18px rgba(42,38,34,.7); line-height: 0; background: #f6cdb8;">
+      <dc-import name="Salt Pastel" embed="{{ true }}" fit="{{ true }}" heat="{{ heat }}" bypass="{{ bypass }}" on-param="{{ onParam }}" hint-size="100%,480px"></dc-import>
       <sc-if value="{{ veil }}" hint-placeholder-val="{{ false }}">
         <div style="position: absolute; inset: 0; background: rgba(251,247,238,.45); pointer-events: none;"></div>
       </sc-if>
@@ -48,48 +48,59 @@
       <div style="border: 3px solid #2a2622; background: #fbf7ee; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px;">
         <div style="font-family: 'Caveat Brush', cursive; font-size: 26px; line-height: 1.1;">This browser can't run the demo</div>
         <div style="font-size: 17px; line-height: 1.45; color: #4a443d; text-wrap: pretty;">{{ failMsg }}</div>
-        <div style="font-size: 17px; line-height: 1.45; color: #4a443d; text-wrap: pretty;">The panel above still works, you just won't hear it. The plugin itself runs in any DAW, and it is free.</div>
+        <div style="font-size: 17px; line-height: 1.45; color: #4a443d; text-wrap: pretty;">The panel above still works, you just won't hear it. The plugin itself runs in any DAW.</div>
       </div>
     </sc-if>
 
     <sc-if value="{{ supported }}" hint-placeholder-val="{{ true }}">
       <div style="display: flex; flex-direction: column; gap: clamp(10px, 3vw, 14px);">
 
-        <div style="display: flex; flex-direction: column; gap: 6px;">
-          <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #8a8378;">CLIP · 20 SECOND LOOPS</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #6e675c;">
+            <div>CLIP · {{ clipCount }} SOURCES</div>
+            <div style="color: #2a2622;">NOW: {{ clipLabel }} · {{ clipLen }}</div>
+          </div>
+          <div role="tablist" aria-label="Clip groups" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: 6px;">
+            <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
+              <button type="button" role="tab" aria-selected="{{ g.onStr }}" data-group="{{ g.id }}" onClick="{{ g.pick }}" style="min-width: 0; min-height: 44px; padding: 6px 10px; justify-content: center; border: 2.5px solid #2a2622; background: {{ g.bg }}; color: {{ g.fg }}; font-family: 'Patrick Hand SC', cursive; font-size: {{ tabSize }}; letter-spacing: .1em; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 7px;" style-hover="background: {{ g.hoverBg }};">
+                <span>{{ g.label }}</span>
+                <sc-if value="{{ g.holdsClip }}" hint-placeholder-val="{{ false }}"><span style="width: 7px; height: 7px; border-radius: 50%; background: #e0785c;"></span></sc-if>
+              </button>
+            </sc-for>
+          </div>
           <div role="radiogroup" aria-label="Clip" style="display: grid; grid-template-columns: {{ clipCols }}; gap: 6px;">
-            <sc-for list="{{ clips }}" as="c" hint-placeholder-count="5">
-              <button type="button" role="radio" aria-checked="{{ c.onStr }}" data-clip="{{ c.id }}" onClick="{{ c.pick }}" style="min-width: 0; min-height: 44px; padding: 8px 12px; border: 2.5px solid #2a2622; background: {{ c.bg }}; color: {{ c.fg }}; font-family: 'Patrick Hand SC', cursive; font-size: {{ clipSize }}; letter-spacing: .1em; cursor: pointer; text-align: center; line-height: 1.2;" style-hover="background: {{ c.hoverBg }};">{{ c.label }}</button>
+            <sc-for list="{{ clips }}" as="c" hint-placeholder-count="4">
+              <button type="button" role="radio" aria-checked="{{ c.onStr }}" data-clip="{{ c.id }}" onClick="{{ c.pick }}" style="min-width: 0; min-height: 44px; padding: 8px 10px; border: 2.5px solid #2a2622; background: {{ c.bg }}; color: {{ c.fg }}; font-family: 'Patrick Hand SC', cursive; font-size: {{ clipSize }}; letter-spacing: .08em; cursor: pointer; text-align: center; line-height: 1.2;" style-hover="background: {{ c.hoverBg }};">{{ c.label }}</button>
             </sc-for>
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px 14px; align-items: end;">
           <div style="display: flex; flex-direction: column; gap: 6px;">
-            <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #8a8378;">{{ playLabel }}</div>
+            <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #6e675c;">{{ playLabel }}</div>
             <button type="button" id="play" aria-pressed="{{ playingStr }}" onClick="{{ toggle }}" style="min-height: 60px; padding: 10px 18px; border: 3px solid #2a2622; background: {{ playBg }}; color: {{ playFg }}; display: flex; align-items: center; justify-content: center; gap: 12px; font-family: 'Patrick Hand SC', cursive; font-size: 20px; letter-spacing: .12em; cursor: {{ playCursor }}; box-shadow: 5px 6px 0 {{ playShadow }};" style-hover="background: {{ playHoverBg }}; color: {{ playHoverFg }};">
               <span style="display: inline-flex; width: 18px; height: 18px; align-items: center; justify-content: center;">{{ playGlyph }}</span>
               <span>{{ playText }}</span>
             </button>
           </div>
           <div style="display: flex; flex-direction: column; gap: 6px;">
-            <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #8a8378;">HEAR THE DIFFERENCE · FLIP IT</div>
-            <div role="radiogroup" aria-label="Schmear on or off" style="display: flex; min-height: 60px; border: 3px solid #2a2622; background: #fbf7ee; opacity: {{ abOp }};">
+            <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #6e675c;">HEAR WHAT IT ADDED · FLIP IT</div>
+            <div role="radiogroup" aria-label="Salt on or off" style="display: flex; min-height: 60px; border: 3px solid #2a2622; background: #fbf7ee; opacity: {{ abOp }};">
               <button type="button" role="radio" aria-checked="{{ dryStr }}" data-bypass="true" onClick="{{ setDry }}" style="flex: 1; min-width: 0; border: 0; border-right: 3px solid #2a2622; background: {{ dryBg }}; color: {{ dryFg }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 6px 8px; font-family: 'Patrick Hand SC', cursive; letter-spacing: .12em; cursor: pointer;">
                 <span style="font-size: 13px; opacity: .7;">A</span>
                 <span style="font-size: 18px; white-space: nowrap;">WITHOUT</span>
               </button>
               <button type="button" role="radio" aria-checked="{{ wetStr }}" data-bypass="false" onClick="{{ setWet }}" style="flex: 1; min-width: 0; border: 0; background: {{ wetBg }}; color: {{ wetFg }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 6px 8px; font-family: 'Patrick Hand SC', cursive; letter-spacing: .12em; cursor: pointer;">
                 <span style="font-size: 13px; opacity: .7;">B</span>
-                <span style="font-size: 18px; white-space: nowrap;">WITH SCHMEAR</span>
+                <span style="font-size: 18px; white-space: nowrap;">WITH SALT</span>
               </button>
             </div>
           </div>
         </div>
 
         <div style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.4; color: #4a443d; text-wrap: pretty;">
-          <svg width="20" height="20" viewBox="0 0 20 20" style="flex: none; margin-top: 1px;"><path d="M 3 12 V 10 a 7 7 0 0 1 14 0 v 2" fill="none" stroke="#2a2622" stroke-width="2.2" stroke-linecap="round"></path><rect x="2" y="11" width="4.5" height="6" rx="1" fill="#2a2622"></rect><rect x="13.5" y="11" width="4.5" height="6" rx="1" fill="#2a2622"></rect></svg>
-          <div>Schmear is stereo width. Listen on headphones or two speakers. A phone speaker is mono, so it will sound like nothing is happening.</div>
+          <svg width="20" height="20" viewBox="0 0 20 20" style="flex: none; margin-top: 1px;"><circle cx="10" cy="10" r="7.6" fill="none" stroke="#2a2622" stroke-width="2.2"></circle><path d="M 10 4.4 V 10" stroke="#2a2622" stroke-width="2.2" stroke-linecap="round"></path><path d="M 10 1 V 2.4 M 16.4 4.4 L 15.4 5.4" stroke="#2a2622" stroke-width="2" stroke-linecap="round"></path></svg>
+          <div>Flavor is the knob to turn. It opens at {{ initHeat }}; push it up, then flip WITHOUT / WITH to hear what it added. At 0 it does almost nothing at normal levels.</div>
         </div>
       </div>
     </sc-if>
@@ -97,27 +108,29 @@
 
   <sc-if value="{{ chrome }}" hint-placeholder-val="{{ false }}">
     <div style="width: 100%; max-width: 680px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px 24px; font-size: 15px; line-height: 1.4; color: #4a443d; border-top: 2px solid #2a2622; padding-top: 14px;">
-      <div><div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #8a8378;">EVENTS ON #schmear-try-it</div><div>change: { id, value } for detune (3, 6, 9), mix (0 to 100), input and output (dB), bypass (true or false). transport: { action: play, stop or clip, clip: female, male, guitar, electric or bass }.</div></div>
-      <div><div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #8a8378;">ENGINE HOOKS</div><div>el.tryIt.ready() ends the loading state, el.tryIt.fail(msg) shows the fallback, el.tryIt.getParams() reads every current value. Controls carry ids detune, mix, input, output, bypass with data-value. Set the simulate tweak off when wiring.</div></div>
+      <div><div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #8a8378;">EVENTS ON #salt-try-it</div><div>change: { id, value } for curve (kosher or pink), mode (acid or fat), heat (-10 to 10), mix (0 to 100), output (dB) and bypass (true or false). transport: { action: play, stop or clip, clip: the clip id }.</div></div>
+      <div><div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #8a8378;">ENGINE HOOKS</div><div>el.tryIt.ready() ends the loading state, el.tryIt.fail(msg) shows the fallback, el.tryIt.getParams() reads every current value, el.tryIt.getClip() reads the clip id and its length in seconds. Controls carry ids curve, mode, heat, mix, output, bypass with data-value. Turn the simulate tweak off when wiring.</div></div>
     </div>
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;embed&quot;:{&quot;editor&quot;:null,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;simulate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Engine&quot;},&quot;previewState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;idle&quot;,&quot;loading&quot;,&quot;playing&quot;,&quot;ready&quot;,&quot;unsupported&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preview&quot;}}">
-const CLIPS = [
-  { id: 'female', label: 'FEMALE VOCAL', short: 'F VOCAL' },
-  { id: 'male', label: 'MALE VOCAL', short: 'M VOCAL' },
-  { id: 'guitar', label: 'ACOUSTIC GUITAR', short: 'ACOUSTIC' },
-  { id: 'electric', label: 'ELECTRIC GUITAR', short: 'ELECTRIC' },
-  { id: 'bass', label: 'BASS GUITAR', short: 'BASS GTR' }
+<script type="text/x-dc" data-dc-script data-props="{&quot;embed&quot;:{&quot;editor&quot;:null,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;initHeat&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:4,&quot;min&quot;:-10,&quot;max&quot;:10,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Engine&quot;},&quot;simulate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Engine&quot;},&quot;previewState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;idle&quot;,&quot;loading&quot;,&quot;playing&quot;,&quot;ready&quot;,&quot;unsupported&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preview&quot;}}">
+const GROUPS = [
+  { id: 'vocals', label: 'VOCALS', short: 'VOX', clips: [['female', 'FEMALE VOCAL', 'F VOCAL', 'FV'], ['male', 'MALE VOCAL', 'M VOCAL', 'MV'], ['male2', 'MALE VOCAL 2', 'M VOCAL 2', 'MV2']] },
+  { id: 'guitars', label: 'GUITARS', short: 'GTRS', clips: [['acoustic', 'ACOUSTIC GUITAR', 'ACOUSTIC', 'ACG'], ['electric', 'ELECTRIC GUITAR', 'ELECTRIC', 'EG'], ['electric2', 'ELECTRIC GUITAR 2', 'ELECTRIC 2', 'EG2'], ['rubber', 'RUBBER BRIDGE', 'RUBBER', 'RBG']] },
+  { id: 'bass', label: 'BASS', short: 'BASS', clips: [['bass', 'BASS GUITAR', 'BASS GTR', 'BASS'], ['synthbass', 'SYNTH BASS', 'SYN BASS', 'SYN B'], ['808', '808', '808', '808']] },
+  { id: 'drums', label: 'DRUMS', short: 'DRUMS', clips: [['drumkit', 'DRUM KIT', 'DRUM KIT', 'KIT'], ['edrums1', 'ELECTRONIC DRUMS 1', 'E DRUMS 1', 'ED1'], ['edrums2', 'ELECTRONIC DRUMS 2', 'E DRUMS 2', 'ED2']] },
+  { id: 'keys', label: 'KEYS', short: 'KEYS', clips: [['pad', 'SYNTH PAD', 'SYN PAD', 'PAD'], ['mellotron', 'MELLOTRON FLUTES', 'MELLOTRON', 'MELO']] }
 ];
+const CLIPS = GROUPS.flatMap(g => g.clips.map(([id, label]) => ({ id, label, group: g.id, secs: id === 'pad' ? 14 : 20 })));
 const INK = '#2a2622', PAPER = '#fbf7ee', ACC = '#e0785c', TOAST = '#ecd3ae';
 const DEFAULT_FAIL = 'It needs WebAssembly and an AudioWorklet, which means a current Chrome, Firefox, Edge or Safari. Some in-app browsers (Instagram, Facebook) block them: open this page in your regular browser.';
 
 class Component extends DCLogic {
-  state = { status: 'idle', clip: 'female', bypass: false, failMsg: DEFAULT_FAIL };
-  params = { detune: 9, mix: 100, input: 0, output: 0, bypass: false };
+  state = { status: 'idle', clip: 'female', group: 'vocals', bypass: false, heat: null, failMsg: DEFAULT_FAIL };
+  params = { curve: 'kosher', mode: 'acid', heat: 4, mix: 100, output: 0, bypass: false };
   root = React.createRef();
+  clipOf(id) { return CLIPS.find(c => c.id === id) || CLIPS[0]; }
   componentDidMount() {
     const AC = window.AudioContext || window.webkitAudioContext;
     const ok = !!AC && !!window.WebAssembly && !!(AC && AC.prototype && 'audioWorklet' in AC.prototype);
@@ -126,14 +139,14 @@ class Component extends DCLogic {
     if (el && window.ResizeObserver) {
       this.ro = new ResizeObserver(([e]) => {
         const w = e.contentRect.width;
-        const cols = w >= 600 ? 5 : w >= 440 ? 3 : 2;
-        this.setState(s => (s.cols === cols ? null : { cols }));
+        const cols = w >= 600 ? 4 : w >= 440 ? 3 : w < 340 ? 3 : 2;
+        this.setState(s => (s.cols === cols && s.w === w ? null : { cols, w }));
       });
       this.ro.observe(el);
     }
     if (el) el.tryIt = {
       getParams: () => ({ ...this.params }),
-      getClip: () => this.state.clip,
+      getClip: () => { const c = this.clipOf(this.state.clip); return { id: c.id, label: c.label, group: c.group, seconds: c.secs }; },
       getStatus: () => this.state.status,
       ready: () => this.setState(s => (s.status === 'loading' ? { status: 'playing' } : null)),
       stop: () => this.setState({ status: 'ready' }),
@@ -145,6 +158,7 @@ class Component extends DCLogic {
   onParam = ({ id, value }) => {
     this.params[id] = value;
     if (id === 'bypass' && value !== this.state.bypass) this.setState({ bypass: value });
+    if (id === 'heat' && value !== this.state.heat) this.setState({ heat: value });
     this.emit('change', { id, value });
   };
   toggle = () => {
@@ -160,7 +174,9 @@ class Component extends DCLogic {
     this.setState({ status: 'playing' }); this.emit('transport', { action: 'play', clip });
   };
   pick = (clip) => () => { if (clip === this.state.clip) return; this.setState({ clip }); this.emit('transport', { action: 'clip', clip }); };
+  pickGroup = (group) => () => this.setState({ group });
   setBypass = (v) => () => { if (v !== this.state.bypass) this.setState({ bypass: v }); };
+  heatNow() { return this.state.heat ?? this.props.initHeat ?? 4; }
   dots() {
     return React.createElement('span', { style: { display: 'inline-flex', gap: 4 } }, [0, 1, 2].map(i =>
       React.createElement('span', { key: i, style: { width: 6, height: 6, borderRadius: '50%', background: 'currentColor', animation: 'pb-blink 1s ' + (i * 0.18) + 's infinite' } })));
@@ -171,17 +187,24 @@ class Component extends DCLogic {
     const status = pv && pv !== 'auto' ? pv : s.status;
     const embed = !!this.props.embed;
     const idle = status === 'idle', loading = status === 'loading', playing = status === 'playing', unsupported = status === 'unsupported';
-    const clipLabel = (CLIPS.find(c => c.id === s.clip) || CLIPS[0]).label;
+    const cur = this.clipOf(s.clip);
+    const grp = GROUPS.find(g => g.id === s.group) || GROUPS[0];
     const primary = idle || loading;
+    const micro = (s.w ?? 680) < 340;
+    const tiny = micro || (s.w ?? 680) < 440;
     return {
-      clipCols: 'repeat(' + (s.cols ?? 5) + ', minmax(0, 1fr))',
       root: this.root, status, clip: s.clip, bypass: s.bypass, onParam: this.onParam,
+      initHeat: this.props.initHeat ?? 4,
+      heat: this.heatNow(),
       chrome: !embed, wrapPad: embed ? '0' : '48px 20px 64px', wrapMinH: embed ? '0' : '100vh', wrapBg: embed ? 'transparent' : PAPER,
       unsupported, supported: !unsupported, failMsg: s.failMsg,
       veil: idle || loading || unsupported,
-      statusLine: unsupported ? 'NO AUDIO IN THIS BROWSER' : idle ? 'NOT STARTED' : loading ? 'LOADING' : playing ? 'PLAYING · ' + clipLabel : 'STOPPED',
-      clipSize: (s.cols ?? 5) <= 2 ? '14px' : '15px',
-      clips: CLIPS.map(c => { const on = c.id === s.clip; return { id: c.id, label: (s.cols ?? 5) <= 2 ? c.short : c.label, onStr: on ? 'true' : 'false', pick: this.pick(c.id), bg: on ? INK : PAPER, fg: on ? PAPER : INK, hoverBg: on ? INK : TOAST }; }),
+      clipCount: CLIPS.length, clipLabel: cur.label, clipLen: cur.secs + ' SEC LOOP',
+      statusLine: unsupported ? 'NO AUDIO IN THIS BROWSER' : idle ? 'NOT STARTED' : loading ? 'LOADING' : playing ? 'PLAYING · ' + cur.label : 'STOPPED',
+      tabSize: tiny ? '13px' : '14px', clipSize: tiny ? '14px' : '15px',
+      groups: GROUPS.map(g => { const on = g.id === grp.id; return { id: g.id, label: tiny ? g.short : g.label, onStr: on ? 'true' : 'false', pick: this.pickGroup(g.id), holdsClip: g.id === cur.group && !on, bg: on ? INK : PAPER, fg: on ? PAPER : INK, hoverBg: on ? INK : TOAST }; }),
+      clipCols: 'repeat(' + (s.cols ?? 4) + ', minmax(0, 1fr))',
+      clips: grp.clips.map(([id, label, short, mini]) => { const on = id === s.clip; return { id, label: micro ? mini : tiny ? short : label, onStr: on ? 'true' : 'false', pick: this.pick(id), bg: on ? INK : PAPER, fg: on ? PAPER : INK, hoverBg: on ? INK : TOAST }; }),
       playLabel: idle ? 'STEP 1 · START HERE' : loading ? 'LOADING THE ENGINE AND CLIP' : playing ? 'LOOPING' : 'READY',
       playText: idle ? 'PLAY THE DEMO' : loading ? 'LOADING' : playing ? 'STOP' : 'PLAY',
       playGlyph: loading ? this.dots() : playing
