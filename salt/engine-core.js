@@ -5,6 +5,7 @@
 //   wasm      engine file next to the page
 //   clips     {clipId: file} relative to the page
 //   toEngine  (id, value) -> [paramIndex, number] or null (see <slug>/params.json)
+//   meters    optional window property name that receives {comp, deess, gate} GR in dB (~80 ms)
 //   debug     window property name for a small inspection handle
 window.PbDemo = {
   start(cfg) {
@@ -35,6 +36,7 @@ window.PbDemo = {
       const module = await WebAssembly.compile(bytes);
       node = new AudioWorkletNode(ctx, 'pb-engine', { processorOptions: { module }, outputChannelCount: [2] });
       node.connect(ctx.destination);
+      if (cfg.meters) { window[cfg.meters] = { comp: 0, deess: 0, gate: 0 }; node.port.onmessage = (e) => { const m = e.data && e.data.meters; if (m) window[cfg.meters] = { comp: m[0], deess: m[1], gate: m[2] }; }; }
       const cur = el.tryIt.getParams();
       for (const id in cur) fromUI(id, cur[id]);
       node.port.postMessage(msg);
@@ -66,7 +68,7 @@ window.PbDemo = {
         el.tryIt.fail(FAIL);
       }
     }
-    function stop() { token = {}; stopSrc(); playing = false; }
+    function stop() { token = {}; stopSrc(); playing = false; if (cfg.meters) window[cfg.meters] = { comp: 0, deess: 0, gate: 0 }; }
 
     function reportHeight() {
       if (window.parent === window || !el) return;

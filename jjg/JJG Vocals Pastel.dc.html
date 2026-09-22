@@ -755,7 +755,7 @@ class Component extends DCLogic {
     }
 
     // ── COMP ────────────────────────────────────────────────────────
-    const grC = pw.comp ? v.amount / 100 * 14 * Math.max(0, env(s.t, 1.2)) : 0;
+    const grC = pw.comp ? ((window.__jjgMeters || {}).comp || 0) : 0;   // real comp GR from the engine
     {
       const X = 208, W = 172, cx = 294, C = pal(COMP_PAL[s.comp]), op = pw.comp ? 1 : .4; C.seam = 262;
       mod(X, 94, W, 580, C, 6);  plate('comp', C, s.comp);
@@ -814,7 +814,7 @@ class Component extends DCLogic {
     }
 
     // ── DS ──────────────────────────────────────────────────────────
-    const grD = pw.deess ? v.deess / 10 * 9 * Math.max(0, env(s.t, 2.6)) : 0;
+    const grD = pw.deess ? ((window.__jjgMeters || {}).deess || 0) : 0;   // real de-ess GR from the engine
     const LISTEN_TIP = 'LISTEN — hear only what the de-esser is taking out (delta). Not saved with presets.';
     const toggleListen = () => this.setState(st => ({ dsListen: !st.dsListen }));
     // X,Y = module origin; model = '536A' | '902'; layout A–D
@@ -874,7 +874,7 @@ class Component extends DCLogic {
     }
 
     // ── OUT ─────────────────────────────────────────────────────────
-    const gateLit = pw.gate && !s.bypass && v.gate > -80 && env(s.t, .4) < (v.gate + 80) / 80;
+    const gateLit = pw.gate && !s.bypass && v.gate > -80 && ((window.__jjgMeters || {}).gate || 0) > 0.5;   // real gate state from the engine
     {
       const X = 1036, W = 148, cx = 1110, C = pal(OUT_PALS[this.props.outPalette] || OUT_PALS.Butter); if (s.dark) C.knob = { style: 'round', body: '#3a3342', mark: '#f2ede4' };
       mod(X, 94, W, 580, C, 12); plate(null, C, 'OUTPUT', { x: X + 14, y: 116, w: W - 28, s: 18 }); 

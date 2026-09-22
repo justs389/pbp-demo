@@ -13,6 +13,7 @@ class PbEngine extends AudioWorkletProcessor {
     this.pL = this.x.pb_bufL(); this.pR = this.x.pb_bufR(); this.max = this.x.pb_maxBlock();
     this.views();
     this.port.onmessage = (e) => { for (const k in e.data) this.x.pb_set(+k, +e.data[k]); };
+    this.meterEvery = Math.max(1, Math.round(sampleRate * 0.08 / 128)); this.quantum = 0;   // ~80 ms, the panel's own meter tick
   }
   views() {
     this.mem = this.x.memory.buffer;
@@ -29,6 +30,8 @@ class PbEngine extends AudioWorkletProcessor {
     this.x.pb_process(n, ch > 1 ? 2 : 1);
     out[0].set(this.L.subarray(0, n));
     if (out[1]) out[1].set(this.R.subarray(0, n));
+    if (this.x.pb_meter && ++this.quantum % this.meterEvery === 0)
+      this.port.postMessage({ meters: [this.x.pb_meter(0), this.x.pb_meter(1), this.x.pb_meter(2)] });
     return true;
   }
 }
