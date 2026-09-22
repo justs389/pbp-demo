@@ -1,7 +1,7 @@
 // Salt Try It -> Salt engine. Indexes per params.json; the panel reports curve/mode as words.
 PbDemo.start({
   root: '#salt-try-it', wasm: 'salt.wasm', debug: '__saltDemo',
-  clips: Object.fromEntries(['female', 'male', 'male2', 'acoustic', 'electric', 'electric2', 'rubber', 'bass', 'synthbass', '808', 'drumkit', 'edrums1', 'edrums2', 'pad', 'mellotron'].map(id => [id, 'clips/' + id + '.m4a'])),
+  clips: Object.fromEntries(['female', 'female2', 'female3', 'male', 'male2', 'male3', 'male4', 'male5', 'backing', 'gang', 'acoustic', 'electric', 'electric2', 'rubber', 'bass', 'synthbass', '808', 'drumkit', 'edrums1', 'edrums2', 'pad', 'mellotron'].map(id => [id, 'clips/' + id + '.m4a'])),
   toEngine(id, value) {
     switch (id) {
       case 'curve': return [0, value === 'pink' ? 1 : 0];
