@@ -495,7 +495,7 @@ class Component extends DCLogic {
     }
     const hAng = (s.heat / 10) * 135;
     // activity: the arc breathes with programme level while the box is in circuit
-    const act = s.bypass ? 0 : 0.55 + 0.45 * Math.sin(s.t * 1.7) * Math.sin(s.t * 0.41 + 1.2);
+    const act = s.bypass ? 0 : (((window.__saltMeters || {}).raw || [0])[0] || 0);   // the engine's real activity meter
     if (Math.abs(hAng) > 1.5) add(this.arcPath(HX, HY, HR + 6, Math.min(0, hAng), Math.max(0, hAng), 88, 1.6), 7, 'none', C.accent, s.bypass ? .35 : .55 + .45 * act);
     if (!s.bypass && Math.abs(hAng) > 1.5) add(this.arcPath(HX, HY, HR + 6, Math.min(0, hAng * act), Math.max(0, hAng * act), 88, 1.6), 7, 'none', C.accent, 1);
     if (s.abDiff.includes('heat')) add(this.blob(HX, HY, HR + 26, 903, 2), 3, 'none', C.accentInk, .9);
