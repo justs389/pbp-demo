@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&amp;family=Patrick+Hand+SC&amp;family=Patrick+Hand&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #1a1714; }
+  a { color: #e0785c; text-decoration: none; }
+  a:hover { color: #f0c25c; }
+</style>
+</helmet>
+
+<div ref="{{ wrapRef }}" style="min-height: {{ wrapMinH }}; background: {{ wrapBg }}; padding: {{ wrapPad }}; display: flex; flex-direction: column; align-items: center; gap: 36px; font-family: 'Patrick Hand', cursive;">
+
+  <sc-if value="{{ chrome }}" hint-placeholder-val="{{ true }}">
+  <div style="font-size: 14px; letter-spacing: .04em; color: #8a8378;">JJG Vocals — the lunchbox — 1200 × 710 base, uniform scale</div>
+  </sc-if>
+
+  <div style="position: relative; width: {{ frameW }}px; height: {{ frameH }}px;">
+  <div style="position: absolute; left: 0; top: 0; transform: scale({{ scale }}); transform-origin: top left;">
+    <div style="position: relative; width: 1200px; height: 710px; overflow: hidden; background: #ece5d8; box-shadow: 0 24px 50px -14px rgba(0,0,0,.78);">
+
+      <div style="position: absolute; inset: 0; background: {{ chBg }};"></div>
+      <div style="position: absolute; inset: 0; opacity: .22; background-image: radial-gradient({{ chGrain }} .5px, rgba(0,0,0,0) .6px); background-size: 3px 3px;"></div>
+      <div style="position: absolute; left: 0; top: 0; width: 1200px; height: 70px; background: {{ chHead }};"></div>
+      <div style="position: absolute; left: 0; top: 70px; width: 1200px; height: 4px; background: {{ chInk }};"></div>
+      <div style="position: absolute; left: 0; bottom: 0; width: 1200px; height: 4px; background: {{ chInk }};"></div>
+
+      <svg width="1200" height="710" viewBox="0 0 1200 710" style="position: absolute; inset: 0;">
+        <g stroke-linecap="round" stroke-linejoin="round">
+          <sc-for list="{{ paths }}" as="p" hint-placeholder-count="80">
+            <path d="{{ p.d }}" transform="{{ p.t }}" stroke="{{ p.s }}" stroke-width="{{ p.w }}" opacity="{{ p.o }}" fill="{{ p.f }}"></path>
+          </sc-for>
+        </g>
+      </svg>
+
+      <div style="position: absolute; left: 24px; top: 6px; display: flex; align-items: baseline; gap: 12px; white-space: nowrap; width: 400px;">
+        <svg width="170" height="50" viewBox="0 0 170 50" style="display: block; overflow: visible;"><text x="0" y="40" font-family="Caveat Brush" font-size="44" fill="{{ chInk }}">JJG Vocals</text></svg>
+        <div style="white-space: nowrap; font-size: 16px; color: {{ chSub }}; line-height: 1.3;">channel strip</div>
+      </div>
+
+      <div onClick="{{ toggleDark }}" onMouseEnter="{{ darkTip }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 360px; top: 20px; width: 30px; height: 30px; box-sizing: border-box; border: 3px solid {{ chInk }}; border-radius: 50%; background: {{ darkBg }}; color: {{ darkFg }}; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; line-height: 1; z-index: 9; user-select: none;">◐</div>
+      <div style="position: absolute; left: 400px; top: 20px; width: 252px; height: 30px; box-sizing: border-box; display: flex; align-items: stretch; border: 3px solid {{ chInk }}; background: {{ chPaper }}; user-select: none; z-index: 9;">
+        <div onClick="{{ presetPrev }}" style="width: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-right: 1.5px solid {{ chFaint }}; font-family: 'Caveat Brush', cursive; font-size: 17px; color: {{ chSoft }}; line-height: 1;">‹</div>
+        <div onClick="{{ presetToggle }}" onContextMenu="{{ presetContext }}" onMouseEnter="{{ presetTip }}" onMouseLeave="{{ tipOut }}" style="flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; cursor: pointer; font-family: 'Patrick Hand SC', cursive; font-size: 14px; letter-spacing: .06em; color: {{ chInk }}; line-height: 1;">{{ presetName }}</div>
+        <div onClick="{{ presetNext }}" style="width: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-left: 1.5px solid {{ chFaint }}; font-family: 'Caveat Brush', cursive; font-size: 17px; color: {{ chSoft }}; line-height: 1;">›</div>
+      </div>
+
+      <div style="position: absolute; left: 660px; top: 20px; height: 30px; display: flex; gap: 6px; z-index: 9; user-select: none; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .1em; line-height: 1;">
+        <div onClick="{{ savePreset }}" onMouseEnter="{{ saveTip }}" onMouseLeave="{{ tipOut }}" style="width: 54px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ chPaper }}; color: {{ chInk }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">SAVE</div>
+        <div onClick="{{ delPreset }}" onMouseEnter="{{ delTip }}" onMouseLeave="{{ tipOut }}" style="width: 44px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ chPaper }}; color: {{ chInk }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">DEL</div>
+        <div onMouseEnter="{{ abTip }}" onMouseLeave="{{ tipOut }}" style="width: 56px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ chPaper }}; display: flex; cursor: pointer;">
+          <div onClick="{{ setA }}" style="flex: 1; display: flex; align-items: center; justify-content: center; background: {{ aBg }}; color: {{ aFg }};">A</div>
+          <div onClick="{{ setB }}" style="flex: 1; display: flex; align-items: center; justify-content: center; background: {{ bBg }}; color: {{ bFg }};">B</div>
+        </div>
+        <div onClick="{{ copyAB }}" onMouseEnter="{{ copyTip }}" onMouseLeave="{{ tipOut }}" style="width: 48px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ chPaper }}; color: {{ chInk }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">COPY</div>
+        <div onClick="{{ toggleStereo }}" onMouseEnter="{{ stereoTip }}" onMouseLeave="{{ tipOut }}" style="width: 66px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ chPaper }}; color: {{ chInk }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">{{ stereoLabel }}</div>
+        <div onClick="{{ toggleLowLat }}" onMouseEnter="{{ lowLatTip }}" onMouseLeave="{{ tipOut }}" style="width: 72px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ lowLatBg }}; color: {{ chInk }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">LOW LAT</div>
+        <div id="engine-params" data-params="{{ paramsJson }}" style="display: none;"></div>
+        <div id="masterBypass" role="switch" aria-label="Bypass" aria-checked="{{ bypassStr }}" data-value="{{ bypassStr }}" onClick="{{ toggleBypass }}" onMouseEnter="{{ bypassTip }}" onMouseLeave="{{ tipOut }}" style="width: 74px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ bypassBg }}; color: {{ bypassFg }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">BYPASS</div>
+        <div onClick="{{ toggleTips }}" onMouseEnter="{{ tipTips }}" onMouseLeave="{{ tipOut }}" style="width: 30px; height: 30px; box-sizing: border-box; border: 3px solid {{ chInk }}; border-radius: 50%; background: {{ tipsBg }}; color: {{ tipsColor }}; display: flex; align-items: center; justify-content: center; cursor: pointer; font-family: 'Caveat Brush', cursive; font-size: 19px;">?</div>
+        <div onClick="{{ undo }}" onMouseEnter="{{ undoTip }}" onMouseLeave="{{ tipOut }}" style="width: 30px; height: 30px; box-sizing: border-box; border: 3px solid {{ chInk }}; border-radius: 50%; background: {{ chPaper }}; color: {{ chInk }}; opacity: {{ undoOp }}; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg width="22" height="22" viewBox="0 0 16 16" style="display: block;"><path d="M 5.2 6.3 A 4.2 4.2 0 1 1 8.6 12.1" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path><path d="M 3.2 3.6 L 3.6 7.4 L 7.3 6.6" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+      </div>
+
+      <sc-if value="{{ presetOpen }}" hint-placeholder-val="{{ false }}">
+        <div ref="{{ pbBox }}" onClick="{{ pbClose }}" style="position: absolute; left: 400px; top: 56px; width: 252px; box-sizing: border-box; padding: 6px 0; background: {{ chPaper }}; border: 3px solid {{ chInk }}; box-shadow: 5px 6px 0 {{ chFaint }}; z-index: 20; font-family: 'Patrick Hand', cursive;">
+          <div ref="{{ pbList }}" style="max-height: 520px; overflow-y: auto; overflow-x: hidden; scrollbar-width: thin; scrollbar-color: {{ chSoft }} transparent; padding: 2px 0;">
+            <sc-for list="{{ pbRows }}" as="r" hint-placeholder-count="10">
+              <div data-pb-key="{{ r.key }}" onClick="{{ r.onClick }}" onContextMenu="{{ r.onContext }}" onMouseEnter="{{ r.onEnter }}" onMouseLeave="{{ r.onLeave }}" style="display: flex; align-items: center; gap: 6px; padding: {{ r.pad }}; font-family: {{ r.font }}; font-size: {{ r.size }}; letter-spacing: {{ r.ls }}; color: {{ r.color }}; background: {{ r.bg }}; cursor: {{ r.cursor }}; white-space: nowrap; user-select: none; line-height: 1.25;">
+                <div style="width: {{ r.triW }}; flex: none; font-size: 13px; color: {{ chSoft }};">{{ r.tri }}</div>
+                <div style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;">{{ r.label }}</div>
+                <div style="flex: none; font-family: 'Patrick Hand SC', cursive; font-size: 11px; letter-spacing: .08em; color: {{ chSoft }};">{{ r.count }}</div>
+                <sc-if value="{{ r.dots }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ r.onDots }}" style="flex: none; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border: 1.5px solid {{ chInk }}; font-family: 'Caveat Brush', cursive; font-size: 16px; line-height: 1; color: {{ chInk }}; cursor: pointer;" style-hover="background: #e0785c; color: #f6f0e4;">⋮</div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ pbMenuOpen }}" hint-placeholder-val="{{ false }}">
+            <div onClick="{{ pbStop }}" style="position: absolute; right: 12px; top: {{ pbMenuY }}; transform: {{ pbMenuT }}; width: 176px; box-sizing: border-box; padding: 5px 0; background: {{ chPaper }}; border: 2.5px solid {{ chInk }}; box-shadow: 4px 5px 0 {{ chFaint }}; z-index: 5;">
+              <sc-for list="{{ pbMenuItems }}" as="m" hint-placeholder-count="3">
+                <div onClick="{{ m.onClick }}" style="padding: {{ m.pad }}; height: {{ m.h }}; font-family: {{ m.font }}; font-size: {{ m.size }}; letter-spacing: {{ m.ls }}; color: {{ m.color }}; cursor: {{ m.cursor }}; white-space: nowrap; line-height: 1.2;" style-hover="background: {{ m.hoverBg }};">{{ m.label }}</div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-for list="{{ labels }}" as="l" hint-placeholder-count="40">
+        <div style="position: absolute; left: {{ l.left }}px; top: {{ l.top }}px; width: {{ l.width }}px; text-align: {{ l.align }}; white-space: nowrap; font-family: {{ l.font }}; font-size: {{ l.size }}px; letter-spacing: {{ l.ls }}; color: {{ l.color }}; line-height: 1; opacity: {{ l.op }}; pointer-events: none;">{{ l.text }}</div>
+      </sc-for>
+
+      <sc-for list="{{ hits }}" as="h" hint-placeholder-count="30">
+        <div onPointerDown="{{ h.onDown }}" onWheel="{{ h.onWheel }}" onClick="{{ h.onClick }}" onDoubleClick="{{ h.onDbl }}" onMouseEnter="{{ h.onEnter }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: {{ h.left }}px; top: {{ h.top }}px; width: {{ h.width }}px; height: {{ h.height }}px; border-radius: {{ h.radius }}; cursor: {{ h.cursor }}; touch-action: none; user-select: none;"></div>
+      </sc-for>
+
+      <sc-if value="{{ bypass }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; left: 0; top: 74px; width: 1200px; height: 636px; background: {{ chBypass }}; pointer-events: none; z-index: 8;"></div>
+      </sc-if>
+
+      <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ menuClose }}" style="position: absolute; inset: 0; z-index: 19;"></div>
+        <div style="position: absolute; left: {{ menuX }}px; top: {{ menuY }}px; width: {{ menuW }}px; box-sizing: border-box; padding: 6px 0; background: {{ chPaper }}; border: 3px solid {{ chInk }}; box-shadow: 5px 6px 0 {{ chFaint }}; z-index: 20;">
+          <sc-for list="{{ menuItems }}" as="m" hint-placeholder-count="4">
+            <div onClick="{{ m.onClick }}" style="display: flex; align-items: center; gap: 10px; padding: 4px 12px; font-family: 'Caveat Brush', cursive; font-size: 20px; color: {{ m.color }}; cursor: pointer; white-space: nowrap;" style-hover="background: {{ chHover }};">
+              <div style="width: 14px; height: 14px; border: 2px solid {{ chInk }}; background: {{ m.swatch }}; flex: none;"></div>
+              <div>{{ m.name }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ live }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; left: {{ liveX }}px; top: {{ liveY }}px; transform: translate(-50%, 0) rotate(-1deg); padding: 3px 10px; background: {{ chPaperA }}; border: 2px solid {{ chInk }}; font-family: 'Caveat Brush', cursive; font-size: 20px; line-height: 1; color: {{ chInk }}; white-space: nowrap; pointer-events: none; z-index: 28;">{{ liveText }}</div>
+      </sc-if>
+      <sc-if value="{{ tip }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; left: {{ tipX }}px; top: {{ tipY }}px; transform: {{ tipShift }}; width: 193px; box-sizing: border-box; padding: 5px 9px; background: {{ chPaper }}; border: 3px solid {{ chInk }}; font-family: 'Patrick Hand', cursive; font-size: 13px; line-height: 1.16; color: {{ chInk }}; pointer-events: none; z-index: 30; box-shadow: 4px 5px 0 {{ chFaint }};">{{ tip }}</div>
+      </sc-if>
+
+      <div style="position: absolute; left: 24px; bottom: 9px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 11px; letter-spacing: .14em; color: {{ chSoft }}; line-height: 1;">PIZZA BAGEL PLUGINS</div>
+      <div style="position: absolute; right: 24px; bottom: 9px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 11px; letter-spacing: .14em; color: {{ chSoft }}; line-height: 1;">v0.6.31</div>
+    </div>
+  </div>
+  </div>
+
+  <sc-if value="{{ chrome }}" hint-placeholder-val="{{ true }}">
+  <div style="width: 100%; max-width: 1200px; display: flex; flex-direction: column; gap: 14px;">
+    <div style="height: 1px; background: #332d28;"></div>
+    <sc-if value="{{ sheetOn }}" hint-placeholder-val="{{ true }}">
+  <div style="position: relative; width: {{ sheetW }}px; height: {{ sheetH }}px;">
+  <div style="position: absolute; left: 0; top: 0; transform: scale({{ scale }}); transform-origin: top left;">
+    <div style="position: relative; width: 1200px; height: 930px; overflow: hidden; background: #f6f0e4; box-shadow: 0 24px 50px -14px rgba(0,0,0,.78);">
+      <svg width="1200" height="930" viewBox="0 0 1200 930" style="position: absolute; inset: 0;">
+        <g stroke-linecap="round" stroke-linejoin="round">
+          <sc-for list="{{ sheetPaths }}" as="p" hint-placeholder-count="40">
+            <path d="{{ p.d }}" transform="{{ p.t }}" stroke="{{ p.s }}" stroke-width="{{ p.w }}" opacity="{{ p.o }}" fill="{{ p.f }}"></path>
+          </sc-for>
+        </g>
+      </svg>
+      <sc-for list="{{ sheetLabels }}" as="l" hint-placeholder-count="20">
+        <div style="position: absolute; left: {{ l.left }}px; top: {{ l.top }}px; width: {{ l.width }}px; text-align: {{ l.align }}; white-space: nowrap; font-family: {{ l.font }}; font-size: {{ l.size }}px; letter-spacing: {{ l.ls }}; color: {{ l.color }}; opacity: {{ l.op }}; line-height: 1; pointer-events: none;">{{ l.text }}</div>
+      </sc-for>
+    </div>
+  </div>
+  </div>
+  </sc-if>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; font-size: 14px; line-height: 1.3; color: #a39a8c;">
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #e0785c;">THE LUNCHBOX</div>
+        <div>A kraft-tan rack holding six 500-series faceplates in signal order. The first slot is the 250-series pair — PRE over TAPE — with the DRIVE knob on a paper bridge that straddles the seam. Every faceplate is drawn in the colour of the circuit chosen on its name plate, so the rack recolours itself as you pick models.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #e0785c;">KNOB SHAPES FOLLOW THE PLATE</div>
+        <div>PRE: 511 black US skirt · 73 red Marconi on knurled grey · TG red chicken-head · 60s fluted bakelite. TAPE: 800 brushed silver · 37 slate · Cassette white plastic · 102 bakelite. COMP: 76 wears Capsaicin HOT lavender with the big skirted knob · 2A / 6A grey with bakelite; the two chained modes split the plate top/bottom in signal order. EQ: 70s voicing = coloured SSL-style caps (red HF, brown LF), 80s = Neve-style grey knurl (blue LF); High Mid is always an API knob; Low Mid is the dual-concentric — one arc for the cut, a nub on the ring for frequency. DS: 536A steel-blue with a black knob, 902 charcoal with the yellow dbx knob. SALT is the pinch dish from Salt, Kosher navy or Pink peach.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #e0785c;">POWER &amp; METERS</div>
+        <div>Ten stage-power switches drawn as little slide toggles beside each knob; an off stage drops to 35% ink. Gain reduction fills downward from 0 dB in the module's accent, turning red past −10. The gate lamp glows while it attenuates. Nothing else meters.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #e0785c;">JUCE NOTES</div>
+        <div>1200 × 710 base (landscape suits six modules), uniform scale 0.6–1.5. Flat fills and 2–4 px strokes, no gradients or bevels; every knob is one closed wobbly Path plus a pointer, so each shape is a small draw routine keyed off the plate's choice. Caveat Brush for wordmark, plate names and all numerals; Patrick Hand SC for legends; Patrick Hand for tooltips. Values stay live text.</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:950},&quot;scale&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[0.6,0.8,1],&quot;default&quot;:0.8,&quot;tsType&quot;:&quot;number&quot;},&quot;eqPalette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Console&quot;,&quot;Console 70s&quot;,&quot;Console 80s&quot;,&quot;Console US&quot;,&quot;Kraft&quot;,&quot;Sage&quot;,&quot;Butter&quot;,&quot;Lilac&quot;,&quot;Mint&quot;,&quot;Slate&quot;],&quot;default&quot;:&quot;Mint&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Palettes&quot;},&quot;outPalette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Kraft&quot;,&quot;Sky&quot;,&quot;Blush&quot;,&quot;Mint&quot;,&quot;Butter&quot;,&quot;Ink&quot;],&quot;default&quot;:&quot;Butter&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Palettes&quot;},&quot;driveSheet&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;demoMeters&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;embed&quot;:{&quot;editor&quot;:null,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;fit&quot;:{&quot;editor&quot;:null,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const INK = '#2a2430', PAPER = '#f6f0e4', RED = '#e0574a';
+const FONT = { sc: "'Patrick Hand SC', cursive", cb: "'Caveat Brush', cursive", ph: "'Patrick Hand', cursive" };
+const DEF = { ink: INK, legend: '#5a544c', screw: '#b9b1a4', onText: PAPER };
+const OFF = { fill: '#e9e3d9', plate: PAPER, plateInk: '#8a8378', accent: '#b9b1a4', knob: { style: 'round', body: '#d9d2c7', mark: INK } };
+
+const PRE_PAL = {
+  'Off': OFF,
+  '511': { fill: '#8db3e3', plate: '#e4eefa', plateInk: '#1f3d6b', legend: '#22375a', accent: PAPER, knob: { style: 'api' } },
+  '73':  { fill: '#9db2bd', plate: '#e8eef1', plateInk: '#2c4653', legend: '#2f4653', accent: '#d95a4a', knob: { style: 'neve', cap: '#d95a4a', skirt: '#bfc4c6' } },
+  'TG':  { fill: '#a8adb8', plate: '#eceef2', plateInk: '#2f3440', legend: '#33384a', accent: '#f2d35b', knob: { style: 'chicken', cap: RED } },
+  '60s': { fill: '#7fb59a', plate: '#e3f0e9', plateInk: '#1f4a37', legend: '#1f4a37', accent: PAPER, knob: { style: 'bakelite' } }
+};
+const TAPE_PAL = {
+  'Off': OFF,
+  '37': { fill: '#9fb8b3', plate: '#e6eeec', plateInk: '#25423c', legend: '#25423c', accent: PAPER, knob: { style: 'round', body: '#3a3a44', mark: PAPER } },
+  '800': { fill: '#d8d5cd', plate: '#3a3a3f', plateInk: '#f0a95a', accent: '#f0a95a', knob: { style: 'studer' } },
+  'Cheap Cassette': { fill: '#f3c7d8', plate: '#fdf0f5', plateInk: '#8b2f56', legend: '#6a1c3e', accent: '#c2557f', knob: { style: 'round', body: '#fbf5f7', mark: INK } },
+  '102': { fill: '#e8dfcd', plate: '#d9534a', plateInk: '#fff3ec', accent: '#d9534a', knob: { style: 'bakelite' } }
+};
+// DRIVE when a tape is on: knob shape from the machine, colour from the preamp
+const PRE_TINT = { 'Off': { c: '#8a8378', back: null }, '511': { c: '#3f6fb5', back: '#8db3e3' }, '73': { c: '#d95a4a', back: '#9db2bd' }, 'TG': { c: '#e0b83a', back: '#a8adb8' }, '60s': { c: '#3f8a63', back: '#7fb59a' } };
+const TAPE_SHAPE = { '37': 'j37', '800': 'a800', 'Cheap Cassette': 'cassette', '102': 'nagra' };
+const mix = (a, b, t) => { const p = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16)); const A = p(a), B = p(b); return '#' + A.map((x, i) => Math.round(x + (B[i] - x) * t).toString(16).padStart(2, '0')).join(''); };
+const HOT = { fill: '#cdb3ee', plate: '#f1e9f9', plateInk: '#4f2d94', legend: '#4f2d94', accent: '#7a4cc0', knob: { style: 'big76', body: '#3b2a5a', skirt: '#e6dcf4', mark: '#f1e9f9' }, meterBg: '#f1e9f9' };
+// LA-2A: brushed light grey, cream VU, plain black knob with a white line
+const TWOA = { fill: '#dcdcd6', plate: '#f3e5c0', plateInk: '#4a3a10', legend: '#4f4b44', accent: '#c9a24a', knob: { style: 'la2a' }, meterBg: '#f3e5c0' };
+const COMP_PAL = {
+  '76': HOT, '2A': TWOA,
+  '76 → 2A': { ...HOT, fill2: TWOA.fill, meterBg: TWOA.meterBg, knob: { style: 'hybrid76', body: '#3b2a5a', skirt: '#e6dcf4', mark: '#f1e9f9' } },
+  '2A → 76': { ...TWOA, fill2: HOT.fill, meterBg: HOT.meterBg, knob: { style: 'hybrid2a', body: '#3b2a5a', mark: '#f1e9f9' } },
+  // RCA BA-6A: two-tone blue-grey, fluted bakelite with a brass pointer ring
+  '6A': { fill: '#9ea5a6', plate: '#f3e5c0', plateInk: '#3d3348', legend: '#2f3a4a', accent: RED, knob: { style: 'rca' }, meterBg: '#f3e5c0' }
+};
+const DS_PAL = {
+  '536A': { fill: '#8faacb', plate: '#e6edf6', plateInk: '#233a5a', legend: '#233a5a', accent: '#f2d35b', knob: { style: 'round', body: '#3a3540', mark: PAPER }, meterBg: '#e6edf6' },
+  '902': { fill: '#4a4650', ink: '#f2ede4', legend: '#d8d0c4', screw: '#6a6572', onText: '#2a2730', cellOff: '#6a6572', plate: '#2a2730', plateInk: '#f2d35b', accent: '#d9413a', knob: { style: 'dbx' }, meterBg: '#2a2730' }
+};
+const SALT_PAL = {
+  'Kosher': { fill: '#26355f', ink: '#eaf0fb', legend: '#a9bce0', screw: '#3f4d75', onText: '#1b2440', plate: '#f0c25c', plateInk: '#4a3a10', accent: '#f0c25c', dish: '#202e55', grain: ['#f6f9ff', '#dde7f8', '#bacbe9'], grainEdge: '#8ba3ca', coarse: true },
+  'Pink': { fill: '#f6cdb8', ink: '#4a2119', legend: '#8a4c39', screw: '#d9a58c', plate: '#fdf1ea', plateInk: '#6d3020', accent: '#e0785c', dish: '#e79a7c', grain: ['#f6c6ae', '#eeaa8b', '#fbdccb'], grainEdge: '#bd7455', coarse: false }
+};
+const EQ_PALS = {
+  'Kraft': { fill: '#e3ddd1', plate: PAPER, plateInk: INK, accent: '#e0785c' },
+  'Sage': { fill: '#c9d6c2', plate: '#eef3ea', plateInk: '#2f4a33', legend: '#3d5a42', accent: '#d9744f' },
+  'Butter': { fill: '#f1dfa4', plate: '#fbf3dc', plateInk: '#5a4410', legend: '#6a5320', accent: '#c94f3f' },
+  'Lilac': { fill: '#d9cfe6', plate: '#f4eff9', plateInk: '#3f2f57', legend: '#4f3f68', accent: '#e0785c' },
+  'Mint': { fill: '#bfe0d2', plate: '#eef8f3', plateInk: '#1f4a3a', legend: '#2f5a4a', accent: '#e0785c' },
+  'Slate': { fill: '#5d6572', ink: '#f2ede4', legend: '#d5d0c6', screw: '#7d8592', onText: '#2a2430', cellOff: '#7d8592', plate: '#f2ede4', plateInk: '#2a2430', accent: '#f0a95a' },
+  // console-follow: the plate takes the desk whose voicing the HIGH band is set to
+  'Console 70s': { fill: '#aeb9c4', plate: '#e9eef3', plateInk: '#1f2a36', legend: '#2c3a48', screw: '#8d9aa8', accent: '#d95a4a', cellOff: '#e9eef3' },
+  'Console 80s': { fill: '#9aa39a', plate: '#2b3f6b', plateInk: '#f2ede4', legend: '#243026', screw: '#7d877d', accent: '#c94f3f', cellOff: '#dfe4df' },
+  'Console US': { fill: '#d9cbb0', plate: '#2a2430', plateInk: '#f6f0e4', legend: '#4a3f2e', screw: '#b39f7c', accent: '#2f6fb5', cellOff: '#f1e9d6' }
+};
+const OUT_PALS = {
+  'Kraft': { fill: '#e9e3d9', plate: PAPER, plateInk: '#5a544c', accent: '#e0785c', knob: { style: 'round', body: PAPER, mark: INK } },
+  'Sky': { fill: '#bfd4ea', plate: '#eef4fb', plateInk: '#23395c', legend: '#33496c', accent: '#e0785c', knob: { style: 'round', body: '#f4f8fd', mark: INK } },
+  'Blush': { fill: '#efc8c2', plate: '#fbf0ee', plateInk: '#6a2c2c', legend: '#7a3c3c', accent: '#c94f3f', knob: { style: 'round', body: '#fdf6f4', mark: INK } },
+  'Mint': { fill: '#bfe0d2', plate: '#eef8f3', plateInk: '#1f4a3a', legend: '#2f5a4a', accent: '#e0785c', knob: { style: 'round', body: '#f6fcf9', mark: INK } },
+  'Butter': { fill: '#f1dfa4', plate: '#fbf3dc', plateInk: '#5a4410', legend: '#6a5320', accent: '#c94f3f', knob: { style: 'round', body: '#fdf8ea', mark: INK } },
+  'Ink': { fill: '#2a2430', ink: '#f2ede4', legend: '#cfc8bd', screw: '#4a4450', onText: '#2a2430', cellOff: '#4a4450', plate: '#f2ede4', plateInk: '#2a2430', accent: '#f0a95a', knob: { style: 'round', body: '#f2ede4', mark: INK } }
+};
+const SWATCH = { pre: PRE_PAL, tape: TAPE_PAL, comp: COMP_PAL, ds: DS_PAL, salt: SALT_PAL };
+
+const OPTS = { pre: ['Off', '511', '73', 'TG', '60s'], tape: ['Off', '37', '800', 'Cheap Cassette', '102'], comp: ['76', '2A', '76 → 2A', '2A → 76', '6A'], ds: ['536A', '902'], salt: ['Kosher', 'Pink'] };
+const PLATE = { pre: { x: 30, y: 116, w: 156 }, tape: { x: 30, y: 446, w: 156 }, comp: { x: 222, y: 116, w: 144 }, ds: { x: 682, y: 116, w: 144 }, salt: { x: 862, y: 116, w: 152 } };
+const ROLE_TIP = {
+  pre: 'PRE — the preamp model. Off / 511 / 73 / TG / 60s. The plate recolours the module and reshapes DRIVE.',
+  tape: 'TAPE — the machine. Off / 37 / 800 / Cheap Cassette / 102. Off hides speed and greys WARMTH & WOW.',
+  comp: 'COMP — 76, 2A, both in either order, or 6A. 76 wears Capsaicin HOT.',
+  ds: 'DS — 536A or 902. The 902 adds the HF ONLY / FULL BAND switch.',
+  salt: 'SALT — Kosher (coarse, one gentle band) or Pink (fine, two stages).'
+};
+
+const V0 = { drive: 3.5, warmth: 40, wow: 20, amount: 45, high: 1.5, hmid: 2, lmid: -3, lmidF: 220, low: 0, hpf: 0.35, deess: 3, salt: 3.5, mix: 100, compMix: 100, gate: -48, inT: 0, outT: 0 };
+const PRESETS = [
+  { name: 'Init', pre: 'Off', tape: 'Off', speed: 1, comp: '76', ds: '536A', salt: 'Kosher', v: { ...V0, drive: 0, amount: 0, high: 0, hmid: 0, lmid: 0, hpf: 0, deess: 0, salt: 0, gate: -80 } },
+  { name: 'Lunchbox Lead', group: 'Justin Gammella', pre: '73', tape: '800', speed: 1, comp: '76', ds: '536A', salt: 'Kosher', v: V0 },
+  { name: 'Silk & Iron', group: 'Justin Gammella', pre: 'TG', tape: '37', speed: 1, comp: '2A', ds: '902', salt: 'Pink', v: { ...V0, drive: 2, amount: 30, high: 2.5, hmid: 0, low: 1, salt: 5 } },
+  { name: 'Cassette Demo', group: 'Justin Gammella', pre: '60s', tape: 'Cheap Cassette', speed: 0, comp: '2A → 76', ds: '536A', salt: 'Pink', v: { ...V0, drive: 6, warmth: 70, wow: 55, amount: 60, hpf: 0.6 } },
+  { name: 'Radio Bright', group: 'Justin Gammella', pre: '511', tape: '102', speed: 2, comp: '76 → 2A', ds: '902', salt: 'Kosher', v: { ...V0, amount: 70, high: 4, hmid: 5, lmid: -5, deess: 5, salt: 6 } },
+  { name: 'Pop Vocal Forward', group: 'Justin Gammella', pre: '511', tape: '800', speed: 1, comp: '76 → 2A', ds: '536A', salt: 'Kosher', v: { ...V0, drive: 2.5, amount: 55, high: 3, hmid: 3, lmid: -4, deess: 4, salt: 4 } },
+  { name: 'Intimate Ballad', group: 'Justin Gammella', pre: 'TG', tape: '37', speed: 0, comp: '2A', ds: '902', salt: 'Pink', v: { ...V0, drive: 1.5, warmth: 55, amount: 35, high: 1, low: 1.5, deess: 2, salt: 2.5 } },
+  { name: 'Rap Punch', group: 'Justin Gammella', pre: '73', tape: 'Off', speed: 1, comp: '76', ds: '536A', salt: 'Kosher', v: { ...V0, drive: 4, amount: 65, hmid: 2, lmid: -2, hpf: 0.45, deess: 3.5, salt: 5 } },
+  { name: 'Lo-Fi Bedroom', group: 'Justin Gammella', pre: '60s', tape: 'Cheap Cassette', speed: 0, comp: '2A', ds: '536A', salt: 'Pink', v: { ...V0, drive: 5, warmth: 65, wow: 45, amount: 40, high: -1, hpf: 0.5 } },
+  { name: 'Stacked BGVs', group: 'Justin Gammella', pre: '511', tape: '800', speed: 2, comp: '2A → 76', ds: '902', salt: 'Kosher', v: { ...V0, amount: 50, high: 2, lmid: -6, hpf: 0.55, deess: 4.5, salt: 3, mix: 85 } },
+  { name: 'Live Room Warm', group: 'Justin Gammella', pre: '73', tape: '37', speed: 1, comp: '6A', ds: '536A', salt: 'Pink', v: { ...V0, drive: 3, warmth: 50, amount: 40, low: 1, hmid: 1, salt: 3 } },
+  { name: 'Clean Reference', group: 'Justin Gammella', pre: 'Off', tape: 'Off', speed: 1, comp: '2A', ds: '902', salt: 'Kosher', v: { ...V0, drive: 0, amount: 25, high: 0, hmid: 0, lmid: 0, deess: 2, salt: 1 } }
+];
+
+const rndf = (seed) => { let a = ((seed + 7) * 2654435761) >>> 0; return () => { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; }; };
+const lattice = (n, seed) => { const r = rndf(seed); return Array.from({ length: n }, (_, i) => ({ rad: Math.sqrt((i + 0.62) / n), ang: i * 137.508, rot: r() * 360, s: 0.82 + r() * 0.3, tone: i % 3, sq: r() > 0.5 })); };
+const COARSE = lattice(78, 31), FINE = lattice(230, 47);
+const env = (t, o) => 0.55 + 0.45 * Math.sin(t * 1.7) * Math.sin(t * 0.41 + o);
+
+class Component extends DCLogic {
+  state = {
+    pre: '73', tape: '800', speed: 1, comp: '76', ds: '536A', salt: 'Kosher', dsMode: 'HF ONLY', highV: '80s', lowV: '70s', autoGain: true, compAuto: true, ratio: 4,
+    v: { ...V0 },
+    pw: { drive: true, warmth: true, wow: true, comp: true, high: true, hmid: true, lmid: true, low: true, hpf: true, gate: true, deess: true, salt: true },
+    menu: null, live: null, preset: 1, presetOpen: false, folded: {}, pbHover: null, pbMenu: null, ab: 'A', abOther: null, abDiff: [], stereo: true, lowLat: false, bypass: false, dark: false, dsListen: false,
+    hist: [], user: [
+      { name: 'Verse take 3', group: 'Album mixes', pre: '73', tape: '800', speed: 1, comp: '76', ds: '536A', salt: 'Kosher', v: { ...V0, amount: 50 } },
+      { name: 'Hook doubles', group: 'Album mixes', pre: '511', tape: '800', speed: 2, comp: '2A → 76', ds: '902', salt: 'Kosher', v: { ...V0, amount: 55, lmid: -5, mix: 80 } },
+      { name: 'Scratch vocal', pre: 'TG', tape: 'Off', speed: 1, comp: '2A', ds: '536A', salt: 'Pink', v: { ...V0, amount: 30 } },
+    ], folders: [], hover: null,
+    tips: false, tip: null, tipX: 0, tipY: 0, tipBelow: false, t: 0
+  };
+
+  wrapRef = React.createRef();
+  // ── engine seam: parameter changes out, controlled bypass in ──────
+  engineParams(s) {
+    const v = s.v, pw = s.pw, idx = (list, val) => Math.max(0, list.indexOf(val));
+    const r1 = x => Math.round(x * 10) / 10;
+    return {
+      inputGain: r1(v.inT), outputGain: r1(v.outT), mix: Math.round(v.mix), compMix: Math.round(v.compMix ?? 100),
+      autoGain: !!s.autoGain, compAutoGain: !!s.compAuto,
+      preampType: idx(['Off', '511', '73', 'TG', '60s'], s.pre),
+      tapeMode: idx(['Off', '37', '800', 'Cheap Cassette', '102'], s.tape), tapeSpeed: s.speed ?? 1,
+      tapeDrive: Math.round(v.drive * 10), warmth: Math.round(v.warmth), wowFlutter: Math.round(v.wow), compAmount: Math.round(v.amount),
+      hpfFreq: v.hpf < 0.04 ? 0 : Math.round(20 * Math.pow(10, v.hpf)),
+      eqLow: r1(v.low), eqHigh: r1(v.high),
+      eqLowConsole: idx(['80s', '70s'], s.lowV), eqHighConsole: idx(['80s', '70s'], s.highV),
+      lowMidCut: r1(v.lmid), lowMidFreq: Math.round(v.lmidF), highMidBoost: r1(v.hmid),
+      compType: idx(['76', '2A', '76 → 2A', '2A → 76', '6A'], s.comp), comp76Ratio: (s.ratio ?? 4) === 8 ? 1 : 0,
+      gateThreshold: Math.round(v.gate),
+      deesser: r1(v.deess), salt: r1(v.salt),
+      deesserModel: idx(['536A', '902'], s.ds), saltCurve: idx(['Kosher', 'Pink'], s.salt),
+      deesser902Hf: s.dsMode === 'HF ONLY', deesserListen: !!s.dsListen,
+      driveOn: !!pw.drive, warmthOn: !!pw.warmth, wowOn: !!pw.wow, gateOn: !!pw.gate, hpfOn: !!pw.hpf,
+      eqLowOn: !!pw.low, eqHighOn: !!pw.high, lowMidOn: !!pw.lmid, highMidOn: !!pw.hmid,
+      compOn: !!pw.comp, deesserOn: !!pw.deess, saltOn: !!pw.salt,
+      masterBypass: !!s.bypass
+    };
+  }
+  pumpParams() {
+    const f = this.props.onParam; if (!f) return;
+    const now = this.engineParams(this.state), prev = this._lastParams;
+    this._lastParams = now;
+    if (!prev) return;
+    const moved = Object.keys(now).filter(id => now[id] !== prev[id]);
+    if (moved.length) queueMicrotask(() => moved.forEach(id => f({ id, value: now[id] })));
+  }
+  componentDidMount() {
+    if (this.props.forceLowLat) this.setState({ lowLat: true });
+    import(new URL('preset-browser.js', document.baseURI).href).then(m => { m.installPB(this, { factory: () => PRESETS, snap: (st) => this.snap(st), commit: this.commit }); this.forceUpdate(); });
+    if (this.props.fit && this.wrapRef.current && window.ResizeObserver) {
+      this.ro = new ResizeObserver(([e]) => { const w = e.contentRect.width; if (w > 0) this.setState({ fitScale: Math.min(1, w / 1200) }); });
+      this.ro.observe(this.wrapRef.current);
+    }
+    this.timer = setInterval(() => { if (this.props.demoMeters ?? true) this.setState(s => ({ t: s.t + 0.08 })); }, 80);
+    this.onKey = (e) => {
+      const s = this.state;
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); this.undo(); return; }
+      if (e.key === 'Escape') { this.setState(st => st.pbMenu ? { pbMenu: null } : { menu: null, presetOpen: false }); return; }
+      const step = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 0;
+      if (!step) return;
+      if (s.menu) { e.preventDefault(); this.stepModel(s.menu, step); }
+      else if (s.presetOpen) { e.preventDefault(); const n = this.allPresets().length; this.applyPreset((s.preset + step + n) % n); this.setState({ presetOpen: true }); }
+    };
+    window.addEventListener('keydown', this.onKey);
+  }
+  componentWillUnmount() { clearInterval(this.timer); window.removeEventListener('keydown', this.onKey); clearTimeout(this.tipT); clearTimeout(this.abT); }
+
+  // ── snapshots, history, presets, A/B ────────────────────────────
+  snap = (s = this.state) => ({ pre: s.pre, tape: s.tape, speed: s.speed, comp: s.comp, ds: s.ds, salt: s.salt, dsMode: s.dsMode, highV: s.highV, lowV: s.lowV, autoGain: s.autoGain, compAuto: s.compAuto, ratio: s.ratio, v: { ...s.v }, pw: { ...s.pw } });
+  presetSnap = (p) => ({ pre: p.pre, tape: p.tape, speed: p.speed, comp: p.comp, ds: p.ds, salt: p.salt, dsMode: p.dsMode ?? 'HF ONLY', highV: p.highV ?? '80s', lowV: p.lowV ?? '70s', autoGain: p.autoGain ?? true, compAuto: p.compAuto ?? true, ratio: p.ratio ?? 4, v: { compMix: 100, ...p.v }, pw: p.pw ? { ...p.pw } : Object.fromEntries(Object.keys(this.state.pw).map(k => [k, true])) });
+  commit = (patch) => this.setState(st => ({ ...(typeof patch === 'function' ? patch(st) : patch), hist: [...st.hist.slice(-39), this.snap(st)] }));
+  undo = () => this.setState(st => { const hh = st.hist; if (!hh.length) return null; return { ...hh[hh.length - 1], hist: hh.slice(0, -1), live: null }; });
+  allPresets = () => [...PRESETS, ...this.state.user];
+  stepModel = (key, d) => { const o = OPTS[key], i = (o.indexOf(this.state[key]) + d + o.length) % o.length; this.commit({ [key]: o[i] }); };
+  savePreset = () => { if (!this.pbAct) return; if (this.state.preset < PRESETS.length) this.pbAct.saveAs(); else this.pbAct.save(this.state.preset); };
+  delPreset = () => { if (this.pbAct && this.state.preset >= PRESETS.length) this.pbAct.del(this.state.preset); };
+  diffKeys = (a, b) => Object.keys(a.v).filter(k => Math.abs(a.v[k] - b.v[k]) > 1e-6);
+  setAB = (slot) => this.setState(st => {
+    if (st.ab === slot) return null;
+    const cur = this.snap(st), other = st.abOther || cur, diff = this.diffKeys(cur, other);
+    clearTimeout(this.abT); this.abT = setTimeout(() => this.setState({ abDiff: [] }), 1800);
+    return { ...other, ab: slot, abOther: cur, abDiff: diff, hist: [...st.hist.slice(-39), cur] };
+  });
+  copyAB = () => this.setState(st => ({ abOther: this.snap(st) }));
+
+  showTip = (text, hover, force) => (e) => {
+    if (hover !== undefined && hover !== null) this.setState({ hover });
+    if ((!this.state.tips && !force) || !text) return;
+    const el = e.currentTarget, r = el.getBoundingClientRect();
+    let n = el;
+    while (n && !(n.style && n.style.width === '1200px')) n = n.parentElement;
+    const f = n ? n.getBoundingClientRect() : { left: 0, top: 0, width: 1200 };
+    const sc = f.width / 1200;
+    const cx = (r.left - f.left + r.width / 2) / sc, top = (r.top - f.top) / sc;
+    const below = top < 150;
+    clearTimeout(this.tipT);
+    this.tipT = setTimeout(() => this.setState({ tip: text, tipX: Math.max(124, Math.min(1076, cx)), tipY: below ? top + r.height / sc + 8 : top - 8, tipBelow: below }), 400);
+  };
+  hideTip = () => { clearTimeout(this.tipT); this.setState(st => (st.tip || st.hover ? { tip: null, hover: null } : null)); };
+
+  applyPreset = (i) => { const p = this.allPresets()[i]; if (!p) return; this.commit({ preset: i, presetOpen: false, ...this.presetSnap(p) }); };
+  setV = (key, val) => this.setState(s => ({ v: { ...s.v, [key]: val } }));
+  togglePw = (key) => this.commit(s => ({ pw: { ...s.pw, [key]: !s.pw[key] } }));
+
+  pt(deg, r, cx, cy) { const a = deg * Math.PI / 180; return [cx + Math.sin(a) * r, cy - Math.cos(a) * r]; }
+  smooth(pts, closed) {
+    const n = pts.length, at = i => pts[closed ? (i + n) % n : Math.max(0, Math.min(n - 1, i))];
+    let d = 'M ' + pts[0][0].toFixed(2) + ' ' + pts[0][1].toFixed(2);
+    const last = closed ? n : n - 1;
+    for (let i = 0; i < last; i++) {
+      const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+      const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      d += ` C ${c1[0].toFixed(2)} ${c1[1].toFixed(2)}, ${c2[0].toFixed(2)} ${c2[1].toFixed(2)}, ${p2[0].toFixed(2)} ${p2[1].toFixed(2)}`;
+    }
+    return closed ? d + ' Z' : d;
+  }
+  blob(x, y, r, seed, wob) { const rr = rndf(seed), n = 15, pts = []; for (let i = 0; i < n; i++) pts.push(this.pt(i * 360 / n, r + (rr() - 0.5) * (wob ?? r * 0.05), x, y)); return this.smooth(pts, true); }
+  dot(x, y, r, seed) { const rr = rndf(seed), n = 8, pts = []; for (let i = 0; i < n; i++) pts.push(this.pt(i * 360 / n, r + (rr() - 0.5) * r * 0.32, x, y)); return this.smooth(pts, true); }
+  chip(r, seed, sides) { const rr = rndf(seed), n = sides ?? 5, pts = []; for (let i = 0; i < n; i++) pts.push(this.pt(i * 360 / n + rr() * 20, r * (0.7 + rr() * 0.5), 0, 0)); return 'M ' + pts.map(p => p[0].toFixed(2) + ' ' + p[1].toFixed(2)).join(' L ') + ' Z'; }
+  arcPath(cx, cy, r, a1, a2, seed, amp) {
+    const rr = rndf(seed ?? r), span = Math.abs(a2 - a1), n = Math.max(3, Math.round(span / 12)), pts = [];
+    for (let i = 0; i <= n; i++) { const t = a1 + (a2 - a1) * i / n; pts.push(this.pt(t, r + (rr() - 0.5) * (amp ?? 1.4), cx, cy)); }
+    return this.smooth(pts, false);
+  }
+  rrect(x, y, w, h, seed, amp) {
+    const rr = rndf(seed), a = amp ?? 1, pts = [], step = 15;
+    const edge = (x1, y1, x2, y2, nx, ny) => { const len = Math.hypot(x2 - x1, y2 - y1), n = Math.max(2, Math.round(len / step)); for (let i = 0; i < n; i++) { const t = i / n, o = (rr() - 0.5) * 2 * a; pts.push([x1 + (x2 - x1) * t + nx * o, y1 + (y2 - y1) * t + ny * o]); } };
+    edge(x, y, x + w, y, 0, -1); edge(x + w, y, x + w, y + h, 1, 0); edge(x + w, y + h, x, y + h, 0, 1); edge(x, y + h, x, y, -1, 0);
+    return this.smooth(pts, true);
+  }
+  line(a, b) { return `M ${a[0].toFixed(2)} ${a[1].toFixed(2)} L ${b[0].toFixed(2)} ${b[1].toFixed(2)}`; }
+
+  drag = (key, min, max, span, at) => (e) => {
+    e.preventDefault();
+    const y0 = e.clientY, v0 = this.state.v[key] ?? V0[key] ?? min;
+    this.commit(at ? { live: { key, x: at.x, y: at.y } } : {});
+    const move = ev => this.setV(key, Math.max(min, Math.min(max, v0 + (y0 - ev.clientY) / (span * (ev.shiftKey || ev.metaKey || ev.ctrlKey ? 10 : 1)) * (max - min))));
+    const up = () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); this.setState({ live: null }); };
+    window.addEventListener('pointermove', move); window.addEventListener('pointerup', up);
+  };
+  wheel = (key, min, max) => (e) => {
+    const now = Date.now(); if (!this.lastWheel || now - this.lastWheel > 1200) this.commit({}); this.lastWheel = now;
+    const d = (e.deltaY < 0 ? 1 : -1) * (max - min) / (e.shiftKey || e.metaKey || e.ctrlKey ? 400 : 60);
+    this.setV(key, Math.max(min, Math.min(max, (this.state.v[key] ?? V0[key] ?? min) + d)));
+  };
+
+  renderVals() {
+    const s = this.state, v = s.v, pw = s.pw, P = [], LB = [], HT = [];
+    this.pumpParams();
+    if (this.props.bypass !== undefined && this.props.bypass !== this._pBypass) {
+      this._pBypass = this.props.bypass;
+      if (this.props.bypass !== s.bypass) queueMicrotask(() => this.setState({ bypass: this.props.bypass }));
+    }
+    const add = (d, w, f, st, o, t) => P.push({ d, t: t ?? '', w: w ?? 2.4, f: f || 'none', s: st || INK, o: o ?? 1 });
+    const L = (x, y, w, text, o = {}) => LB.push({ left: x, top: y, width: w, text, font: FONT[o.f || 'sc'], size: o.s || 12, color: o.c || DEF.legend, ls: o.ls ?? (o.f ? '0' : '.16em'), align: o.a || 'center', op: o.op ?? 1 });
+    let hitsOn = true;
+    const H = (x, y, w, h, o = {}) => hitsOn && HT.push({ left: x, top: y, width: w, height: h, radius: o.r || '0', cursor: o.cursor || 'pointer', onDown: o.down, onClick: o.click, onDbl: o.dbl, onEnter: (o.tip || o.hover) ? this.showTip(o.tip, o.hover) : undefined, onWheel: o.wheel });
+    const pal = (p) => ({ ...DEF, ...p });
+    const sgn = (x, d) => (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(d);
+
+    // ── drawing primitives ─────────────────────────────────────────
+    const mod = (x, y, w, h, C, seed) => {
+      add(this.rrect(x, y, w, h, seed, 1.2), 3, C.fill, C.ink);
+      if (C.fill2) {
+        // soft blend fill → fill2 over a 120px zone centred on the seam (stacked bands, no hard line)
+        const sy = y + (C.seam ?? h / 2), Z = 260, N = 26, t0 = sy - Z / 2;
+        add(this.rrect(x + 2, t0 + Z, w - 4, y + h - (t0 + Z) - 2, seed + 3, 1.2), 0, C.fill2, 'none');
+        for (let i = 0; i < N; i++) { const yy = t0 + i * Z / N; add(this.rrect(x + 2, yy, w - 4, Z / N + 1.5, seed + 30 + i, .3), 0, mix(C.fill, C.fill2, (i + .5) / N), 'none'); }
+        add(this.rrect(x, y, w, h, seed, 1.2), 3, 'none', C.ink);
+      }
+      [[x + 12, y + 12], [x + w - 12, y + 12], [x + 12, y + h - 12], [x + w - 12, y + h - 12]].forEach((p, i) => {
+        add(this.dot(p[0], p[1], 4.2, seed * 10 + i), 1.8, C.screw, C.ink);
+        add(this.line([p[0] - 2.4, p[1] - 2.4], [p[0] + 2.4, p[1] + 2.4]), 1.4, 'none', C.ink, .7);
+      });
+    };
+    const plate = (key, C, text, o = {}) => {
+      const pl = PLATE[key] || o, x = pl.x, y = pl.y, w = pl.w, h = 32; const isModel = !!PLATE[key];
+      const dkP = s.dark, pf = dkP ? '#3a3342' : C.plate, pi = dkP ? ((C.accent === PAPER || C.accent === '#b9b1a4') ? '#f2ede4' : C.accent) : C.plateInk;
+      add(this.rrect(x, y, w, h, x + y, 1), 2.6, pf, dkP ? '#1c1922' : C.ink);
+      const hov = isModel && s.hover === key;
+      L(x, y + 5, w, text, { f: 'cb', s: o.s || 22, c: pi, op: hov ? .55 : 1 });
+      if (isModel) {
+        if (s.hover === key) add(this.rrect(x, y, w, h, x + y, 1), 0, '#ffffff', 'none', dkP ? .12 : .35);
+        add(`M ${x + 10} ${y + 10} L ${x + 5} ${y + 16} L ${x + 10} ${y + 22}`, 2.2, 'none', pi, hov ? .45 : .85);
+        add(`M ${x + w - 10} ${y + 10} L ${x + w - 5} ${y + 16} L ${x + w - 10} ${y + 22}`, 2.2, 'none', pi, hov ? .45 : .85);
+        H(x, y, 18, h, { click: () => this.stepModel(key, -1), hover: key, tip: 'Previous model (← / ↑ while the menu is open).' });
+        H(x + w - 18, y, 18, h, { click: () => this.stepModel(key, 1), hover: key, tip: 'Next model (→ / ↓ while the menu is open).' });
+        H(x + 18, y, w - 36, h, { click: () => this.setState(st => ({ menu: st.menu === key ? null : key })), hover: key, tip: ROLE_TIP[key] + ' Click to open the menu.' });
+      }
+    };
+    // stage power: a small push-button beside the legend — lit in the module accent when on, hollow when off
+    const sw = (x, y, on, C, key, tip) => {
+      add(this.dot(x, y, 8.5, x * 3 + y), 2.4, on ? C.accent : C.plate, C.ink, on ? 1 : .6);
+      if (on) add(this.dot(x, y, 3, x + y), 0, C.ink, C.ink); else add(this.line([x - 4, y + 4], [x + 4, y - 4]), 2, 'none', C.ink, .6);
+      H(x - 12, y - 12, 24, 24, { r: '50%', click: () => this.togglePw(key), tip: tip + (on ? ' Click to bypass this stage.' : ' Off — click to switch on.') });
+    };
+    const cell = (x, y, w, h, text, on, C, o = {}) => {
+      add(this.rrect(x, y, w, h, x * 7 + y, .9), 2.4, on ? (o.fill || C.ink) : (C.cellOff || PAPER), C.ink);
+      L(x, y + (h - (o.s || 11)) / 2, w, text, { s: o.s || 11, c: on ? (o.fill ? INK : C.onText) : (C.cellOff ? C.ink : INK), ls: '.08em', op: o.op });
+      H(x, y, w, h, { click: o.click, tip: o.tip });
+    };
+    const meter = (cx, y0, y1, gr, C, on) => {
+      const w = 30, Hh = y1 - y0;
+      add(this.rrect(cx - w / 2, y0, w, Hh, cx, 1), 2.6, s.dark ? '#3a3342' : (C.meterBg || C.plate), 'none');
+      if (on && !s.bypass && gr > 0.2) {
+        const fh = Hh * Math.min(gr, 20) / 20;
+        // gradual accent → red (6A: light red → deep red) over the full 0–20 dB scale, revealed by the fill height
+        const hex = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
+        const isRed = C.accent.toLowerCase() === RED;
+        const c0 = hex(isRed ? '#f08a7c' : C.accent), c1 = hex(isRed ? '#9e2a22' : RED);
+        const N = 40, top = y0 - .6, full = Hh + .2, shown = Math.max(0, fh + .6);
+        for (let i = 0; i < N; i++) {
+          const ya = top + full * i / N, yb = Math.min(top + full * (i + 1) / N, top + shown);
+          if (yb <= ya) break;
+          const t = Math.min(1, Math.max(0, (i / (N - 1) - .3) / .6));
+          const col = '#' + c0.map((a, k) => Math.round(a + (c1[k] - a) * t).toString(16).padStart(2, '0')).join('');
+          add(`M ${cx - w / 2 + .2} ${ya} h ${w - .4} v ${yb - ya + .3} h ${-(w - .4)} Z`, 0, col, 'none');
+        }
+      }
+      add(this.rrect(cx - w / 2, y0, w, Hh, cx, 1), 3, 'none', C.ink);
+      [[0, 0], [2, .1], [3, .15], [4, .2], [6, .3], [8, .4], [10, .5], [15, .75], [20, 1]].forEach(([db, f], i) => {
+        const yy = y0 + Hh * f, right = i % 2 === 0;
+        add(right ? this.line([cx + w / 2 + 3, yy], [cx + w / 2 + 9, yy]) : this.line([cx - w / 2 - 9, yy], [cx - w / 2 - 3, yy]), 2, 'none', C.ink, .7);
+        if (right) L(cx + w / 2 + 13, yy - 8, 40, db === 0 ? '0 dB' : '−' + db, { f: 'cb', s: 16, c: C.legend, a: 'left' });
+        else L(cx - w / 2 - 53, yy - 8, 40, '−' + db, { f: 'cb', s: 16, c: C.legend, a: 'right' });
+      });
+    };
+
+    const knob = (k) => {
+      const { cx, cy, r } = k, C = k.C, ink = C.ink, dim = k.on === false ? .35 : 1, st = k.style || 'round', acc = k.accent || C.accent, mark = k.mark || PAPER;
+      const a2 = (d, w, f, sk, o, t) => add(d, w, f, sk, (o ?? 1) * dim, t);
+      let ang, from;
+      if (k.mode === 'centre') { ang = (k.frac - .5) * 270; from = 0; } else if (k.mode === 'boost') { ang = k.frac * 135; from = 0; } else if (k.mode === 'cut') { ang = -k.frac * 135; from = 0; } else { ang = -135 + k.frac * 270; from = -135; }
+      const big = st === 'big76' || st === 'hybrid76' || st === 'hybrid2a', tickR = r + (big ? 18 : 10), arcR = r + (big ? 12 : 5), seed = cx * 3 + cy;
+      if (k.surround) {
+        // tape-machine surround: a quiet plate + bezel behind the preamp's own knob. Sits outside the tick ring.
+        const bs = (tickR + 20) * 2, sx = cx - bs / 2, sy = cy - bs / 2, su = k.surround, bez = tickR + 3;
+        if (su === 'j37') {
+          a2(this.blob(cx, cy, bs / 2 - 2, seed + 77, 1), 2.6, '#9fb8b3', ink);
+          a2(this.blob(cx, cy, bs / 2 - 20, seed + 79, .8), 1.4, 'none', ink, .3);
+          [45, 135, 225, 315].forEach((a, i) => { const p = this.pt(a, bs / 2 - 8, cx, cy); a2(this.dot(p[0], p[1], 2.6, seed + i), 1, '#d7d6cf', ink); });
+          a2(this.blob(cx, cy, bez, seed + 3, .8), 2.4, '#d7d6cf', ink);
+        } else if (su === 'a800') {
+          a2(this.rrect(sx, sy, bs, bs, seed + 77, .8), 2.6, '#3a3a3f', ink);
+          for (let i = 0; i < 9; i++) a2(this.line([sx + 6, sy + 8 + i * (bs - 16) / 8], [sx + bs - 6, sy + 8 + i * (bs - 16) / 8]), 1, 'none', '#f2ede4', .08);
+          a2(this.blob(cx, cy, bez, seed + 3, .8), 2.4, '#dcdad4', ink);
+          const od = this.pt(0, tickR + 12, cx, cy); a2(this.dot(od[0], od[1], 3.4, seed + 5), 1.4, '#f0a95a', ink);
+        } else if (su === 'cassette') {
+          a2(this.rrect(sx, sy, bs, bs, seed + 77, 1.2), 2.6, '#fbe4ee', ink);
+          a2(this.blob(cx, cy, bez, seed + 3, 1.2), 2.2, '#f3c7d8', ink);
+        } else if (su === 'nagra') {
+          const pts = []; for (let i = 0; i < 60; i++) pts.push(this.pt(i * 6, bez + 4 + (i % 2 ? 0 : 3), cx, cy));
+          a2('M ' + pts.map(p => p[0].toFixed(2) + ' ' + p[1].toFixed(2)).join(' L ') + ' Z', 2.2, '#d9b86a', ink);
+          a2(this.blob(cx, cy, bez - 2, seed + 3, .8), 2, '#efe9d8', ink);
+        }
+      }
+      const tickC = k.surround === 'a800' ? '#f2ede4' : k.surround === 'j37' ? '#d7d6cf' : ink, tR = k.surround ? tickR + 12 : tickR;
+      if (k.surround === 'nagra') { for (let j = 0; j <= 8; j++) { const a = -135 + j * 33.75, p = this.pt(a, tickR + 9, cx, cy), d = j === 4 ? 4.2 : 3.2; a2(`M ${p[0]} ${p[1] - d} L ${p[0] + d} ${p[1]} L ${p[0]} ${p[1] + d} L ${p[0] - d} ${p[1]} Z`, 1.8, '#fbf7ee', ink, 1, `rotate(${a} ${p[0]} ${p[1]})`); } }
+      else if (!k.noTicks) for (let j = 0; j <= 8; j++) { const a = -135 + j * 33.75, p = this.pt(a, tR, cx, cy); const bigJ = k.bigTick ?? 4, isBig = j === bigJ; a2(this.dot(p[0], p[1], isBig ? 2.6 : 1.6, cx + j + cy), k.surround === 'j37' ? 1 : 0, tickC, k.surround === 'j37' ? ink : tickC, k.surround ? .9 : isBig ? 1 : .6); }
+      const lineP = (r1, r2, w, col) => a2(this.line(this.pt(ang, r1, cx, cy), this.pt(ang, r2, cx, cy)), w, 'none', col);
+      const arcUnder = st === 'neve' || st === 'chicken' || st === 'nevehpf';
+      const drawArc = () => { if (Math.abs(ang - from) > 2) a2(this.arcPath(cx, cy, arcR, Math.min(from, ang), Math.max(from, ang), seed + 41, 1), k.arcW || 5, 'none', acc); };
+      if (arcUnder) drawArc();
+      const tint = k.tint || '#8a8378';
+      if (st === 'j37') {
+        // J37: Studer spinner — tall black skirt, chrome hub and one long chrome pointer arm past the rim
+        a2(this.blob(cx, cy, r + 2, seed, 2.4), 2.8, '#2a2830', ink);
+        for (let i = 0; i < 24; i++) a2(this.line(this.pt(i * 15, r * .55, cx, cy), this.pt(i * 15, r - 3, cx, cy)), 1.2, 'none', '#6a6572', .35);
+        a2(this.blob(cx, cy, r * .42, seed + 9, 1.4), 2.4, '#d7d6cf', ink);
+        a2(this.arcPath(cx, cy, r * .3, ang + 120, ang + 220, seed + 3, .5), 2, 'none', '#ffffff', .7);
+        const arm = [this.pt(ang - 6, r * .36, cx, cy), this.pt(ang - 2.5, r + 11, cx, cy), this.pt(ang + 2.5, r + 11, cx, cy), this.pt(ang + 6, r * .36, cx, cy)];
+        a2(this.smooth(arm, true), 2.2, '#d7d6cf', ink);
+        a2(this.blob(cx, cy, r * .42, seed + 9, 1.4), 0, '#d7d6cf', 'none');
+        a2(this.smooth(arm, true), 0, '#d7d6cf', 'none');
+        a2(this.line(this.pt(ang, r * .5, cx, cy), this.pt(ang, r + 8, cx, cy)), 1.6, 'none', tint, .95);
+      } else if (st === 'a800') {
+        // A800: wide low aluminium disc with a black rubber grip band and a deep notch, on a dark escutcheon
+        const bs = r * 2 + 18; a2(this.rrect(cx - bs / 2, cy - bs / 2 + 6, bs, bs - 6, seed + 5, 1.4), 2.4, '#3a3a3f', ink);
+        a2(this.blob(cx, cy, r + 4, seed, 1.8), 2.6, '#1f1e22', ink);
+        for (let i = 0; i < 48; i++) a2(this.line(this.pt(i * 7.5, r - 2, cx, cy), this.pt(i * 7.5, r + 3, cx, cy)), 1.6, 'none', '#4a4650', .9);
+        a2(this.blob(cx, cy, r * .78, seed + 9, 1.4), 2.4, '#dcdad4', ink);
+        for (let i = 0; i < 20; i++) a2(this.arcPath(cx, cy, r * .78 - 2 - i * 1.4, 30 + i * 3, 60 + i * 2, seed + i, .3), 1, 'none', '#ffffff', .25);
+        const notch = [this.pt(ang - 5, r * .8, cx, cy), this.pt(ang + 5, r * .8, cx, cy), this.pt(ang + 3, r * .2, cx, cy), this.pt(ang - 3, r * .2, cx, cy)];
+        a2(this.smooth(notch, true), 2, tint, ink);
+        a2(this.blob(cx, cy, r * .12, seed + 13, .8), 1.6, '#1f1e22', ink);
+      } else if (st === 'cassette') {
+        // Cheap Cassette: 424 Portastudio trim pot — small conical black knob, coloured cap insert, white pointer, tinted ring
+        a2(this.blob(cx, cy, r + 2, seed, 2), 2.4, mix(tint, '#fbf5f7', .55), ink);
+        for (let j = 0; j <= 10; j++) { const a = -135 + j * 27; a2(this.line(this.pt(a, r - 5, cx, cy), this.pt(a, r - 1, cx, cy)), j % 5 === 0 ? 2.2 : 1.2, 'none', ink, .7); }
+        a2(this.blob(cx, cy, r * .7, seed + 9, 2), 2.8, '#2a2830', ink);
+        a2(this.blob(cx, cy, r * .58, seed + 11, 1.6), 1.4, 'none', '#6a6572', .5);
+        a2(this.blob(cx, cy, r * .4, seed + 13, 1.4), 2.2, tint, ink);
+        a2(this.arcPath(cx, cy, r * .3, ang + 130, ang + 210, seed + 3, .5), 1.8, 'none', '#ffffff', .5);
+        lineP(r * .42, r * .68, 3.2, '#f4efe6');
+      } else if (st === 'nagra') {
+        // 102 / Nagra: serrated brass bezel, small black dome, a thin needle over the engraved scale
+        const pts = []; for (let i = 0; i < 72; i++) { const th = i * 5; pts.push(this.pt(th, (r + 8) * (.97 + .03 * (i % 2)), cx, cy)); }
+        a2('M ' + pts.map(p => p[0].toFixed(2) + ' ' + p[1].toFixed(2)).join(' L ') + ' Z', 2.4, '#d9b86a', ink);
+        a2(this.blob(cx, cy, r + 1, seed, 1.6), 2, '#efe9d8', ink);
+        for (let j = 0; j <= 20; j++) { const a = -135 + j * 13.5; a2(this.line(this.pt(a, r - 6, cx, cy), this.pt(a, r - 1, cx, cy)), j % 5 === 0 ? 2.2 : 1.1, 'none', ink, .85); }
+        a2(this.blob(cx, cy, r * .46, seed + 9, 1.6), 2.8, '#2a2830', ink);
+        a2(this.blob(cx, cy, r * .28, seed + 13, 1), 1.4, 'none', '#6a6572', .7);
+        a2(this.arcPath(cx, cy, r * .36, ang + 130, ang + 220, seed + 3, .5), 2, 'none', '#ffffff', .4);
+        a2(this.line(this.pt(ang, r * .1, cx, cy), this.pt(ang, r - 2, cx, cy)), 2.2, 'none', tint);
+        a2(this.line(this.pt(ang, r * .1, cx, cy), this.pt(ang, r * .46, cx, cy)), 2.2, 'none', '#f4efe6');
+      } else if (st === 'round') {
+        a2(this.blob(cx, cy, r, seed, 2.2), 2.8, k.body || '#d9d2c7', ink); a2(this.blob(cx, cy, r - 6, seed + 9, 1.8), 1.4, 'none', k.mark === PAPER ? PAPER : ink, .35);
+        lineP(r * .3, r - 4, 3.2, k.mark || ink);
+      } else if (st === 'api') {
+        a2(this.blob(cx, cy, r, seed, 2), 2.8, '#3a3540', ink);
+        for (let i = 0; i < 16; i++) { const p = this.pt(i * 22.5, r - 3.6, cx, cy); a2(this.dot(p[0], p[1], 1.3, seed + i), 0, '#7a7582', '#7a7582'); }
+        a2(this.blob(cx, cy, r * .64, seed + 9, 1.6), 1.6, '#2a2430', '#7a7582'); lineP(r * .12, r * .6, 3, '#f4efe6');
+      } else if (st === 'neve') {
+        // Marconi: grey skirt, coloured domed cap, one raised pointer bar that runs cap-to-rim
+        const cap = k.cap || '#c9c3bb';
+        a2(this.blob(cx, cy, r, seed, 2.2), 2.8, k.skirt || '#c9c3bb', ink);
+        a2(this.blob(cx, cy, r - 5, seed + 4, 1.4), 1.4, 'none', ink, .3);
+        a2(this.blob(cx, cy, r * .66, seed + 9, 1.6), 2.6, cap, ink);
+        const bar = [this.pt(ang - 9, r * .84, cx, cy), this.pt(ang + 9, r * .84, cx, cy), this.pt(ang + 180 - 9, r * .8, cx, cy), this.pt(ang + 180 + 9, r * .8, cx, cy)];
+        const barD = this.smooth(bar, true);
+        a2(barD, 2.4, cap, ink);
+        // union: re-fill cap and bar unstroked so only the outer silhouette keeps its ink line
+        a2(this.blob(cx, cy, r * .66, seed + 9, 1.6), 0, cap, 'none');
+        a2(barD, 0, cap, 'none');
+        a2(this.line(this.pt(ang, r * .3, cx, cy), this.pt(ang, r * .78, cx, cy)), 1.6, 'none', '#ffffff', .5);
+        a2(this.arcPath(cx, cy, r * .5, ang + 40, ang + 95, seed + 3, .6), 2.2, 'none', '#ffffff', .55);
+      } else if (st === 'la2a') {
+        // LA-2A: small black dome on a broad brushed-aluminium skirt carrying the printed scale
+        a2(this.blob(cx, cy, r + 6, seed, 2), 2.6, '#d7d6cf', ink);
+        for (let i = 0; i < 40; i++) a2(this.line(this.pt(i * 9, r * .7 + 2, cx, cy), this.pt(i * 9, r + 3, cx, cy)), 1, 'none', ink, .12);
+        for (let j = 0; j <= 10; j++) { const a = -135 + j * 27, p1 = this.pt(a, r - 2, cx, cy), p2 = this.pt(a, r + 3, cx, cy); a2(this.line(p1, p2), j % 5 === 0 ? 2.2 : 1.4, 'none', ink, .8); }
+        a2(this.blob(cx, cy, r * .58, seed + 9, 1.8), 2.8, '#2f2b33', ink);
+        a2(this.blob(cx, cy, r * .36, seed + 13, 1.2), 1.4, 'none', '#6a6572', .8);
+        a2(this.arcPath(cx, cy, r * .46, ang + 130, ang + 220, seed + 3, .5), 2, 'none', '#ffffff', .3);
+        lineP(r * .08, r * .54, 3.4, '#f4efe6');
+        const tp = this.pt(ang, r + 1, cx, cy); a2(this.dot(tp[0], tp[1], 2.6, seed + 88), 0, ink, ink);
+      } else if (st === 'rca') {
+        // BA-6A: round black dome sitting in a wide cream dial ring
+        a2(this.blob(cx, cy, r + 6, seed, 2.4), 2.8, '#e9e3d9', ink);
+        for (let i = 0; i < 20; i++) { const p = this.pt(-150 + i * 300 / 19, r + 1, cx, cy); a2(this.dot(p[0], p[1], 1.2, seed + i), 0, ink, ink, .7); }
+        a2(this.blob(cx, cy, r * .74, seed + 9, 2), 2.8, '#2f2b33', ink);
+        a2(this.arcPath(cx, cy, r * .5, ang + 130, ang + 220, seed + 3, .6), 2.2, 'none', '#ffffff', .35);
+        lineP(r * .1, r * .7, 3.4, '#f4efe6');
+      } else if (st === 'ssl') {
+        a2(this.blob(cx, cy, r * .9, seed, 2), 2.4, '#4a4650', ink); a2(this.blob(cx, cy, r * .62, seed + 9, 1.6), 2.2, k.cap || '#d95a4a', ink); lineP(r * .08, r * .56, 3, '#f4efe6');
+      } else if (st === 'chicken') {
+        const cap = k.cap || RED;
+        a2(this.blob(cx, cy, r * .86, seed, 2), 2.6, '#2f2b33', ink);
+        const wedge = [this.pt(ang - 52, r * .66, cx, cy), this.pt(ang - 11, r * 1.1, cx, cy), this.pt(ang, r * 1.16, cx, cy), this.pt(ang + 11, r * 1.1, cx, cy), this.pt(ang + 52, r * .66, cx, cy)];
+        a2('M ' + wedge.map(p => p[0].toFixed(2) + ' ' + p[1].toFixed(2)).join(' L ') + ' Z', 2.8, cap, ink);
+        a2(this.blob(cx, cy, r * .68, seed + 9, 1.8), 2.8, cap, ink);
+        a2(this.line(this.pt(ang, r * .25, cx, cy), this.pt(ang, r * 1.02, cx, cy)), 2, 'none', '#f4efe6', .8);
+        a2(this.arcPath(cx, cy, r * .5, ang + 120, ang + 200, seed + 3, .6), 2.2, 'none', '#ffffff', .45);
+      } else if (st === 'bakelite') {
+        const pts = []; for (let i = 0; i < 48; i++) { const th = i * 7.5; pts.push(this.pt(th, r * (.93 + .07 * Math.cos(th * 8 * Math.PI / 180)), cx, cy)); }
+        a2(this.smooth(pts, true), 2.8, '#2f2b33', ink); a2(this.blob(cx, cy, r * .55, seed + 9, 1.4), 1.4, '#3d3842', '#6a6572'); lineP(r * .15, r * .86, 3.4, '#f4efe6');
+      } else if (st === 'big76') {
+        a2(this.blob(cx, cy, r + 8, seed, 2.6), 3, k.skirt || '#e6dcf4', ink);
+        for (let i = 0; i < 36; i++) a2(this.line(this.pt(i * 10, r + 2, cx, cy), this.pt(i * 10, r + 7, cx, cy)), 1.4, 'none', ink, .3);
+        a2(this.blob(cx, cy, r, seed + 9, 2.2), 2.8, k.body || '#3b2a5a', ink); a2(this.blob(cx, cy, r * .5, seed + 13, 1.4), 1.4, 'none', mark, .3);
+        lineP(r * .18, r - 4, 4, mark);
+      } else if (st === 'hybrid76') {
+        // 76 → 2A: the 76's lavender ridged skirt, but the 2A's small black dome on top
+        a2(this.blob(cx, cy, r + 8, seed, 2.6), 3, k.skirt || '#e6dcf4', ink);
+        for (let i = 0; i < 36; i++) a2(this.line(this.pt(i * 10, r + 2, cx, cy), this.pt(i * 10, r + 7, cx, cy)), 1.4, 'none', ink, .3);
+        a2(this.blob(cx, cy, r, seed + 9, 2.2), 2.4, '#d7d6cf', ink);
+        for (let j = 0; j <= 10; j++) { const a = -135 + j * 27; a2(this.line(this.pt(a, r - 7, cx, cy), this.pt(a, r - 2, cx, cy)), j % 5 === 0 ? 2.2 : 1.4, 'none', ink, .7); }
+        a2(this.blob(cx, cy, r * .58, seed + 13, 1.8), 2.8, '#2f2b33', ink);
+        a2(this.arcPath(cx, cy, r * .46, ang + 130, ang + 220, seed + 3, .5), 2, 'none', '#ffffff', .3);
+        lineP(r * .08, r * .54, 3.4, '#f4efe6');
+        const tp = this.pt(ang, r - 4, cx, cy); a2(this.dot(tp[0], tp[1], 2.6, seed + 88), 0, ink, ink);
+      } else if (st === 'hybrid2a') {
+        // 2A → 76: the 2A's brushed silver scale skirt, carrying the 76's big dark-lavender disc
+        a2(this.blob(cx, cy, r + 8, seed, 2.2), 2.6, '#d7d6cf', ink);
+        for (let i = 0; i < 40; i++) a2(this.line(this.pt(i * 9, r + 1, cx, cy), this.pt(i * 9, r + 6, cx, cy)), 1, 'none', ink, .12);
+        for (let j = 0; j <= 10; j++) { const a = -135 + j * 27; a2(this.line(this.pt(a, r + 1, cx, cy), this.pt(a, r + 6, cx, cy)), j % 5 === 0 ? 2.2 : 1.4, 'none', ink, .8); }
+        a2(this.blob(cx, cy, r * .82, seed + 9, 2.2), 2.8, k.body || '#3b2a5a', ink);
+        a2(this.blob(cx, cy, r * .42, seed + 13, 1.4), 1.4, 'none', mark, .3);
+        lineP(r * .15, r * .78, 4, mark);
+        const tp = this.pt(ang, r + 3, cx, cy); a2(this.dot(tp[0], tp[1], 2.6, seed + 88), 0, ink, ink);
+      } else if (st === 'studer') {
+        a2(this.blob(cx, cy, r, seed, 2.2), 2.8, '#dcdad4', ink); a2(this.blob(cx, cy, r * .7, seed + 9, 1.6), 1.2, '#c8c5bd', ink, .5); lineP(r * .12, r - 3, 4, ink);
+      } else if (st === 'nevehpf') {
+        a2(this.blob(cx, cy, r, seed, 2.2), 2.8, '#c9c3bb', ink);
+        for (let i = 0; i < 24; i++) a2(this.line(this.pt(i * 15, r - 6, cx, cy), this.pt(i * 15, r - 1.5, cx, cy)), 1.5, 'none', ink, .3);
+        const wing = [this.pt(ang - 16, r * .6, cx, cy), this.pt(ang - 5, r + 6, cx, cy), this.pt(ang + 5, r + 6, cx, cy), this.pt(ang + 16, r * .6, cx, cy)];
+        a2(this.smooth(wing, true), 2.4, '#3a3540', ink);
+        a2(this.blob(cx, cy, r * .62, seed + 9, 1.6), 2.6, '#3a3540', ink);
+        a2(this.blob(cx, cy, r * .4, seed + 13, 1.2), 1.4, 'none', '#7a7582', .8);
+        a2(this.arcPath(cx, cy, r * .5, ang + 40, ang + 95, seed + 3, .6), 2, 'none', '#ffffff', .4);
+      } else if (st === 'dbx') {
+        a2(this.blob(cx, cy, r, seed, 2.2), 2.8, '#f2d35b', INK); lineP(r * .1, r - 4, 3.4, INK);
+      }
+      if (!arcUnder) drawArc();
+    };
+
+    // dual-concentric, the 1073 / 550 idiom: stepped frequency on the outer ring with a winged pointer and the
+    // legend printed round the panel; continuous cut on the taller inner knob, its arc living between the two.
+    const dual = (cx, cy, R, r, cutFrac, fFrac, C, on) => {
+      const dim = on ? 1 : .35, ink = C.ink, a2 = (d, w, f, sk, o) => add(d, w, f, sk, (o ?? 1) * dim);
+      const STOPS = [160, 180, 200, 220, 240, 260, 280];
+      STOPS.forEach((hz, i) => {
+        const a = -135 + i * 45, p = this.pt(a, R + 8, cx, cy), q = this.pt(a, R + 19, cx, cy);
+        a2(this.dot(p[0], p[1], 1.8, cx + i), 0, ink, ink, .6);
+        L(q[0] - 16, q[1] - 6, 32, String(hz), { f: 'cb', s: 11, c: C.legend, op: dim });
+      });
+      a2(this.blob(cx, cy, R, cx, 2.4), 2.8, '#c9c3bb', ink);
+      for (let i = 0; i < 30; i++) a2(this.line(this.pt(i * 12, R - 6, cx, cy), this.pt(i * 12, R - 1.5, cx, cy)), 1.5, 'none', ink, .3);
+      const fa = -135 + fFrac * 270;
+      const wing = [this.pt(fa - 15, R * .62, cx, cy), this.pt(fa - 4.5, R + 6, cx, cy), this.pt(fa + 4.5, R + 6, cx, cy), this.pt(fa + 15, R * .62, cx, cy)];
+      a2(this.smooth(wing, true), 2.4, '#5b8fc4', ink);
+      const ang = 135 - cutFrac * 270;
+      [[112.5, '0'], [22.5, '−4'], [-22.5, '−6'], [-112.5, '−10']].forEach(([a, txt]) => { const q = this.pt(a, R + 19, cx, cy); L(q[0] - 14, q[1] - 6, 28, txt, { f: 'cb', s: 11, c: C.accent, op: dim }); });
+      a2(this.blob(cx, cy, r, cx + 9, 2), 2.8, '#3a3540', ink);
+      for (let i = 0; i < 14; i++) { const p = this.pt(i * 25.7, r - 3.4, cx, cy); a2(this.dot(p[0], p[1], 1.2, cx + 20 + i), 0, '#7a7582', '#7a7582'); }
+      a2(this.blob(cx, cy, r * .62, cx + 13, 1.4), 1.6, '#2a2430', '#7a7582');
+      a2(this.line(this.pt(ang, r * .12, cx, cy), this.pt(ang, r * .58, cx, cy)), 3, 'none', '#f4efe6');
+    };
+
+    const dish = (cx, cy, R, frac, C, on) => {
+      const dim = on ? 1 : .35, a2 = (d, w, f, sk, o, t) => add(d, w, f, sk, (o ?? 1) * dim, t);
+      a2(this.blob(cx, cy, R, 11, 3.2), 3.4, C.dish, C.ink); a2(this.blob(cx, cy, R - 9, 17, 2.6), 1.6, 'none', C.grainEdge, .55);
+      const pileR = R * .3 + .855 * R * .62, k = R / 94;
+      a2(this.blob(cx, cy, pileR, 23, 3.4), 2.2, C.grain[2], C.grainEdge);
+      const LAT = C.coarse ? COARSE : FINE, count = Math.round(.855 * LAT.length), baseS = (C.coarse ? 7.6 : 3.6) * k;
+      for (let i = 0; i < count; i++) { const G = LAT[i], p = this.pt(G.ang, G.rad * (pileR - 5), cx, cy); a2(this.chip(baseS * G.s, 1200 + i, G.sq ? 4 : 5), C.coarse ? 2 : 1.3, C.grain[G.tone], C.grainEdge, 1, `translate(${p[0].toFixed(1)} ${p[1].toFixed(1)}) rotate(${G.rot.toFixed(1)})`); }
+      for (let j = 0; j <= 10; j++) { const a = -135 + j * 27, p = this.pt(a, R + 20, cx, cy); a2(this.dot(p[0], p[1], j === 5 ? 3.6 : 2.2, 60 + j), 0, C.ink, C.ink, j === 5 ? 1 : .5); }
+      const ang = -135 + frac * 270;
+      if (ang > -133) a2(this.arcPath(cx, cy, R + 6, -135, ang, 88, 1.6), 7, 'none', C.accent);
+      const t2 = this.pt(ang, R - 5, cx, cy);
+      a2(this.line(this.pt(ang, pileR * .35, cx, cy), t2), 4, 'none', C.ink); a2(this.dot(t2[0], t2[1], 5.2, 94), 2.4, C.plate, C.ink);
+    };
+
+    const hpfHz = v.hpf < .04 ? 'Off' : Math.round(20 * Math.pow(10, v.hpf)) + ' Hz';
+    const NO_POP = { mix: 1, gate: 1, inT: 1, outT: 1 };
+    const knobHit = (cx, cy, r, key, min, max, span, reset, tip) => {
+      if (s.abDiff.includes(key)) add(this.blob(cx, cy, r + 8, cx + cy + 5, 2), 3, 'none', RED, .85);
+      H(cx - r, cy - r, r * 2, r * 2, { r: '50%', cursor: 'ns-resize', down: this.drag(key, min, max, span, NO_POP[key] ? null : { x: cx, y: cy + 10 }), dbl: () => this.commit({ v: { ...s.v, [key]: reset } }), wheel: this.wheel(key, min, max), tip: tip + ' Drag or scroll · ⌘/shift for fine · double-click resets.' });
+    };
+
+    // ── rack ────────────────────────────────────────────────────────
+    add(this.rrect(8, 84, 1184, 600, 900, 1.6), 3.4, s.dark ? '#3b3642' : '#cfc6b8', s.dark ? '#14111a' : INK);
+
+    // ── PRE / TAPE (the 250-series pair) ───────────────────────────
+    {
+      const X = 16, W = 184, cx = 108, CP = pal(PRE_PAL[s.pre]), CT = pal(TAPE_PAL[s.tape]), tapeOn = s.tape !== 'Off';
+      if (s.dark && s.tape === 'Cheap Cassette') { CT.legend = '#5e1a38'; CT.ink = '#3a1024'; CT.knob = { style: 'round', body: '#3a3342', mark: '#f2ede4' }; }
+      if (s.dark && s.tape === '800') CT.knob = { style: 'round', body: '#3a3342', mark: '#f0a95a' };
+      mod(X, 94, W, 221, CP, 1); mod(X, 323, W, 351, CT, 2);
+       plate('pre', CP, s.pre);
+      // the bridge: a paper dial card straddling the seam, hand-numbered 0–10 like a drawn volume knob
+      const cardInk = s.dark ? '#f2ede4' : INK;
+      add(this.rrect(cx - 80, 240, 160, 152, 5, 1.8), 3, s.dark ? '#3a3342' : PAPER, s.dark ? '#1c1922' : INK);
+      const dop = pw.drive ? 1 : .4, DR = 48;
+      sw(cx - 46, 168, pw.drive, CP, 'drive', 'DRIVE power — switches the preamp + tape drive stage.');
+      L(X + 10, 161, W, 'DRIVE', { s: 13, c: CP.legend, op: dop });
+      knob({ cx, cy: 316, r: DR, frac: v.drive / 10, C: CP, on: pw.drive, ...CP.knob, surround: tapeOn ? TAPE_SHAPE[s.tape] : null, accent: CP.accent === PAPER ? INK : CP.accent, arcW: 7 });
+      knobHit(cx, 316, DR, 'drive', 0, 10, 220, 0, 'DRIVE 0–10 — how hard the preamp and the tape are pushed. One knob, both stages.');
+      cell(cx - 42, 406, 84, 20, 'AUTO GAIN', s.autoGain, CT, { s: 10, op: s.autoGain ? 1 : .4, click: () => this.commit(st => ({ autoGain: !st.autoGain })), tip: 'AUTO GAIN — compensates output level as DRIVE rises, so you hear tone, not volume.' });
+      plate('tape', CT, s.tape, { s: s.tape.length > 5 ? 18 : 22 });
+      {
+        const cass = s.tape === 'Cheap Cassette', names = cass ? ['Broker', 'Broke', 'Broke-ish'] : ['7.5', '15', '30'];
+        names.forEach((n, i) => cell(30 + i * 56, 490, 44, 20, n, tapeOn && s.speed === i, CT, { s: cass ? 10 : 12, op: tapeOn ? 1 : .35, click: tapeOn ? () => this.commit({ speed: i }) : undefined, tip: !tapeOn ? 'SPEED — pick a tape machine first.' : cass ? 'SPEED — how broke the cassette deck is.' : 'SPEED — 7.5 / 15 / 30 ips. Slower is darker and wobblier.' }));
+      }
+      [['warmth', 'WARMTH', cx - 44, 'WARMTH 0–100 — low-end bloom from the tape path. Greyed when TAPE is Off.'], ['wow', 'WOW', cx + 44, 'WOW 0–100 — slow pitch drift. Greyed when TAPE is Off.']].forEach(([key, lab, kx, tip]) => {
+        const wowOut = key === 'wow' && s.lowLat, on = tapeOn && pw[key] && !wowOut, op = wowOut ? .18 : on ? 1 : .4;
+        L(kx - 45, 522, 90, lab, { s: 11, c: CT.legend, op });
+        knob({ cx: kx, cy: 570, r: 24, frac: v[key] / 100, C: CT, on, ...CT.knob, accent: CT.accent === PAPER ? INK : CT.accent, arcW: 4 });
+        if (tapeOn && !wowOut) knobHit(kx, 570, 24, key, 0, 100, 160, key === 'warmth' ? 40 : 20, tip);
+        if (!wowOut) sw(kx, 618, pw[key], CT, key, lab + ' power.');
+        if (wowOut) {
+          // whited out: a paper wash over the whole WOW column with a hand note
+          add(this.rrect(kx - 42, 514, 84, 118, 313, 1.6), 0, s.dark ? '#f2ede4' : PAPER, 'none', .78);
+          add(this.rrect(kx - 36, 552, 72, 34, 314, 1.4), 2.4, s.dark ? '#f2ede4' : PAPER, INK, 1, 'rotate(-4 ' + kx + ' 569)');
+          L(kx - 36, 556, 72, 'off in', { f: 'cb', s: 13, c: INK }); L(kx - 36, 569, 72, 'LOW LAT', { s: 10, c: RED });
+          H(kx - 42, 514, 84, 118, { cursor: 'not-allowed', tip: 'WOW is bypassed in LOW LAT — the pitch drift needs the lookahead buffer.' });
+        }
+      });
+    }
+
+    // ── COMP ────────────────────────────────────────────────────────
+    const grC = pw.comp ? v.amount / 100 * 14 * Math.max(0, env(s.t, 1.2)) : 0;
+    {
+      const X = 208, W = 172, cx = 294, C = pal(COMP_PAL[s.comp]), op = pw.comp ? 1 : .4; C.seam = 262;
+      mod(X, 94, W, 580, C, 6);  plate('comp', C, s.comp);
+      sw(cx - 48, 180, pw.comp, C, 'comp', 'COMP power.'); L(X + 10, 174, W, 'AMOUNT', { s: 13, c: C.legend, op });
+      knob({ cx, cy: 271, r: 54, frac: v.amount / 100, C, on: pw.comp, ...C.knob, arcW: 6 });
+      knobHit(cx, 271, 54, 'amount', 0, 100, 220, 45, 'AMOUNT 0–100 — the one knob you ride. Drives input and makeup together against the model.');
+      // MIX: tiny fixed knob tucked at the lower right of AMOUNT
+      { const mx = cx + 56, my = 356, mr = 12, cm = v.compMix ?? 100;
+        L(mx - 20, my + mr + 10, 40, 'MIX', { s: 9, c: C.legend, op });
+        knob({ cx: mx, cy: my, r: mr, frac: cm / 100, C, on: pw.comp, style: 'round', body: C.plate, mark: C.plateInk, arcW: 3, bigTick: 8 });
+        knobHit(mx, my, mr, 'compMix', 0, 100, 140, 100, 'MIX 0–100% — parallel blend of the compressor. 100 is fully compressed.'); }
+      // RATIO: round 4 / 8 toggle mirrored on the left (76 model only)
+      if (s.comp === '76') { const rx = cx - 56, ry = 356, rr = 12, r8 = (s.ratio ?? 4) === 8;
+        L(rx - 20, ry + rr + 10, 40, 'RATIO', { s: 9, c: C.legend, op });
+        add(this.blob(rx, ry, rr, 4181, 1.6), 2.4, C.plate, C.ink, op);
+        L(rx - rr, ry - 9, rr * 2, r8 ? '8' : '4', { s: 18, c: C.accent, op, f: 'cb', a: 'center', ls: '0' });
+        H(rx - rr, ry - rr, rr * 2, rr * 2, { r: '50%', click: () => this.commit(st => ({ ratio: (st.ratio ?? 4) === 4 ? 8 : 4 })), tip: 'RATIO — 4:1 for gentle vocal levelling, 8:1 to really clamp it down. Click to switch.' }); }
+      L(X, 372, W, 'GR', { s: 16, c: C.legend });
+      meter(cx, 400, 630, grC, C, pw.comp);
+      cell(cx - 42, 642, 84, 20, 'AUTO GAIN', s.compAuto, C, { s: 10, op, click: () => this.commit(st => ({ compAuto: !st.compAuto })), tip: 'AUTO GAIN — makes up the level the compressor takes away so A/B stays honest.', fill: C.accent });
+    }
+
+    // ── EQ ──────────────────────────────────────────────────────────
+    {
+      // wider slot: legend column | big knob | two-cell voicing switch. Power buttons sit on the band name.
+      const X = 388, W = 272, eqMode = this.props.eqPalette || 'Mint', C = pal(EQ_PALS[eqMode] || (s.highV === '70s' ? EQ_PALS['Console 70s'] : EQ_PALS['Console 80s'])), kx = 530;
+      mod(X, 94, W, 580, C, 8); plate(null, C, 'EQ', { x: X + 14, y: 116, w: W - 28 }); 
+      { const keys = ['high', 'hmid', 'lmid', 'low', 'hpf'], anyOn = keys.some(k => pw[k]);
+        cell(X + 14, 156, 48, 20, anyOn ? 'ALL OFF' : 'ALL ON', false, C, { s: 9, click: () => this.commit(st => ({ pw: { ...st.pw, ...Object.fromEntries(keys.map(k => [k, !anyOn])) } })), tip: 'Bypass every EQ band at once. Click again to restore.' }); }
+      const CENTRED = [[-135, '−10'], [-67.5, '−5'], [0, '0'], [67.5, '+5'], [135, '+10']], BOOST = [[-135, '0'], [-67.5, '2.5'], [0, '+5'], [67.5, '7.5'], [135, '+10']];
+      const rows = [
+        { key: 'high', lab: 'HIGH', y: 217, nums: CENTRED, mode: 'centre', frac: (v.high + 10) / 20, min: -10, max: 10, def: 0, read: sgn(v.high, 1) + ' dB', voice: 'highV', st: s.highV === '70s' ? { style: 'ssl', cap: '#d95a4a' } : { style: 'neve', cap: '#c9c3bb', skirt: '#8f8a84' }, tip: 'HIGH ±10 dB, centred at 0. The switch to the right picks a British 70s or 80s console.' },
+        { key: 'hmid', lab: 'HI-MID', sub: 'BOOST', y: 314, nums: BOOST, mode: 'sweep', frac: v.hmid / 10, min: 0, max: 10, def: 0, read: '+' + v.hmid.toFixed(1) + ' dB', st: { style: 'api' }, tip: 'HI-MID — boost only, 0 to +10 dB from 7 o\'clock. A 60s American console\'s presence push.' },
+        { key: 'lmid', lab: 'LO-MID', sub: 'DIP', y: 423, dual: true, tip: 'LOW MID — cut only, 0 at 5 o\'clock down to −10 dB (inner knob). Outer ring picks the frequency, 160–280 Hz.' },
+        { key: 'low', lab: 'LOW', y: 527, nums: CENTRED, mode: 'centre', frac: (v.low + 10) / 20, min: -10, max: 10, def: 0, read: sgn(v.low, 1) + ' dB', voice: 'lowV', st: s.lowV === '70s' ? { style: 'ssl', cap: '#8a6a4a' } : { style: 'neve', cap: '#5b8fc4', skirt: '#c9c3bb' }, tip: 'LOW ±10 dB, centred at 0. The switch to the right picks a British 70s or 80s console.' },
+        { key: 'hpf', lab: 'HPF', y: 618, mode: 'sweep', frac: v.hpf, min: 0, max: 1, def: 0, read: hpfHz, st: { style: 'neve', cap: '#2d6fd6', skirt: '#c3c8cc' }, r: 26, stops: ['OFF', '30', '50', '80', '120', '200'], tip: 'HPF 20–200 Hz, continuous — a British 80s console\'s high-pass. Fully down is Off; the printed stops are legend only.' }
+      ];
+      rows.forEach(rw => {
+        const on = pw[rw.key], op = on ? 1 : .4, y = rw.y, lx = X + 32;
+        sw(X + 18, y - 14, on, C, rw.key, rw.lab + ' power.');
+        L(lx, y - 20, 90, rw.lab, { s: 12, a: 'left', ls: '.12em', c: C.legend, op });
+        if (rw.sub) L(lx, y - 6, rw.lab.length * 6.5, rw.sub, { s: 10, ls: '.12em', c: C.legend, op: op * .7 });
+        if (rw.dual) {
+          dual(kx, y, 42, 30, -v.lmid / 10, (v.lmidF - 160) / 120, C, on);
+          H(kx - 42, y - 42, 84, 84, { r: '50%', cursor: 'ns-resize', down: this.drag('lmidF', 160, 280, 200, { x: kx, y: y + 10 }), dbl: () => this.setV('lmidF', 220), tip: 'LOW MID frequency ring — 160 to 280 Hz, continuous.' });
+          knobHit(kx, y, 30, 'lmid', -10, 0, 180, 0, rw.tip);
+        } else {
+          const r = rw.r || 34;
+          if (rw.stops) rw.stops.forEach((sname, i) => { const q = this.pt(-135 + i * 54, r + 20, kx, y); L(q[0] - 16, q[1] - 6, 32, sname, { f: 'cb', s: 11, c: C.legend, op }); });
+          if (rw.nums) rw.nums.forEach(([a, txt]) => { const q = this.pt(a, r + 21, kx, y); L(q[0] - 16, q[1] - 6, 32, txt, { f: 'cb', s: 12, c: C.ink, op }); });
+          knob({ cx: kx, cy: y, r, frac: rw.frac, mode: rw.mode, C, on, ...rw.st, arcW: 5, noTicks: !!rw.stops });
+          knobHit(kx, y, r, rw.key, rw.min, rw.max, 180, rw.def, rw.tip);
+        }
+        if (rw.voice) { const vv = s[rw.voice], VC = vv === '70s' ? { ...C, ink: '#d95a4a', onText: '#f2ede4' } : { ...C, ink: '#2b3f6b', onText: '#f2ede4' }; cell(604, y - 12, 44, 24, vv, true, VC, { s: 12, op, click: () => this.commit(st => ({ [rw.voice]: st[rw.voice] === '70s' ? '80s' : '70s' })), tip: rw.lab + ' — British 70s console or British 80s console. Click to switch.' }); }
+      });
+    }
+
+    // ── DS ──────────────────────────────────────────────────────────
+    const grD = pw.deess ? v.deess / 10 * 9 * Math.max(0, env(s.t, 2.6)) : 0;
+    const LISTEN_TIP = 'LISTEN — hear only what the de-esser is taking out (delta). Not saved with presets.';
+    const toggleListen = () => this.setState(st => ({ dsListen: !st.dsListen }));
+    // X,Y = module origin; model = '536A' | '902'; layout A–D
+    const dsModule = (X, Y, model, plateKey) => {
+      const W = 172, cx = X + 86, dy = Y - 94, C = pal(DS_PAL[model]), op = pw.deess ? 1 : .4, is902 = model === '902';
+      const modeTip = is902 ? '902 mode — HF ONLY ducks just the highs; FULL BAND dips the whole signal.' : 'Mode is a 902 feature — the 536A is always HF only.';
+      const listenPill = (x, y, w) => cell(x, y, w, 20, 'LISTEN', s.dsListen, C, { s: 10, op, click: toggleListen, tip: LISTEN_TIP });
+      mod(X, Y, W, 580, C, 9);
+      plate(plateKey, C, model, { x: X + 14, y: Y + 22, w: 144 });
+      sw(cx - 46, 180 + dy, pw.deess, C, 'deess', 'DE-ESS power.'); L(X + 10, 174 + dy, W, 'DE-ESS', { s: 13, c: C.legend, op });
+      knob({ cx, cy: 271 + dy, r: 54, frac: v.deess / 10, C, on: pw.deess, ...C.knob, accent: C.accent, arcW: 6 });
+      knobHit(cx, 271 + dy, 54, 'deess', 0, 10, 220, 3, 'DE-ESS 0–10 — threshold and depth on one knob, tuned for sibilance.');
+      if (is902) ['HF ONLY', 'FULL BAND'].forEach((m, i) => cell(cx - 72 + i * 80, 346 + dy, 64, 20, m, s.dsMode === m, C, { s: 10, click: () => this.commit({ dsMode: m }), tip: modeTip }));
+      L(X, 372 + dy, W, 'GR', { s: 16, c: C.legend }); meter(cx, 400 + dy, 630 + dy, grD, C, pw.deess);
+      // LISTEN at the foot of the meter — same meter geometry as the compressor beside it
+      if (s.dsListen && pw.deess) {
+        // monitoring state: accent frame around the module + hand-note beside the meter so it can't be missed
+        add(this.rrect(X + 4, Y + 4, W - 8, 572, 19, 1.2), 3.2, 'none', C.accent, .9);
+        add(this.rrect(X + 6, Y + 6, W - 12, 568, 21, 1.2), 0, C.accent, 'none', .1);
+        add(this.rrect(X + 10, 508 + dy, 50, 26, 23, 1.4), 2.4, C.accent, C.ink, 1, 'rotate(-6 ' + (X + 35) + ' ' + (521 + dy) + ')');
+        L(X + 10, 513 + dy, 50, 'Δ only', { f: 'cb', s: 14, c: INK });
+      }
+      cell(cx - 36, 642 + dy, 72, 20, 'LISTEN', s.dsListen, C, { s: 10, op, click: toggleListen, tip: LISTEN_TIP, fill: C.accent });
+    };
+    dsModule(668, 94, s.ds, 'ds');
+
+    // ── SALT ────────────────────────────────────────────────────────
+    {
+      const X = 848, W = 180, cx = 938, C = pal(SALT_PAL[s.salt]), op = pw.salt ? 1 : .4;
+      mod(X, 94, W, 580, C, 11);  plate('salt', C, s.salt);
+      sw(cx - 36, 180, pw.salt, C, 'salt', 'SALT power.'); L(X + 10, 174, W, 'SALT', { s: 13, c: C.legend, op });
+      dish(cx, 347, 52, v.salt / 10, C, pw.salt);
+      knobHit(cx, 347, 52, 'salt', 0, 10, 240, 3.5, 'SALT 0–10 — the enhancer. Kosher: one gentle band. Pink: darkens low, brightens hard up top.');
+      // doodles: a scattered pinch below the dish, a shaker in the corner, a wee pile by its foot
+      {
+        const rr = rndf(4242), d = (dd, w, f, sk, o, t) => add(dd, w, f, sk, (o ?? 1) * op, t);
+        for (let i = 0; i < 18; i++) {
+          const gx = X + 14 + rr() * (W - 28), gy = 204 + rr() * 60, sz = (C.coarse ? 4.2 : 2.6) * (.7 + rr() * .7);
+          if (Math.hypot(gx - cx, gy - 347) < 84) continue;
+          d(this.chip(sz, 3200 + i, rr() > .5 ? 4 : 5), C.coarse ? 1.6 : 1.1, C.grain[i % 3], C.grainEdge, .9, `translate(${gx.toFixed(1)} ${gy.toFixed(1)}) rotate(${(rr() * 90).toFixed(1)})`);
+        }
+        for (let i = 0; i < 26; i++) {
+          const gx = X + 14 + rr() * (W - 28), gy = 436 + rr() * 90, sz = (C.coarse ? 4.2 : 2.6) * (.7 + rr() * .7);
+          if (Math.abs(gx - (X + W - 42)) < 30 && gy > 480) continue;
+          d(this.chip(sz, 3000 + i, rr() > .5 ? 4 : 5), C.coarse ? 1.6 : 1.1, C.grain[i % 3], C.grainEdge, .9, `translate(${gx.toFixed(1)} ${gy.toFixed(1)}) rotate(${(rr() * 90).toFixed(1)})`);
+        }
+        const sx = X + W - 42, sy = 540;
+        d(this.rrect(sx - 14, sy - 8, 28, 46, 77, 1.4), 2.6, C.plate, C.ink);
+        d(this.rrect(sx - 11, sy - 22, 22, 15, 78, 1.2), 2.4, C.accent, C.ink);
+        d(this.line([sx - 14, sy + 10], [sx + 14, sy + 10]), 1.6, 'none', C.ink, .5);
+        [[-5, -17], [0, -19], [5, -17], [-3, -13], [3, -13]].forEach(([ox, oy], i) => d(this.dot(sx + ox, sy + oy, 1.3, 80 + i), 0, C.ink, C.ink));
+        d(this.line([sx + 4, sy - 34], [sx + 9, sy - 42]), 2, 'none', C.ink, .55); d(this.line([sx - 4, sy - 34], [sx - 9, sy - 42]), 2, 'none', C.ink, .55);
+        d(this.blob(sx - 28, sy + 36, 8, 88, 1.6), 2, C.grain[2], C.grainEdge);
+        for (let i = 0; i < 5; i++) d(this.chip(2.4, 3100 + i, 5), 1.1, C.grain[i % 3], C.grainEdge, 1, `translate(${(sx - 28 + (rr() - .5) * 10).toFixed(1)} ${(sy + 34 + (rr() - .5) * 6).toFixed(1)})`);
+      }
+      L(X, 605, W, C.coarse ? 'coarse · one gentle band' : 'fine · two stages', { f: 'ph', s: 14, c: C.legend, op });
+    }
+
+    // ── OUT ─────────────────────────────────────────────────────────
+    const gateLit = pw.gate && !s.bypass && v.gate > -80 && env(s.t, .4) < (v.gate + 80) / 80;
+    {
+      const X = 1036, W = 148, cx = 1110, C = pal(OUT_PALS[this.props.outPalette] || OUT_PALS.Butter); if (s.dark) C.knob = { style: 'round', body: '#3a3342', mark: '#f2ede4' };
+      mod(X, 94, W, 580, C, 12); plate(null, C, 'OUTPUT', { x: X + 14, y: 116, w: W - 28, s: 18 }); 
+      L(X, 174, W, 'MIX', { s: 13, c: C.legend });
+      knob({ cx, cy: 249, r: 41, frac: v.mix / 100, C, ...C.knob, arcW: 5 });
+      knobHit(cx, 249, 41, 'mix', 0, 100, 200, 100, 'MIX 0–100 % — blend the whole strip against dry. Default 100.');
+      L(X, 306, W, Math.round(v.mix) + '%', { f: 'cb', s: 22, c: C.ink });
+      const gop = pw.gate ? 1 : .4;
+      L(X, 350, W, 'GATE', { s: 13, c: C.legend, op: gop }); sw(cx - 44, 408, pw.gate, C, 'gate', 'GATE power.');
+      knob({ cx, cy: 408, r: 24, frac: (v.gate + 80) / 80, C, on: pw.gate, ...C.knob, arcW: 4 });
+      knobHit(cx, 408, 24, 'gate', -80, 0, 180, -80, 'GATE threshold −80 to 0 dB. The lamp lights while it attenuates.');
+      if (gateLit) add(this.blob(cx + 44, 408, 12, 71, 1.4), 0, RED, 'none', .28);
+      add(this.dot(cx + 44, 408, 6.5, 72), 2.2, gateLit ? RED : C.plate, C.ink, gop);
+      L(X, 446, W, v.gate <= -79.5 ? 'Off' : Math.round(v.gate) + ' dB', { f: 'cb', s: 18, c: C.ink, op: gop });
+      [['inT', 'IN', cx - 36, 'IN trim ±24 dB, centred at 0.'], ['outT', 'OUT', cx + 36, 'OUT trim ±24 dB, centred at 0.']].forEach(([key, lab, kx, tip]) => {
+        L(kx - 35, 498, 70, lab, { s: 11, c: C.legend });
+        knob({ cx: kx, cy: 542, r: 19, frac: (v[key] + 24) / 48, mode: 'centre', C, ...C.knob, arcW: 4 });
+        knobHit(kx, 542, 19, key, -24, 24, 200, 0, tip);
+        L(kx - 35, 579, 70, sgn(v[key], 1), { f: 'cb', s: 15, c: C.ink });
+      });
+    }
+
+    const FMT = {
+      drive: x => x.toFixed(1), warmth: x => Math.round(x) + '', wow: x => Math.round(x) + '', amount: x => Math.round(x) + '', deess: x => x.toFixed(1), salt: x => x.toFixed(1),
+      high: x => sgn(x, 1) + ' dB', hmid: x => '+' + x.toFixed(1) + ' dB', lmid: x => sgn(x, 1) + ' dB', low: x => sgn(x, 1) + ' dB', lmidF: x => Math.round(x) + ' Hz',
+      hpf: x => hpfHz, mix: x => Math.round(x) + ' %', compMix: x => Math.round(x) + ' %', gate: x => x <= -79.5 ? 'Off' : Math.round(x) + ' dB', inT: x => sgn(x, 1) + ' dB', outT: x => sgn(x, 1) + ' dB'
+    };
+    const live = s.live;
+    const embed = !!this.props.embed;
+    const scale = this.props.fit ? (s.fitScale ?? Math.min(1, (this.wrapRef.current?.clientWidth || 720) / 1200)) : (this.props.scale ?? .8);
+    // ── DRIVE swatch sheet: rows = tape machine, cols = preamp tint ──
+    const n0 = P.length, l0 = LB.length;
+    if (this.props.driveSheet ?? true) {
+      const pres = ['Off', '511', '73', 'TG', '60s'], tapes = ['Off', '37', '800', 'Cheap Cassette', '102'], cw = 196, rh = 168, x0 = 150, y0 = 72;
+      L(0, 14, 1200, 'DRIVE KNOBS — the preamp knob, set into the tape machine\'s surround', { s: 14, c: '#8a8378' });
+      pres.forEach((p, i) => L(x0 + i * cw, y0 - 32, cw, p === 'Off' ? 'PRE OFF' : p, { f: 'cb', s: 22, c: INK }));
+      tapes.forEach((t, j) => {
+        L(0, y0 + j * rh + rh / 2 - 12, x0 - 18, t === 'Off' ? 'TAPE OFF' : t, { f: 'cb', s: 20, c: INK, a: 'right' });
+        pres.forEach((p, i) => {
+          const CP = pal(PRE_PAL[p]), cx = x0 + i * cw + cw / 2, cy = y0 + j * rh + rh / 2;
+          add(this.rrect(x0 + i * cw + 6, y0 + j * rh + 6, cw - 12, rh - 12, i * 7 + j, .8), 2.2, CP.fill, INK);
+          knob({ cx, cy, r: 34, frac: .6, C: CP, ...CP.knob, surround: TAPE_SHAPE[t] || null, accent: CP.accent === PAPER ? INK : CP.accent, arcW: 5 });
+        });
+      });
+    }
+    const sheetPaths = P.splice(n0), sheetLabels = LB.splice(l0);
+    const menu = s.menu, mp = menu ? PLATE[menu] : null;
+    const dk = s.dark, cI = dk ? '#f2ede4' : INK, cP = dk ? '#3a3342' : PAPER;
+    const ALL = this.allPresets(), curP = ALL[s.preset] || ALL[0], modified = JSON.stringify(this.snap(s)) !== JSON.stringify(this.presetSnap(curP));
+    const NAMES = { drive: 'DRIVE', warmth: 'WARMTH', wow: 'WOW', amount: 'AMOUNT', high: 'HIGH', hmid: 'HI-MID', lmid: 'LO-MID', lmidF: 'LO-MID Hz', low: 'LOW', hpf: 'HPF', deess: 'DE-ESS', salt: 'SALT', mix: 'MIX', gate: 'GATE', inT: 'IN', outT: 'OUT' };
+    const otherSlot = s.ab === 'A' ? 'B' : 'A', abDiffNow = s.abOther ? this.diffKeys(this.snap(s), s.abOther) : [];
+    const abText = !s.abOther ? 'A / B — two full states. Click ' + otherSlot + ' to start a second one from here.' : abDiffNow.length ? otherSlot + ' differs: ' + abDiffNow.map(k => NAMES[k]).join(', ') + '.' : otherSlot + ' is identical to ' + s.ab + '.';
+    const pItem = (p, i) => ({ name: p.name, color: i === s.preset ? '#e0785c' : cI, onClick: () => this.applyPreset(i) });
+    return {
+      presetName: (modified ? '• ' : '') + curP.name,
+      ...(this.pbVals ? this.pbVals({ ink: cI, loaded: '#e0785c', muted: dk ? '#b8b0a4' : '#5a544c', section: dk ? '#b8b0a4' : '#5a544c', hoverBg: dk ? '#4a4452' : '#ece5d8', font: "'Patrick Hand', cursive", fontSC: "'Patrick Hand SC', cursive", size: 16, secSize: 11, menuSize: 14, padX: 12, indent: 16, rowPad: '3px', secPad: '5px' }) : {}),
+      undo: this.undo, undoOp: s.hist.length ? 1 : .4, undoTip: this.showTip(s.hist.length ? 'UNDO the last change (⌘/Ctrl-Z).' : 'Nothing to undo yet.'),
+      savePreset: embed ? null : this.savePreset, delPreset: this.delPreset, copyAB: this.copyAB,
+      scale, frameW: 1200 * scale, frameH: 710 * scale, wrapRef: this.wrapRef,
+      chrome: !embed, wrapBg: embed ? 'transparent' : '#1a1714', wrapPad: embed ? '0' : '44px 24px 64px', wrapMinH: embed ? '0' : '100vh',
+      paths: P, labels: LB, hits: HT, sheetPaths, sheetLabels, sheetOn: !embed && (this.props.driveSheet ?? true), sheetW: 1200 * scale, sheetH: 930 * scale,
+      presetOpen: !embed && s.presetOpen,
+      presetPrev: embed ? null : () => this.applyPreset((s.preset + ALL.length - 1) % ALL.length),
+      presetNext: embed ? null : () => this.applyPreset((s.preset + 1) % ALL.length),
+      presetToggle: embed ? null : () => this.setState(st => ({ presetOpen: !st.presetOpen, menu: null, pbMenu: null })),
+      presetTip: this.showTip(modified ? 'Presets — • means you\'ve moved off the saved state. ‹ › step, click to browse, ↑↓ while open.' : 'Presets — ‹ › step, click to browse, ↑↓ while open.'),
+      saveTip: this.showTip(s.preset >= PRESETS.length ? 'SAVE — overwrite this user preset.' : 'SAVE — store this state as a new user preset (factory ones stay put).'), delTip: this.showTip(s.preset >= PRESETS.length ? 'DEL — delete this user preset.' : 'DEL — only user presets can be deleted.'),
+      abTip: this.showTip(abText), copyTip: this.showTip('COPY — copy this state into slot ' + otherSlot + '.'),
+      stereoTip: this.showTip('STEREO / MONO processing.'), lowLatTip: this.showTip('LOW LAT — tracking mode, shorter lookahead. Amber when on.'),
+      bypassTip: this.showTip('BYPASS the whole strip. Red when on.'),
+      setA: () => this.setAB('A'), setB: () => this.setAB('B'),
+      aBg: s.ab === 'A' ? cI : 'transparent', aFg: s.ab === 'A' ? cP : cI, bBg: s.ab === 'B' ? cI : 'transparent', bFg: s.ab === 'B' ? cP : cI,
+      chBg: dk ? 'linear-gradient(158deg, #2b2731 0%, #24202b 56%, #1c1922 100%)' : 'linear-gradient(158deg, #f1ebe0 0%, #ebe4d6 56%, #e3dbcb 100%)',
+      chGrain: dk ? 'rgba(246,240,228,.35)' : 'rgba(42,36,48,.5)', chHead: dk ? '#3a3342' : '#e8d6b0', chSub: dk ? '#d9c9a6' : '#5a4a2a',
+      chInk: cI, chPaper: cP, chSoft: dk ? '#b8b0a4' : '#5a544c', chFaint: dk ? 'rgba(246,240,228,.25)' : 'rgba(42,36,48,.25)', chHover: dk ? '#4a4452' : '#ece5d8',
+      chPaperA: dk ? 'rgba(58,51,66,.88)' : 'rgba(246,240,228,.82)', chBypass: dk ? 'rgba(28,25,34,.6)' : 'rgba(236,229,216,.55)',
+      toggleDark: () => this.setState(st => ({ dark: !st.dark })), darkTip: this.showTip(dk ? 'LIGHT — back to the paper desk.' : 'DARK — dim the room; the modules stay lit.'),
+      darkBg: dk ? cI : 'transparent', darkFg: dk ? cP : cI,
+      toggleStereo: () => this.setState(st => ({ stereo: !st.stereo })), stereoLabel: s.stereo ? 'STEREO' : 'MONO',
+      toggleLowLat: () => this.setState(st => ({ lowLat: !st.lowLat })), lowLatBg: s.lowLat ? '#f0c25c' : cP,
+      bypassStr: s.bypass ? 'true' : 'false',
+      paramsJson: JSON.stringify(this.engineParams(s)),
+      toggleBypass: () => this.setState(st => ({ bypass: !st.bypass })), bypassBg: s.bypass ? RED : cP, bypassFg: s.bypass ? cP : cI, bypass: s.bypass,
+      tipsColor: s.tips ? cP : cI, tipsBg: s.tips ? cI : 'transparent',
+      tipTips: this.showTip(s.tips ? 'Tooltips are on. Click to switch these little notes off.' : 'Tooltips are off. Click to switch them on; this one always shows.', null, true),
+      toggleTips: () => this.setState(st => ({ tips: !st.tips, tip: st.tip ? (st.tips ? 'Tooltips are off. Click to switch them on; this one always shows.' : 'Tooltips are on. Click to switch these little notes off.') : null })),
+      menuOpen: !!menu, menuX: mp ? mp.x : 0, menuY: mp ? mp.y + 36 : 0, menuW: mp ? mp.w : 0,
+      menuClose: () => this.setState({ menu: null }),
+      menuItems: menu ? OPTS[menu].map(o => ({ name: o, swatch: SWATCH[menu][o].fill, color: s[menu] === o ? '#e0785c' : cI, onClick: () => this.commit({ [menu]: o, menu: null }) })) : [],
+      live: !!live, liveX: live ? live.x : 0, liveY: live ? live.y : 0, liveText: live ? FMT[live.key](v[live.key]) : '',
+      tip: s.tip, tipX: s.tipX, tipY: s.tipY,
+      tipShift: s.tipBelow ? 'translate(-50%, 0) rotate(-.6deg)' : 'translate(-50%, -100%) rotate(-.6deg)',
+      tipOut: this.hideTip
+    };
+  }
+}
+</script>
+</body>
+</html>
