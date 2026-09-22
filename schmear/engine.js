@@ -7,7 +7,8 @@
   const CLIPS = { female: 'clips/female-vocal.m4a', male: 'clips/male-vocal.m4a', guitar: 'clips/acoustic-guitar.m4a',
                   electric: 'clips/electric-guitar.m4a', bass: 'clips/bass-guitar.m4a' };
   const FAIL = 'The audio engine could not start here. It needs a current Chrome, Firefox, Edge or Safari; some in-app browsers (Instagram, Facebook) block it, so open this page in your regular browser.';
-  const p = { detune: 2, mix: 100, input: 0, output: 0, bypass: 0 };   // engine ids, engine ranges
+  const IDX = { detune: 0, mix: 1, input: 2, output: 3, bypass: 4 };   // params.json
+  const p = { detune: 2, mix: 100, input: 0, output: 0, bypass: 0 };   // engine ranges
   let el, ctx, node, src, decoded = {}, token = null, playing = false;
 
   // The panel reports detune as its cents (3/6/9); the engine wants the choice index.
@@ -15,8 +16,9 @@
     if (id === 'detune') p.detune = Math.max(0, Math.min(2, Math.round(value / 3) - 1));
     else if (id === 'bypass') p.bypass = value ? 1 : 0;
     else if (id in p) p[id] = +value;
-    if (node) node.port.postMessage(p);
+    if (node) node.port.postMessage(toMsg());
   }
+  const toMsg = () => { const m = {}; for (const id in IDX) m[IDX[id]] = p[id]; return m; };
 
   // Safari only unlocks audio inside the click's own call stack, so the context is created
   // and resumed synchronously in the transport handler; loading happens after.
@@ -32,7 +34,7 @@
       ctx.audioWorklet.addModule(new URL('worklet.js', base))
     ]);
     const module = await WebAssembly.compile(bytes);
-    node = new AudioWorkletNode(ctx, 'schmear', { processorOptions: { module }, outputChannelCount: [2] });
+    node = new AudioWorkletNode(ctx, 'pb-engine', { processorOptions: { module }, outputChannelCount: [2] });
     node.connect(ctx.destination);
     const cur = el.tryIt.getParams();
     for (const id in cur) fromUI(id, cur[id]);

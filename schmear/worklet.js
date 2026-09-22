@@ -1,27 +1,23 @@
-// AudioWorklet host for dist/schmear.wasm. The main thread compiles the module and hands it
-// over in processorOptions; parameters arrive on the port as {detune, mix, input, output, bypass}.
-class SchmearProcessor extends AudioWorkletProcessor {
+// Generic AudioWorklet host for a Pizza Bagel engine .wasm (schmear, salt, ...). Every engine
+// exports the same C API: pb_bufL/pb_bufR/pb_maxBlock/pb_prepare/pb_set(index, value)/
+// pb_process(n, channels). The main thread compiles the module and hands it over in
+// processorOptions; parameter messages are {index: value} objects.
+class PbEngine extends AudioWorkletProcessor {
   constructor(options) {
     super();
-    const wasi = new Proxy({}, { get: () => () => 0 }); // proc_exit/fd_write etc: never used
-    const inst = new WebAssembly.Instance(options.processorOptions.module, {
-      wasi_snapshot_preview1: wasi, env: new Proxy({}, { get: () => () => 0 })
-    });
+    const stub = new Proxy({}, { get: () => () => 0 }); // WASI fds / memory-growth notify: never used
+    const inst = new WebAssembly.Instance(options.processorOptions.module, { wasi_snapshot_preview1: stub, env: stub });
     this.x = inst.exports;
     if (this.x._initialize) this.x._initialize();
-    this.x.schmear_prepare(sampleRate);
-    this.pL = this.x.schmear_bufL(); this.pR = this.x.schmear_bufR();
+    this.x.pb_prepare(sampleRate);
+    this.pL = this.x.pb_bufL(); this.pR = this.x.pb_bufR(); this.max = this.x.pb_maxBlock();
     this.views();
-    this.p = { detune: 0, mix: 100, input: 0, output: 0, bypass: 0 };
-    this.port.onmessage = (e) => {
-      Object.assign(this.p, e.data);
-      this.x.schmear_set(this.p.detune | 0, +this.p.mix, +this.p.input, +this.p.output, this.p.bypass ? 1 : 0);
-    };
+    this.port.onmessage = (e) => { for (const k in e.data) this.x.pb_set(+k, +e.data[k]); };
   }
   views() {
     this.mem = this.x.memory.buffer;
-    this.L = new Float32Array(this.mem, this.pL, 4096);
-    this.R = new Float32Array(this.mem, this.pR, 4096);
+    this.L = new Float32Array(this.mem, this.pL, this.max);
+    this.R = new Float32Array(this.mem, this.pR, this.max);
   }
   process(inputs, outputs) {
     const inp = inputs[0], out = outputs[0];
@@ -30,10 +26,10 @@ class SchmearProcessor extends AudioWorkletProcessor {
     const n = inp[0].length, ch = inp.length;
     this.L.set(inp[0]);
     if (ch > 1) this.R.set(inp[1]);
-    this.x.schmear_process(n, ch > 1 ? 2 : 1);
+    this.x.pb_process(n, ch > 1 ? 2 : 1);
     out[0].set(this.L.subarray(0, n));
     if (out[1]) out[1].set(this.R.subarray(0, n));
     return true;
   }
 }
-registerProcessor('schmear', SchmearProcessor);
+registerProcessor('pb-engine', PbEngine);
