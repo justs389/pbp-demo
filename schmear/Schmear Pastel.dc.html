@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style data-omelette-injected>html,body{background:transparent}</style><script data-omelette-injected>(()=>{{const n=new URLSearchParams(location.search).get("theme");if(n==="light"||n==="dark"){document.documentElement.dataset.theme=n}}{if(new URLSearchParams(location.search).get("_omthumb")==="1"){const n=(f)=>{const g=f.focus;if(!g)return;f.focus=function(h){g.call(this,{...h,preventScroll:true})}};n(HTMLElement.prototype);n(SVGElement.prototype);if(typeof MathMLElement!=="undefined"){n(MathMLElement.prototype)}const d=(f)=>{f.removeAttribute("autofocus");f.inert=true;if(!(f instanceof HTMLElement))f.removeAttribute("tabindex")};const p=(f)=>{if(f.hasAttribute("autofocus"))d(f);for(const g of f.querySelectorAll("[autofocus]")){d(g)}};p(document.documentElement);new MutationObserver((f)=>{for(const g of f){for(const h of g.addedNodes){if(h.nodeType===1)p(h)}}}).observe(document,{childList:true,subtree:true})}}{const n=()=>{try{if(document.querySelector('meta[name="color-scheme"]'))return;const d=getComputedStyle(document.documentElement).getPropertyValue("color-scheme").trim();if(d&&d!=="normal")return;const p=(y)=>{if(!y)return null;const m=getComputedStyle(y).backgroundColor.match(/^rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s/]+([\d.]+%?))?\s*\)$/);if(!m)return null;const w=m[4]==null?1:parseFloat(m[4])/(m[4].endsWith("%")?100:1);if(w<0.99)return null;return[+m[1],+m[2],+m[3]]};const f=p(document.body)||p(document.documentElement);if(!f)return;const g=(y)=>{const m=y/255;return m<=0.04045?m/12.92:((m+0.055)/1.055)**2.4};const h=0.2126*g(f[0])+0.7152*g(f[1])+0.0722*g(f[2]);document.documentElement.style.setProperty("color-scheme",h<0.4?"dark":"light")}catch{}};if(document.readyState==="complete")n();else window.addEventListener("load",n)}var I=[];var B=false;var K=false;var C=()=>{};if(K===true){try{const n=setTimeout.bind(window);const d=1e4;const p=15;const f=1e4;const g=120000;const h=200;const y=(o)=>{try{let r;if(typeof o==="string")r=o;else if(o instanceof URL)r=o.href;else if(typeof Request!=="undefined"&&o instanceof Request)r=o.url;else return null;if(!r)return null;const l=document.baseURI;const i=new URL(r,l);if(i.protocol!=="http:"&&i.protocol!=="https:")return null;if(i.origin!==new URL(l).origin)return null;return i.origin+i.pathname}catch{return null}};const m=new Map;const w=(o)=>{let r=m.get(o);if(!r){if(m.size>=h){const l=m.keys().next().value;if(l!==undefined)m.delete(l)}r={fails:[],until:0,cooldown:f,hard:false};m.set(o,r)}return r};const R=(o)=>{const r=m.get(o);return r!==undefined&&r.until>Date.now()};const O=(o,r)=>{const l=Date.now();const i=w(o);if(r)i.hard=true;if(i.until>l)return;i.fails.push(l);while(i.fails.length>0&&i.fails[0]<=l-d)i.fails.shift();if(i.fails.length>=p){i.until=l+i.cooldown;if(i.hard)i.cooldown=Math.min(i.cooldown*2,g);i.fails.length=0;try{n(()=>{try{S(true)}catch{}},i.until-l+100)}catch{}console.warn("[omelette] asset circuit breaker: pausing requests to "+o+" for "+Math.round((i.until-l)/1000)+"s after "+p+" failures in "+d/1000+"s")}};const e=(o)=>{m.delete(o)};const t=100;const a=new WeakMap;const u=new Set;let s=null;const S=(o)=>{for(const r of Array.from(u)){try{const l=a.get(r);if(l===undefined){u.delete(r);continue}if(o){const i=y(l);if(i!==null&&R(i))continue}a.delete(r);u.delete(r);if(s!==null)s.call(r,l)}catch{}}};C=()=>{try{m.clear();S(false)}catch{}};document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")C()});const _=window.fetch;if(typeof _==="function"){const o=function(...r){let l=null;try{l=y(r[0])}catch{}if(l!==null&&R(l)){let c;try{if(r[1]&&r[1].signal!==undefined){c=r[1].signal||undefined}else if(typeof Request!=="undefined"&&r[0]instanceof Request){c=r[0].signal||undefined}}catch{c=undefined}return new Promise((k,b)=>{const E=()=>{try{return c.reason!==undefined?c.reason:new DOMException("The operation was aborted.","AbortError")}catch{return new DOMException("The operation was aborted.","AbortError")}};try{if(c&&c.aborted){b(E());return}}catch{}let T=false;const j=()=>{if(T)return;T=true;b(E())};try{if(c)c.addEventListener("abort",j,{once:true})}catch{}n(()=>{if(T)return;T=true;try{if(c)c.removeEventListener("abort",j)}catch{}let L;try{L=new Response(null,{status:429,statusText:"Too Many Requests",headers:{"Retry-After":"10"}})}catch{L={ok:false,status:429}}k(L)},250)})}const i=_.apply(window,r);if(l!==null){const c=l;i.then((k)=>{try{if(k.ok)e(c);else if(k.status===401||k.status===403||k.status===404||k.status===429){O(c,k.status!==404)}}catch{}},()=>{})}return i};window.fetch=o}const v=Object.getOwnPropertyDescriptor(HTMLImageElement.prototype,"src");if(v!==undefined&&v.set!==undefined&&v.get!==undefined){const o=v.set;s=o;Object.defineProperty(HTMLImageElement.prototype,"src",{configurable:true,enumerable:v.enumerable,get:v.get,set(r){const l=`${r}`;try{const i=y(l);if(i!==null&&R(i)){a.set(this,l);if(u.size<t)u.add(this);return}}catch{}try{a.delete(this);u.delete(this)}catch{}o.call(this,l)}})}try{const o=HTMLImageElement.prototype.setAttribute;HTMLImageElement.prototype.setAttribute=function(r,l){if(arguments.length<2){o.apply(this,arguments);return}if(typeof r==="string"&&r.toLowerCase()==="src"){const i=`${l}`;try{const c=y(i);if(c!==null&&R(c)){a.set(this,i);if(u.size<t)u.add(this);return}a.delete(this);u.delete(this)}catch{}o.call(this,r,i);return}o.call(this,r,l)}}catch{}window.addEventListener("error",(o)=>{try{const r=o.target;if(r instanceof HTMLImageElement){const l=y(r.currentSrc||r.src||"");if(l!==null)O(l,true)}}catch{}},true);window.addEventListener("load",(o)=>{try{const r=o.target;if(r instanceof HTMLImageElement){const l=y(r.currentSrc||r.src||"");if(l!==null)e(l);const i=a.get(r);if(i!==undefined){let c=false;try{c=new URL(i,document.baseURI).href===new URL(r.currentSrc||r.src||"",document.baseURI).href}catch{c=false}if(c){a.delete(r);u.delete(r)}}}}catch{}},true)}catch{}}var J=30000;var G=3000;document.addEventListener("DOMContentLoaded",()=>{const n=window.Babel;const d="om-src-id";if(n&&n.registerPlugin&&!(n.availablePlugins&&n.availablePlugins[d])){n.registerPlugin(d,({types:h})=>({visitor:{JSXOpeningElement(y,m){const w=y.node;if(w.name&&w.name.type==="JSXMemberExpression")return;for(let t=0;t<w.attributes.length;t++){const a=w.attributes[t];if(a.type==="JSXAttribute"&&a.name&&a.name.name==="data-om-id")return}const R=m.file&&m.file.opts&&m.file.opts.filename||"?";const O=w.loc&&w.loc.start;const e=`jsx:${R}:${w.start??0}:${O?O.line:0}:${O?O.column+1:0}`;w.attributes.push(h.jsxAttribute(h.jsxIdentifier("data-om-id"),h.stringLiteral(e)))}}}))}const p="om-text-extract";let f=false;if(B&&n&&n.registerPlugin&&!(n.availablePlugins&&n.availablePlugins[p])){const h=window.React;if(h&&h.useSyncExternalStore&&h.createElement){f=true;const y={};const m=new Set;let w=0;window.__omTextO=y;window.__omTextSet=(e)=>{for(const t in e){const a=e[t];if(a==null)delete y[t];else y[t]=a}w++;m.forEach((t)=>t())};const R=(e)=>{m.add(e);return()=>m.delete(e)};const O=()=>w;window.__OmT=function e(t){h.useSyncExternalStore(R,O,O);return h.createElement("span",{"data-om-text":t.i,className:"__om-t"},t.i in y?y[t.i]:t.children)};n.registerPlugin(p,({types:e})=>{const t={style:1,script:1,noscript:1,textarea:1,title:1,option:1,text:1,tspan:1,textPath:1};const a={placeholder:1,alt:1,title:1,label:1,"aria-label":1,"aria-description":1,"aria-placeholder":1};const u=(o,r)=>e.logicalExpression("??",e.memberExpression(e.logicalExpression("||",e.memberExpression(e.identifier("window"),e.identifier("__omTextO")),e.objectExpression([])),e.stringLiteral(o),true),r);const s=(o)=>o.file&&o.file.opts&&o.file.opts.filename||"?";const S=(o)=>o.file&&o.file.code||"";const _=(o,r)=>{const l=(c)=>c&&c.start!=null&&c.end!=null&&(c.type==="StringLiteral"||c.type==="TemplateLiteral"&&c.expressions.length===0)?[c.start,c.end]:null;const i=l(r);if(i)return i;if(r&&r.type==="Identifier"){const c=o.scope.getBinding(r.name);if(c&&c.constant&&c.path.node.type==="VariableDeclarator"){return l(c.path.node.init)}}return null};const v=(o,r,l)=>{const i=o.node;let c=false;const k=(E,T)=>{c=true;return e.jsxElement(e.jsxOpeningElement(e.jsxIdentifier("__OmT"),[e.jsxAttribute(e.jsxIdentifier("i"),e.stringLiteral(E))],false),e.jsxClosingElement(e.jsxIdentifier("__OmT")),[T],false)};const b=i.children.map((E)=>{if(E.type==="JSXText"){if(E.start==null||E.end==null)return E;const T=l.slice(E.start,E.end);const j=T.length-T.trimStart().length;const L=T.length-T.trimEnd().length;if(j+L>=T.length)return E;return k(`txt:${r}:${E.start+j}:${E.end-L}`,E)}if(E.type==="JSXExpressionContainer"){const T=_(o,E.expression);if(T)return k(`str:${r}:${T[0]}:${T[1]}`,E)}return E});if(c)i.children=b};return{visitor:{JSXOpeningElement(o,r){const l=o.node;const i=s(r);const c={};for(let k=0;k<l.attributes.length;k++){const b=l.attributes[k];if(b.type!=="JSXAttribute"||!b.name)continue;const E=b.name.name;if(!a[E])continue;if(!b.value||b.value.type!=="StringLiteral")continue;if(b.value.start==null||b.value.end==null)continue;const T=`txt:${i}:${b.value.start}:${b.value.end}`;c[E]=T;b.value=e.jsxExpressionContainer(u(T,e.stringLiteral(b.value.value)))}if(Object.keys(c).length){l.attributes.push(e.jsxAttribute(e.jsxIdentifier("data-om-text-attrs"),e.stringLiteral(JSON.stringify(c))))}},JSXElement(o,r){const l=o.node.openingElement;const i=l&&l.name&&l.name.name;if(i==="__OmT")return;if(typeof i==="string"&&t[i])return;v(o,s(r),S(r))},JSXFragment(o,r){v(o,s(r),S(r))}}}})}}const g=f?["transform-react-jsx-source",d,p]:["transform-react-jsx-source",d];document.querySelectorAll('script[type="text/babel"],script[type="text/jsx"]').forEach((h,y)=>{const m=h.getAttribute("data-plugins")||"";const w=g.filter((R)=>m.indexOf(R)<0);if(w.length){h.setAttribute("data-plugins",m?`${m},${w.join(",")}`:w.join(","))}if(!h.hasAttribute("data-filename")){h.setAttribute("data-filename",h.getAttribute("src")||`inline-${y}`)}})});var A=window.parent;var U="not editable here — open the project in the Claude Design editor to save";var W=()=>Promise.resolve({persisted:false,noHost:true,reason:U});var H=W;var M="data/storage.json";var z=()=>{try{const n=new URL(document.baseURI);const d=n.pathname.match(/\/projects\/([^/]+)\/serve\//);if(d)return d[1];return n.hostname.split(".")[0]||""}catch{return location.hostname.split(".")[0]||""}};var Z=()=>{try{const n=new URL(document.baseURI);const d=n.pathname.indexOf("/serve/");if(d>=0)return n.origin+n.pathname.slice(0,d+"/serve/".length)+M}catch{}return"./"+M};var x=null;var N=()=>{if(!x){x=fetch(Z(),{cache:"no-store"}).then((n)=>{if(n.ok)return n.text();return n.status===404?"":null}).catch(()=>null).then((n)=>{if(n===null){x=null;return null}const d=new Map;if(!n)return d;let p;try{p=JSON.parse(n)}catch{console.warn("[omelette.storage] "+M+" is not valid JSON; treating the store as unreadable so a save cannot overwrite the "+"hand-edited bytes. Fix the JSON (or delete the file) to re-enable persistence.");x=null;return null}if(p===null||typeof p!=="object"||Array.isArray(p)){console.warn("[omelette.storage] "+M+" doesn't hold a JSON object; treating the store as unreadable so a save cannot "+"overwrite the hand-edited bytes. Make the top level a JSON object to re-enable persistence.");x=null;return null}const f=p;if("data"in f){const g=f.data;if(g===null||typeof g!=="object"||Array.isArray(g)){console.warn("[omelette.storage] "+M+' has a "data" field that is not a JSON object; treating the store as unreadable so a '+'save cannot overwrite the hand-edited bytes. Make "data" a JSON object to re-enable persistence.');x=null;return null}const h=f._meta;const y=h!==null&&typeof h==="object"?h.project:undefined;if(typeof y==="string"&&y!==""&&y!==z())return d;for(const m of Object.keys(g))d.set(m,g[m]);return d}for(const g of Object.keys(f)){if(g!=="_meta")d.set(g,f[g])}return d})}return x};var F=(n)=>H(M,JSON.stringify({_meta:{project:z(),version:1},data:Object.fromEntries(n)},null,2));var D=Promise.resolve();var $=(n)=>{const d=D.then(n);D=d.then(()=>{return},()=>{return});return d};var V=/sk-(?:ant-)?[A-Za-z0-9_-]{16,}|AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{20,}|xox[a-z]-[A-Za-z0-9][A-Za-z0-9-]{9,}|AIza[0-9A-Za-z_-]{30,}|-----BEGIN [A-Z ]*PRIVATE KEY-----/;var Y=/password|passwd|secret|api[_-]?key|access[_-]?token|auth[_-]?token|credential/i;var Q=(n,d,p)=>{if(V.test(d)||Y.test(n)&&typeof p==="string"&&p.length>=8){console.warn('[omelette.storage] the value for "'+n+'" looks like a credential. The storage file is a plaintext project file — visible to '+"everyone with project access and copied when the project is duplicated. Do not store secrets here.")}};var q={persisted:false,reason:"could not load the existing store — not overwriting it"};var X={persisted:false,reason:"stored value changed since a failed read — re-read this key before saving"};var P=new Set;var ee={get:(n)=>{if(typeof n!=="string"){return Promise.reject(new TypeError("storage.get: key must be a string"))}return $(N).then((d)=>{if(d===null){P.add(n);return null}P.delete(n);if(!d.has(n))return null;const p=d.get(n);return p==null?null:JSON.parse(JSON.stringify(p))})},set:(n,d)=>{if(typeof n!=="string"){return Promise.reject(new TypeError("storage.set: key must be a string"))}let p;try{p=JSON.stringify(d)}catch(g){return Promise.reject(new TypeError("storage.set: value must be JSON-serializable ("+String(g)+")"))}if(p===undefined){return Promise.reject(new TypeError("storage.set: value must be JSON-serializable"))}Q(n,p,d);const f=JSON.parse(p);return $(()=>N().then((g)=>{if(g===null)return q;if(P.has(n)){if(g.has(n))return X;P.delete(n)}g.set(n,f);return F(g)}))},delete:(n)=>{if(typeof n!=="string"){return Promise.reject(new TypeError("storage.delete: key must be a string"))}return $(()=>N().then((d)=>{if(d===null)return q;if(P.has(n)){if(d.has(n))return X;P.delete(n)}d.delete(n);return F(d)}))},keys:()=>$(N).then((n)=>n===null?[]:Array.from(n.keys()))};window.omelette={writeFile:(n,d)=>H(n,d).then((p)=>{if(!p.persisted&&!p.noHost){throw new Error(p.reason||"write failed")}}),storage:ee};if(A&&A!==window){const n=(e,t)=>{try{A.postMessage({__omelette_log:true,type:e,data:t},"*")}catch{}};["log","warn","error"].forEach((e)=>{const t=console[e];console[e]=(...a)=>{const u=a.map((s)=>{try{return typeof s==="object"?JSON.stringify(s):String(s)}catch{try{return String(s)}catch{return"[unstringifiable]"}}}).join(" ");n(e,u);t.apply(console,a)}});window.addEventListener("error",(e)=>{const t=e.target;if(t&&t!==window&&t.tagName){const a=t.src||t.href||"";n("resource_error",`${t.tagName} failed to load: ${a}`)}else{n("error",`${e.message||"Unknown error"} at ${e.filename||"?"}:${e.lineno||0}:${e.colno||0}`)}},true);window.addEventListener("unhandledrejection",(e)=>{const t=e.reason;const a=t instanceof Error?`${t.message} ${t.stack}`:String(t);n("error",`Unhandled rejection: ${a}`)});window.addEventListener("click",(e)=>{if(e.defaultPrevented||e.button!==0)return;if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;const t=e.composedPath?e.composedPath():[];const a=["button","input","select","textarea","summary","label"];let u=null;for(const v of t){if(!(v instanceof Element))continue;if(v.localName==="a"){if(!(v instanceof HTMLAnchorElement))return;u=v;break}if(a.indexOf(v.localName)!==-1)return}if(!u)return;if(u.isContentEditable)return;const s=u.closest("[contenteditable]");if(s&&s.getAttribute("contenteditable")!=="false")return;const S=(u.getAttribute("target")||"_self").toLowerCase();if(S!=="_self"&&S!=="_top"&&S!=="_parent")return;let _;try{_=new URL(u.href)}catch{return}if(_.protocol!=="http:"&&_.protocol!=="https:")return;if(location.origin==="null")return;if(_.origin===location.origin)return;e.preventDefault();window.open(_.href,"_blank","noopener,noreferrer")});const d=()=>{try{A.postMessage({type:"omelette:height",height:document.documentElement.scrollHeight},"*")}catch{}};if(window.ResizeObserver)new ResizeObserver(d).observe(document.documentElement);const p=()=>{d();if(!document.querySelector('script[type="text/babel"],script[type="text/jsx"]'))return;const e=()=>document.getElementById("root")||document.querySelector("body > div[id]");const t=e()?.firstElementChild??null;let a=0;const u=()=>{const s=e();if(s&&s.firstElementChild!==t||++a>30){d();return}setTimeout(u,100)};setTimeout(u,100)};if(document.readyState==="complete")p();else window.addEventListener("load",p);const f={};let g=0;const h=(e)=>new Promise((t,a)=>{if(!I.length){a(new Error("claude.complete: no parent origin"));return}const u=`c${++g}`;const s=()=>setTimeout(()=>{delete f[u];a(new Error(`claude.complete: no data for ${J/1000}s`))},J);const S=s();f[u]={resolve:t,reject:a,text:"",t:S,arm:s};try{for(const _ of I){A.postMessage({__om_api:true,id:u,body:e},_)}}catch(_){clearTimeout(S);delete f[u];a(_)}});const y=8;const m=async(e,t)=>{if(!Array.isArray(e.messages)){throw new Error("claude.complete: tools require a messages array")}const a=e.messages.slice();const u={...e,tools:e.tools.map((_)=>{if(_===null||typeof _!=="object")return _;const v={};for(const o of Object.keys(_)){if(typeof _[o]!=="function")v[o]=_[o]}return v})};const s=u.tool_choice;const S=s!=null&&(s.type==="any"||s.type==="tool")?{...u,tool_choice:s.disable_parallel_tool_use!==undefined?{type:"auto",disable_parallel_tool_use:s.disable_parallel_tool_use}:{type:"auto"}}:u;for(let _=0;_<y;_++){const v=await h({..._===0?u:S,messages:a});const o=v.message;const r=o&&Array.isArray(o.content)?o.content:null;const l=r?r.filter((c)=>c?.type==="tool_use"):[];if(o?.stop_reason!=="tool_use"||l.length===0){return v.text}const i=[];for(const c of l){const k=t.get(c.name);if(!k){i.push({type:"tool_result",tool_use_id:c.id,content:`no handler for tool "${c.name}"`,is_error:true});continue}try{const b=await k(c.input);const E=typeof b==="string"?b:O(b)??"";i.push({type:"tool_result",tool_use_id:c.id,content:E})}catch(b){i.push({type:"tool_result",tool_use_id:c.id,content:String(b?.message??b??"tool handler failed"),is_error:true})}}a.push({role:"assistant",content:r},{role:"user",content:i})}throw new Error(`claude.complete: exceeded ${y} tool turns`)};window.claude={complete(e){const t=e;if(t!==null&&typeof t==="object"&&Array.isArray(t.tools)&&t.tools.some((a)=>a!==null&&typeof a==="object"&&typeof a.run==="function")){const a=new Map;for(const u of t.tools){if(u!==null&&typeof u==="object"&&typeof u.run==="function"){a.set(String(u.name),u.run)}}return m(t,a)}return h(e).then((a)=>a.text)}};const w={};let R=0;H=(e,t)=>new Promise((a)=>{if(!I.length){a({persisted:false,noHost:true,reason:U});return}const u=`f${++R}`;const s=setTimeout(()=>{delete w[u];a({persisted:false,noHost:true,reason:U})},G);w[u]={settle:a,t:s};try{for(const S of I){A.postMessage({__om_file:true,id:u,op:"write",path:e,content:t},S)}}catch{clearTimeout(s);delete w[u];a({persisted:false,noHost:true,reason:U})}});const O=(e)=>{try{return JSON.stringify(e)}catch{return JSON.stringify(String(e))}};window.addEventListener("message",(e)=>{if(I.indexOf(e.origin)<0)return;if(e.source!==A)return;const t=e.data;if(!t)return;if(t.type==="omelette-preview-refresh"){if(typeof t.token!=="string"||!/^[0-9a-f.-]+(\.(rc|pr-[0-9]+))?(\.[0-9]+\.[0-9a-f]{16})?$/.test(t.token))return;const s=Math.max(1,Math.floor((t.expiresAt||0)-Date.now()/1000));document.cookie="__Host-omelette-preview="+t.token+"; Path=/; Secure; SameSite=None; Partitioned; Max-Age="+s;C();return}if(t.__om_file_r){const s=w[t.id];if(!s)return;clearTimeout(s.t);delete w[t.id];s.settle(t.ok?{persisted:true}:{persisted:false,reason:t.error||"write failed"});return}if(t.__om_api_r){const s=f[t.id];if(!s)return;if(t.error!=null){clearTimeout(s.t);delete f[t.id];s.reject(new Error(t.error));return}if(t.chunk!=null){clearTimeout(s.t);s.t=s.arm();s.text+=t.chunk;return}if(t.done){clearTimeout(s.t);delete f[t.id];s.resolve({text:t.text!=null?t.text:s.text,message:t.message});return}return}if(!t.__om_eval)return;const a=t;const u=(s)=>{e.source.postMessage({...s,__om_eval_r:1,id:a.id},e.origin)};try{const s=(0,eval)(a.code);if(s&&typeof s.then==="function"){s.then((S)=>u({ok:1,v:O(S)}),(S)=>u({ok:0,e:String(S)}))}else{u({ok:1,v:O(s)})}}catch(s){u({ok:0,e:String(s)})}})}})();
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&amp;family=Patrick+Hand+SC&amp;family=Patrick+Hand&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #17120c; }
+  a { color: #d9a86a; text-decoration: none; }
+  a:hover { color: #2b1f14; }
+</style>
+</helmet>
+
+<div ref="{{ wrapRef }}" style="min-height: {{ wrapMinH }}; background: {{ wrapBg }}; padding: {{ wrapPad }}; display: flex; flex-direction: column; align-items: center; gap: 40px; font-family: 'Patrick Hand', cursive;">
+
+  <sc-if value="{{ chrome }}" hint-placeholder-val="{{ true }}">
+  <div style="font-size: 14px; letter-spacing: .04em; color: #7d6a4f;">Schmear, vocal widener, bagel &amp; cream cheese — 600 × 380 (2× of 300 × 190)</div>
+  </sc-if>
+
+  <div style="width: {{ frameW }}px; height: {{ frameH }}px;">
+  <div style="transform: scale({{ scale }}); transform-origin: top left;">
+    <div style="position: relative; width: 600px; height: 380px; overflow: hidden; box-shadow: 0 24px 50px -14px rgba(0,0,0,.78);">
+
+      <div style="position: absolute; inset: 0; background: {{ paperWash }};"></div>
+      <div style="position: absolute; inset: 0; opacity: .26; background-image: radial-gradient(rgba(43,31,20,.55) .5px, rgba(0,0,0,0) .6px); background-size: 3px 3px;"></div>
+      <div style="position: absolute; left: 0; top: 0; width: 600px; height: 66px; background: {{ bandTone }};"></div>
+      <div style="position: absolute; left: 0; top: 66px; width: 600px; height: 4px; background: #2b1f14;"></div>
+      <div style="position: absolute; left: 0; bottom: 0; width: 600px; height: 8px; background: #2b1f14;"></div>
+
+      <svg width="600" height="380" viewBox="0 0 600 380" style="position: absolute; inset: 0;">
+        <g stroke="#2b1f14" stroke-linecap="round" stroke-linejoin="round">
+          <sc-for list="{{ plate }}" as="p" hint-placeholder-count="30">
+            <path d="{{ p.d }}" stroke="{{ p.s }}" stroke-width="{{ p.w }}" opacity="{{ p.o }}" fill="{{ p.f }}"></path>
+          </sc-for>
+          <sc-for list="{{ live }}" as="p" hint-placeholder-count="24">
+            <path d="{{ p.d }}" transform="{{ p.t }}" stroke="{{ p.s }}" stroke-width="{{ p.w }}" opacity="{{ p.o }}" fill="{{ p.f }}"></path>
+          </sc-for>
+        </g>
+      </svg>
+
+      <div style="position: absolute; left: 22px; top: 6px; display: flex; align-items: baseline; gap: 9px;">
+        <div style="font-family: 'Caveat Brush', cursive; font-size: 38px; color: #2b1f14; line-height: 1.3;">Schmear</div>
+        <div style="white-space: nowrap; font-size: 15px; color: #5a4426; line-height: 1.3;">vocal widener</div>
+      </div>
+
+      <div style="position: absolute; left: 296px; top: 20px; width: 120px; height: 26px; box-sizing: border-box; display: flex; align-items: stretch; border: 3px solid #2b1f14; background: #fdf3e2; user-select: none; z-index: 9;">
+        <div onClick="{{ presetPrev }}" style="width: 19px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-right: 1.5px solid rgba(43,31,20,.25); font-family: 'Caveat Brush', cursive; font-size: 16px; color: #6b5335; line-height: 1;">‹</div>
+        <div onClick="{{ presetToggle }}" onContextMenu="{{ presetContext }}" onMouseEnter="{{ tipPreset }}" onMouseLeave="{{ tipOut }}" style="flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; cursor: pointer; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .06em; color: #2b1f14; line-height: 1;">{{ presetName }}</div>
+        <div onClick="{{ presetNext }}" style="width: 19px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-left: 1.5px solid rgba(43,31,20,.25); font-family: 'Caveat Brush', cursive; font-size: 16px; color: #6b5335; line-height: 1;">›</div>
+      </div>
+
+      <sc-if value="{{ presetOpen }}" hint-placeholder-val="{{ false }}">
+        <div ref="{{ pbBox }}" onClick="{{ pbClose }}" style="position: absolute; left: 296px; top: 52px; width: 200px; box-sizing: border-box; padding: 9px 0 8px; background: #fdf3e2; border: 3px solid #2b1f14; box-shadow: 5px 6px 0 rgba(43,31,20,.35); z-index: 20; font-family: 'Patrick Hand', cursive;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; padding: 0 12px 6px; font-family: 'Patrick Hand SC', cursive; font-size: 11px; letter-spacing: .16em; color: #8f7550;">
+            <div style="white-space: nowrap;">PRESET FOLDERS</div>
+            <div onClick="{{ presetToggle }}" style="white-space: nowrap; cursor: pointer; color: #6b5335;">CLOSE</div>
+          </div>
+          <div ref="{{ pbList }}" style="max-height: 220px; overflow-y: auto; overflow-x: hidden; scrollbar-width: thin; scrollbar-color: #c9a66f transparent; border-top: 1px solid #e0cba6; border-bottom: 1px solid #e0cba6; padding: 3px 0;">
+            <sc-for list="{{ pbRows }}" as="r" hint-placeholder-count="8">
+              <div data-pb-key="{{ r.key }}" onClick="{{ r.onClick }}" onContextMenu="{{ r.onContext }}" onMouseEnter="{{ r.onEnter }}" onMouseLeave="{{ r.onLeave }}" style="display: flex; align-items: center; gap: 5px; padding: {{ r.pad }}; font-family: {{ r.font }}; font-size: {{ r.size }}; letter-spacing: {{ r.ls }}; color: {{ r.color }}; background: {{ r.bg }}; cursor: {{ r.cursor }}; white-space: nowrap; user-select: none; line-height: 1.25;">
+                <div style="width: {{ r.triW }}; flex: none; font-size: 12px; color: #8f7550;">{{ r.tri }}</div>
+                <div style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;">{{ r.label }}</div>
+                <div style="flex: none; font-family: 'Patrick Hand SC', cursive; font-size: 11px; letter-spacing: .08em; color: #8f7550;">{{ r.count }}</div>
+                <sc-if value="{{ r.dots }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ r.onDots }}" style="flex: none; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-family: 'Caveat Brush', cursive; font-size: 15px; line-height: 1; color: #2b1f14; cursor: pointer;" style-hover="background: #c98f4e;">⋮</div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display: flex; gap: 5px; padding: 8px 11px 0; font-family: 'Patrick Hand SC', cursive; font-size: 11px; letter-spacing: .1em;">
+            <div onClick="{{ savePreset }}" onMouseEnter="{{ tipSave }}" onMouseLeave="{{ tipOut }}" style="flex: 1; text-align: center; padding: 4px 0; border: 2px solid #2b1f14; background: #f2e2c6; color: #2b1f14; cursor: pointer;" style-hover="background: #c98f4e;">SAVE</div>
+            <div onClick="{{ saveAsPreset }}" onMouseEnter="{{ tipSaveAs }}" onMouseLeave="{{ tipOut }}" style="flex: 1.3; text-align: center; padding: 4px 0; border: 2px solid #2b1f14; background: #f2e2c6; color: #2b1f14; cursor: pointer;" style-hover="background: #c98f4e;">SAVE AS…</div>
+            <div onClick="{{ delPreset }}" onMouseEnter="{{ tipDel }}" onMouseLeave="{{ tipOut }}" style="flex: 1; text-align: center; padding: 4px 0; border: 2px solid #2b1f14; background: #f2e2c6; color: #2b1f14; cursor: {{ delCursor }}; opacity: {{ delOp }};" style-hover="background: {{ delHover }};">DELETE</div>
+          </div>
+          <sc-if value="{{ pbMenuOpen }}" hint-placeholder-val="{{ false }}">
+            <div onClick="{{ pbStop }}" style="position: absolute; right: 10px; top: {{ pbMenuY }}; transform: {{ pbMenuT }}; width: 150px; box-sizing: border-box; padding: 4px 0; background: #fdf3e2; border: 2px solid #2b1f14; box-shadow: 3px 4px 0 rgba(43,31,20,.3); z-index: 5;">
+              <sc-for list="{{ pbMenuItems }}" as="m" hint-placeholder-count="3">
+                <div onClick="{{ m.onClick }}" style="padding: {{ m.pad }}; height: {{ m.h }}; font-family: {{ m.font }}; font-size: {{ m.size }}; letter-spacing: {{ m.ls }}; color: {{ m.color }}; cursor: {{ m.cursor }}; white-space: nowrap; line-height: 1.2;" style-hover="background: {{ m.hoverBg }};">{{ m.label }}</div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <div style="position: absolute; left: 232px; top: 20px; height: 26px; display: flex; align-items: center; gap: 6px; z-index: 9; user-select: none;">
+        <div onClick="{{ undo }}" onMouseEnter="{{ tipUndo }}" onMouseLeave="{{ tipOut }}" style="width: 24px; height: 24px; box-sizing: border-box; border: 3px solid #2b1f14; border-radius: 50%; background: #fdf3e2; opacity: {{ undoOp }}; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #2b1f14; line-height: 1;"><svg width="16" height="16" viewBox="0 0 16 16" style="display: block;"><path d="M 5.2 6.3 A 4.2 4.2 0 1 1 8.6 12.1" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path><path d="M 3.2 3.6 L 3.6 7.4 L 7.3 6.6" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+        <div onClick="{{ toggleTips }}" onMouseEnter="{{ tipTips }}" onMouseLeave="{{ tipOut }}" style="width: 24px; height: 24px; box-sizing: border-box; border: 3px solid #2b1f14; border-radius: 50%; background: {{ tipsBg }}; display: flex; align-items: center; justify-content: center; cursor: pointer; font-family: 'Caveat Brush', cursive; font-size: 16px; color: {{ tipsColor }}; line-height: 1;">?</div>
+      </div>
+      <div style="position: absolute; left: 426px; top: 20px; height: 26px; display: flex; align-items: center; z-index: 9; user-select: none;">
+        <div onMouseEnter="{{ tipAB }}" onMouseLeave="{{ tipOut }}" style="display: flex; height: 26px; box-sizing: border-box; border: 3px solid #2b1f14; background: #fdf3e2; cursor: pointer; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .08em; line-height: 1;">
+          <div onClick="{{ setA }}" style="width: 21px; display: flex; align-items: center; justify-content: center; background: {{ aBg }}; color: {{ aFg }};">A</div>
+          <div onClick="{{ setB }}" style="width: 21px; display: flex; align-items: center; justify-content: center; background: {{ bBg }}; color: {{ bFg }};">B</div>
+        </div>
+      </div>
+      <div id="bypass" role="switch" aria-label="Bypass" aria-checked="{{ bypassStr }}" data-value="{{ bypassStr }}" onClick="{{ toggleBypass }}" onMouseEnter="{{ tipBypass }}" onMouseLeave="{{ tipOut }}" style="position: absolute; right: 22px; top: 20px; display: flex; align-items: center; gap: 7px; height: 26px; box-sizing: border-box; padding: 0 9px; border: 3px solid #2b1f14; cursor: pointer; user-select: none; background-color: {{ bypassPlate }};">
+        <div style="width: 9px; height: 9px; border-radius: 50%; border: 2px solid #2b1f14; background-color: {{ bypassLamp }};"></div>
+        <div style="white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 15px; letter-spacing: .1em; color: #2b1f14; line-height: 1;">BYPASS</div>
+      </div>
+
+      <div style="position: absolute; left: 40px; top: 92px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 15px; letter-spacing: .14em; color: #6b5335; line-height: 1;">DETUNE</div>
+
+      <div id="detune" role="radiogroup" aria-label="Detune" data-value="{{ step }}">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+        <div role="radio" aria-checked="{{ s.onStr }}" data-value="{{ s.label }}" onClick="{{ s.onClick }}" onMouseEnter="{{ s.onEnter }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: {{ s.left }}px; top: 118px; width: 74px; height: 74px; display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; font-family: 'Caveat Brush', cursive; font-size: 36px; color: {{ s.color }}; line-height: 1;">{{ s.label }}</div>
+      </sc-for>
+      </div>
+
+      <div style="position: absolute; left: 50px; top: 212px; width: 100px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .14em; color: #6b5335; line-height: 1;">INPUT</div>
+      <div id="input" role="slider" aria-label="Input" aria-valuemin="-12" aria-valuemax="12" aria-valuenow="{{ inVal }}" data-value="{{ inVal }}" onPointerDown="{{ inDown }}" onWheel="{{ inWheel }}" onDoubleClick="{{ inReset }}" onMouseEnter="{{ tipIn }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 76px; top: 240px; width: 48px; height: 48px; border-radius: 50%; cursor: ns-resize; touch-action: none;"></div>
+      <div style="position: absolute; left: 50px; top: 306px; width: 100px; text-align: center; white-space: nowrap; font-family: 'Caveat Brush', cursive; font-size: 17px; color: #40301d; line-height: 1;">{{ inReadout }}</div>
+      <div style="position: absolute; left: 160px; top: 212px; width: 100px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .14em; color: #6b5335; line-height: 1;">OUTPUT</div>
+      <div id="output" role="slider" aria-label="Output" aria-valuemin="-12" aria-valuemax="12" aria-valuenow="{{ outVal }}" data-value="{{ outVal }}" onPointerDown="{{ outDown }}" onWheel="{{ outWheel }}" onDoubleClick="{{ outReset }}" onMouseEnter="{{ tipOut2 }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 186px; top: 240px; width: 48px; height: 48px; border-radius: 50%; cursor: ns-resize; touch-action: none;"></div>
+      <div style="position: absolute; left: 160px; top: 306px; width: 100px; text-align: center; white-space: nowrap; font-family: 'Caveat Brush', cursive; font-size: 17px; color: #40301d; line-height: 1;">{{ outReadout }}</div>
+
+      <div style="position: absolute; left: 340px; top: 92px; width: 220px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 15px; letter-spacing: .14em; color: #6b5335; line-height: 1;">MIX</div>
+      <div id="mix" role="slider" aria-label="Mix" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ mixVal }}" data-value="{{ mixVal }}" onPointerDown="{{ mixDown }}" onWheel="{{ mixWheel }}" onDoubleClick="{{ mixReset }}" onMouseEnter="{{ tipMix }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 372px; top: 128px; width: 156px; height: 156px; border-radius: 50%; cursor: ns-resize; touch-action: none;"></div>
+      <div style="position: absolute; left: 340px; top: 300px; width: 220px; text-align: center; white-space: nowrap; font-family: 'Caveat Brush', cursive; font-size: 24px; color: #40301d; line-height: 1;">{{ mixReadout }}</div>
+
+      <sc-if value="{{ bypass }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; left: 0; top: 70px; width: 600px; height: 302px; background: rgba(242,220,182,.55); pointer-events: none; z-index: 8;"></div>
+      </sc-if>
+      <sc-if value="{{ tip }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; left: {{ tipX }}px; top: {{ tipY }}px; transform: {{ tipShift }}; width: 176px; box-sizing: border-box; padding: 5px 8px; background: #fdf3e2; border: 3px solid #2b1f14; font-family: 'Patrick Hand', cursive; font-size: 12px; line-height: 1.16; color: #2b1f14; pointer-events: none; z-index: 30; box-shadow: 4px 5px 0 rgba(43,31,20,.3);">{{ tip }}</div>
+      </sc-if>
+      <div style="position: absolute; left: 26px; bottom: 14px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #6b5335; line-height: 1;">PIZZA BAGEL PLUGINS</div>
+      <div style="position: absolute; right: 26px; bottom: 14px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #6b5335; line-height: 1;">v0.0.0.1.6</div>
+    </div>
+  </div>
+  </div>
+
+  <sc-if value="{{ chrome }}" hint-placeholder-val="{{ true }}">
+  <div style="width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 14px;">
+    <div style="height: 1px; background: #33281b;"></div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; font-size: 14px; line-height: 1.3; color: #9c8365;">
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #e8c58f;">PALETTE</div>
+        <div style="display: flex; gap: 5px; margin: 7px 0;">
+          <div style="flex: 1; height: 26px; background: #fdf3e0;"></div>
+          <div style="flex: 1; height: 26px; background: #f2dcb6;"></div>
+          <div style="flex: 1; height: 26px; background: #e8c58f;"></div>
+          <div style="flex: 1; height: 26px; background: #c98f4e;"></div>
+          <div style="flex: 1; height: 26px; background: #2b1f14;"></div>
+        </div>
+        <div style="color: #9c8365;">cream fdf3e0 · paper f2dcb6 · crust e8c58f · toast c98f4e · ink 2b1f14. Cream cheese is the pale fill, crust is the tan, poppy seeds are the ink dots.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #e8c58f;">MIX = THE SCHMEAR</div>
+        <div style="color: #9c8365;">The knob is a sliced bagel seen top-down. Mix spreads cream cheese clockwise from 6 o'clock all the way round to 6 o'clock again; bare crust keeps its poppy seeds. 0% is a dry bagel, 100% is fully covered. Cream cheese goes out to the rim at every setting, so only a sliver of seeded crust shows. The detune switch changes the topping: 3 plain, 6 scallion (green folded through the cheese), 9 piles on draped lox until it overtakes the bagel, a few scallion bits riding on top.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #e8c58f;">TYPE</div>
+        <div style="color: #9c8365;">Caveat Brush for the wordmark and every numeral, Patrick Hand SC for painted caps legends (15px, .14em), Patrick Hand for the one line of prose. Same pair as Capsaicin.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #e8c58f;">JUCE NOTES</div>
+        <div style="color: #9c8365;">All flat fills + 2.4px strokes, no gradients or bevels. Bagel = 2 wobbly ellipses + one pie Path for the schmear + seed ellipses in a loop. Switch cells are 3 rounded Paths; only the active cell's fill redraws.</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:680,&quot;height&quot;:600},&quot;scale&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[1,1.5,2],&quot;default&quot;:1,&quot;tsType&quot;:&quot;number&quot;},&quot;creamPanel&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Look&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;options&quot;:[&quot;#c98f4e&quot;,&quot;#e8c58f&quot;,&quot;#d98f7a&quot;,&quot;#a8b98a&quot;],&quot;default&quot;:&quot;#c98f4e&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Look&quot;}}">
+const INK = '#2b1f14';
+const STEPS = [
+  { v: 3, cents: 3 },
+  { v: 6, cents: 6 },
+  { v: 9, cents: 9 }
+];
+const SX = [36, 118, 200], SW = 74, SY = 118, SH = 74;
+const BX = 450, BY = 206, R_OUT = 78, R_IN = 27;
+
+// seeded topping scatter — fixed placement, so nothing dances between renders
+const scatter = (n, seed, make) => {
+  let a = ((seed + 3) * 2654435761) >>> 0;
+  const rnd = () => { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; };
+  return Array.from({ length: n }, (_, i) => make(rnd, i));
+};
+// scallion bits folded into the cheese: irregular chips + a few cut rings
+// jittered polar grid — rings carry cells in proportion to circumference, so
+// coverage is even by area, then each cell is nudged so nothing reads as a lattice
+const CHIVES = (() => {
+  let a = (8 * 2654435761) >>> 0;
+  const r = () => { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; };
+  const out = [], rings = [[0.14, 7], [0.42, 12], [0.7, 16], [0.92, 19]];
+  rings.forEach(([rr, n], k) => {
+    const off = r() * 360;
+    for (let i = 0; i < n; i++) {
+      out.push({
+        a: (off + (i + 0.5 + (r() - 0.5) * 0.7) * 360 / n) % 360,
+        r: Math.max(0.03, Math.min(0.97, rr + (r() - 0.5) * 0.2)),
+        rot: r() * 360, s: 1.7 + r() * 2.2,
+        ring: r() > 0.7, deep: r() > 0.5, sunk: r() > 0.65
+      });
+    }
+  });
+  return out;
+})();
+// big draped slices that overtake the bagel, like the reference plate
+// laid out on a jittered grid across the face (even in AREA, not in angle) with
+// each ribbon's long axis running tangentially, like slices draped off a knife
+const LOX = (() => {
+  let a = 23 * 2654435761 >>> 0;
+  const rnd = () => { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; };
+  const out = [], G = [-0.78, -0.39, 0, 0.39, 0.78];
+  G.forEach((gx, ix) => G.forEach((gy, iy) => {
+    const x = gx + (rnd() - 0.5) * 0.2, y = gy + (rnd() - 0.5) * 0.2;
+    const rad = Math.hypot(x, y);
+    if (rad > 0.98) return;
+    // slices crowd the hole but leave a ragged gap of it showing
+    if (rad < 0.36) return;
+    const tangent = Math.atan2(y, x) * 180 / Math.PI + 90 + (rnd() - 0.5) * 46;
+    out.push({
+      x, y, rad, rot: tangent,
+      ang: (((Math.atan2(-x, y) * 180 / Math.PI) % 360) + 360) % 360,
+      s: 17 + rnd() * 9, sx: 1.5 + rnd() * 0.8, sy: 0.5 + rnd() * 0.3
+    });
+  }));
+  // perimeter ring so the edges carry as much lox as the middle
+  for (let k = 0; k < 10; k++) {
+    const th = (k / 10) * Math.PI * 2 + 0.31;
+    const rad = 0.8 + (rnd() - 0.5) * 0.1;
+    const x = Math.cos(th) * rad, y = Math.sin(th) * rad;
+    out.push({
+      x, y, rad,
+      rot: th * 180 / Math.PI + 90 + (rnd() - 0.5) * 36,
+      ang: (((Math.atan2(-x, y) * 180 / Math.PI) % 360) + 360) % 360,
+      s: 16 + rnd() * 7, sx: 1.5 + rnd() * 0.7, sy: 0.5 + rnd() * 0.28
+    });
+  }
+  // a few extra slices on the right side
+  [[0.62, -0.58], [0.9, 0.12], [0.6, 0.62]].forEach(([x, y]) => {
+    const rad = Math.hypot(x, y);
+    out.push({
+      x, y, rad,
+      rot: Math.atan2(y, x) * 180 / Math.PI + 90 + (rnd() - 0.5) * 40,
+      ang: (((Math.atan2(-x, y) * 180 / Math.PI) % 360) + 360) % 360,
+      s: 16 + rnd() * 8, sx: 1.5 + rnd() * 0.7, sy: 0.5 + rnd() * 0.28
+    });
+  });
+  return out;
+})();
+
+const PRESETS = [
+  { name: 'Init', folder: 0, step: 9, mix: 1 },
+  { name: 'Just A Hair', folder: 0, step: 3, mix: 0.62 },
+  { name: 'Wide Spread', folder: 0, step: 6, mix: 0.85 },
+  { name: 'Full Schmear', folder: 0, step: 9, mix: 1 },
+  { name: 'Guitar Doubler', folder: 1, step: 6, mix: 0.7 },
+  { name: 'Vocal Sheen', folder: 1, step: 3, mix: 0.5 }
+];
+
+class Component extends DCLogic {
+  state = { step: 9, mix: 1, inp: 0, out: 0, bypass: false, preset: 0, presetOpen: false, folded: {}, pbHover: null, pbMenu: null, tips: false, tip: null, tipX: 0, tipY: 0, tipBelow: false, hist: [], user: [
+    { name: 'Lead wide', group: 'Mixes', step: 6, mix: .8, inp: 0, out: 0 },
+    { name: 'BGV spread', group: 'Mixes', step: 12, mix: 1, inp: 0, out: -1 },
+    { name: 'Subtle stack', step: 4, mix: .5, inp: 0, out: 0 },
+  ], folders: [], ab: 'A', abOther: null, abDiff: [] };
+  snap = (s = this.state) => ({ step: s.step, mix: s.mix, inp: s.inp, out: s.out });
+  commit = (patch) => this.setState(st => ({ ...(typeof patch === 'function' ? patch(st) : patch), hist: [...st.hist.slice(-39), this.snap(st)] }));
+  undo = () => this.setState(st => { const hh = st.hist; if (!hh.length) return null; return { ...hh[hh.length - 1], hist: hh.slice(0, -1) }; });
+  allPresets = () => [...PRESETS, ...this.state.user];
+  savePreset = () => { if (!this.pbAct) return; if (this.state.preset < PRESETS.length) this.pbAct.saveAs(); else this.pbAct.save(this.state.preset); };
+  saveAsPreset = () => this.pbAct && this.pbAct.saveAs();
+  delPreset = () => { if (this.pbAct && this.state.preset >= PRESETS.length) this.pbAct.del(this.state.preset); };
+  diffKeys = (a, b) => ['mix', 'inp', 'out'].filter(k => Math.abs(a[k] - b[k]) > 1e-6).concat(a.step !== b.step ? ['step'] : []);
+  setAB = (slot) => this.setState(st => {
+    if (st.ab === slot) return null;
+    const cur = this.snap(st), other = st.abOther || cur, diff = this.diffKeys(cur, other);
+    clearTimeout(this.abT); this.abT = setTimeout(() => this.setState({ abDiff: [] }), 1800);
+    return { ...other, ab: slot, abOther: cur, abDiff: diff, hist: [...st.hist.slice(-39), cur] };
+  });
+  wrapRef = React.createRef();
+  componentDidMount() {
+    import(new URL('preset-browser.js', document.baseURI).href).then(m => { m.installPB(this, { factory: () => PRESETS, snap: (st) => this.snap(st), commit: this.commit }); this.forceUpdate(); });
+    if (this.props.fit && this.wrapRef.current && window.ResizeObserver) {
+      this.ro = new ResizeObserver(([e]) => { const w = e.contentRect.width; if (w > 0) this.setState({ fitScale: Math.min(1, w / 600) }); });
+      this.ro.observe(this.wrapRef.current);
+    }
+    this.onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); this.undo(); return; }
+      if (e.key === 'Escape') { this.setState(st => st.pbMenu ? { pbMenu: null } : { presetOpen: false }); return; }
+      const d = e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' ? -1 : 0;
+      if (d && this.state.presetOpen) { e.preventDefault(); const n = this.allPresets().length; this.applyPreset((this.state.preset + d + n) % n); this.setState({ presetOpen: true }); }
+    };
+    window.addEventListener('keydown', this.onKey);
+  }
+  // engine seam: controlled bypass in, parameter changes out
+  paramOf = { detune: ['step', v => v], mix: ['mix', v => Math.round(v * 100)], input: ['inp', v => +v.toFixed(1)], output: ['out', v => +v.toFixed(1)], bypass: ['bypass', v => v] };
+  pumpParams() {
+    const f = this.props.onParam; if (!f) return;
+    const now = {};
+    Object.entries(this.paramOf).forEach(([id, [k, fn]]) => { now[id] = fn(this.state[k]); });
+    const prev = this._lastParams;
+    this._lastParams = now;
+    if (!prev) return;
+    const moved = Object.keys(now).filter(id => now[id] !== prev[id]);
+    if (moved.length) queueMicrotask(() => moved.forEach(id => f({ id, value: now[id] })));
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this.onKey); clearTimeout(this.tipT); clearTimeout(this.abT); }
+  showTip = (text, force) => (e) => {
+    if (!this.state.tips && !force) return;
+    const el = e.currentTarget, r = el.getBoundingClientRect();
+    let n = el;
+    while (n && !(n.style && n.style.width === '600px')) n = n.parentElement;
+    const f = n ? n.getBoundingClientRect() : { left: 0, top: 0, width: 600 };
+    const sc = f.width / 600;
+    const cx = (r.left - f.left + r.width / 2) / sc, top = (r.top - f.top) / sc;
+    const below = top < 110;
+    clearTimeout(this.tipT);
+    this.tipT = setTimeout(() => this.setState({ tip: text, tipX: Math.max(112, Math.min(488, cx)), tipY: below ? top + r.height / sc + 8 : top - 8, tipBelow: below }), 400);
+  };
+  hideTip = () => { clearTimeout(this.tipT); this.setState(st => (st.tip ? { tip: null } : null)); };
+
+  applyPreset = (i) => {
+    const p = this.allPresets()[i]; if (!p) return;
+    this.commit({ preset: i, presetOpen: false, step: p.step, mix: p.mix, inp: p.inp ?? 0, out: p.out ?? 0 });
+  };
+  presetStep = (d) => () => { const n = this.allPresets().length; this.applyPreset((this.state.preset + d + n) % n); };
+  presetToggle = () => this.setState(s => ({ presetOpen: !s.presetOpen, pbMenu: null }));
+
+  pt(deg, r, cx, cy) { const a = deg * Math.PI / 180; return [cx + Math.sin(a) * r, cy - Math.cos(a) * r]; }
+
+  rnd(seed) { let a = ((seed + 7) * 2654435761) >>> 0; return () => { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; }; }
+
+  smooth(pts, closed) {
+    const n = pts.length, at = i => pts[closed ? (i + n) % n : Math.max(0, Math.min(n - 1, i))];
+    let d = 'M ' + pts[0][0].toFixed(2) + ' ' + pts[0][1].toFixed(2);
+    const last = closed ? n : n - 1;
+    for (let i = 0; i < last; i++) {
+      const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+      const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      d += ` C ${c1[0].toFixed(2)} ${c1[1].toFixed(2)}, ${c2[0].toFixed(2)} ${c2[1].toFixed(2)}, ${p2[0].toFixed(2)} ${p2[1].toFixed(2)}`;
+    }
+    return closed ? d + ' Z' : d;
+  }
+
+  blob(x, y, r, seed, wob) {
+    const rr = this.rnd(seed), n = 13, pts = [];
+    for (let i = 0; i < n; i++) pts.push(this.pt(i * 360 / n, r + (rr() - 0.5) * (wob ?? r * 0.045), x, y));
+    return this.smooth(pts, true);
+  }
+
+  dot(x, y, r, seed) {
+    const rr = this.rnd(seed), n = 8, pts = [];
+    for (let i = 0; i < n; i++) pts.push(this.pt(i * 360 / n, r + (rr() - 0.5) * r * 0.3, x, y));
+    return this.smooth(pts, true);
+  }
+
+  arcPath(cx, cy, r, a1, a2, seed, amp) {
+    const rr = this.rnd(seed ?? r), span = Math.abs(a2 - a1);
+    const n = Math.max(3, Math.round(span / 12)), pts = [];
+    for (let i = 0; i <= n; i++) {
+      const t = a1 + (a2 - a1) * i / n;
+      pts.push(this.pt(t, r + (rr() - 0.5) * (amp ?? 1.4), cx, cy));
+    }
+    return this.smooth(pts, false);
+  }
+
+  // wobbly annulus sector: cream cheese spread between the hole and the crust
+  ring(cx, cy, r1, r2, a1, a2, seed) {
+    const rr = this.rnd(seed), pts = [];
+    const n = Math.max(4, Math.round(Math.abs(a2 - a1) / 11));
+    for (let i = 0; i <= n; i++) {
+      const t = a1 + (a2 - a1) * i / n;
+      pts.push(this.pt(t, r2 + (rr() - 0.5) * 2.6, cx, cy));
+    }
+    for (let i = n; i >= 0; i--) {
+      const t = a1 + (a2 - a1) * i / n;
+      pts.push(this.pt(t, r1 + (rr() - 0.5) * 2.2, cx, cy));
+    }
+    return this.smooth(pts, true) ;
+  }
+
+  rrect(x, y, w, h, seed, amp) {
+    const rr = this.rnd(seed), a = amp ?? 1, pts = [], step = 15;
+    const edge = (x1, y1, x2, y2, nx, ny) => {
+      const len = Math.hypot(x2 - x1, y2 - y1), n = Math.max(2, Math.round(len / step));
+      for (let i = 0; i < n; i++) {
+        const t = i / n, o = (rr() - 0.5) * 2 * a;
+        pts.push([x1 + (x2 - x1) * t + nx * o, y1 + (y2 - y1) * t + ny * o]);
+      }
+    };
+    edge(x, y, x + w, y, 0, -1);
+    edge(x + w, y, x + w, y + h, 1, 0);
+    edge(x + w, y + h, x, y + h, 0, 1);
+    edge(x, y + h, x, y, -1, 0);
+    return this.smooth(pts, true);
+  }
+
+  plate() {
+    if (this._plate) return this._plate;
+    const P = [], add = (d, w, f, s, o) => P.push({ d, w: w ?? 2.4, f: f || 'none', s: s || INK, o: o ?? 1 });
+
+    // three detune cells
+    SX.forEach((x, i) => add(this.rrect(x, SY, SW, SH, 200 + i * 13, 1), 2.4, '#fdf3e0'));
+
+    // bagel: crust body, then the toasted rim line
+    add(this.blob(BX, BY, R_OUT, 41, 3.4), 3, '#e8c58f');
+    add(this.blob(BX, BY, R_OUT - 7, 47, 2.6), 1.6, 'none', '#c98f4e', 0.9);
+
+    // poppy seeds on the crust, under the schmear
+    const rr = this.rnd(9);
+    for (let i = 0; i < 14; i++) {
+      const a = rr() * 360, r = R_OUT - 6 + rr() * 5;
+      const p = this.pt(a, r, BX, BY);
+      add(this.dot(p[0], p[1], 1.5 + rr() * 0.9, 300 + i), 0, INK, INK, 0.72);
+    }
+
+    // INPUT / OUTPUT trims: small plain bagel-crust knobs under the switch
+    [100, 210].forEach((kx, k) => {
+      add(this.blob(kx, 264, 22, 81 + k, 1.8), 2.6, '#e8c58f');
+      add(this.blob(kx, 264, 15, 83 + k, 1.4), 1.4, 'none', '#c98f4e', 0.9);
+      for (let j = 0; j <= 8; j++) { const p = this.pt(-135 + j * 33.75, 30, kx, 264); add(this.dot(p[0], p[1], j === 4 ? 2.2 : 1.4, 420 + k * 10 + j), 0, INK, INK, j === 4 ? 1 : 0.6); }
+    });
+
+    // scale dots around the bagel
+    for (let j = 0; j < 12; j++) {
+      const p = this.pt(180 + j * 30, R_OUT + 13, BX, BY);
+      add(this.dot(p[0], p[1], j % 3 === 0 ? 2.4 : 1.6, 400 + j), 0, INK, INK, j % 3 === 0 ? 1 : 0.62);
+    }
+
+    this._plate = P;
+    return P;
+  }
+
+  drag = (key, min, max, span) => (e) => {
+    e.preventDefault();
+    const y0 = e.clientY, v0 = this.state[key];
+    this.commit({});
+    const move = ev => this.setState({ [key]: Math.max(min, Math.min(max, v0 + (y0 - ev.clientY) / (span * (ev.shiftKey || ev.metaKey || ev.ctrlKey ? 10 : 1)) * (max - min))) });
+    const up = () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  wheel = (key, min, max) => (e) => {
+    const now = Date.now(); if (!this.lastWheel || now - this.lastWheel > 1200) this.commit({}); this.lastWheel = now;
+    const d = (e.deltaY < 0 ? 1 : -1) * (max - min) / (e.shiftKey || e.metaKey || e.ctrlKey ? 400 : 60);
+    this.setState(s => ({ [key]: Math.max(min, Math.min(max, s[key] + d)) }));
+  };
+
+  renderVals() {
+    const s = this.state;
+    this.pumpParams();
+    if (this.props.bypass !== undefined && this.props.bypass !== this._pBypass) {
+      this._pBypass = this.props.bypass;
+      if (this.props.bypass !== s.bypass) queueMicrotask(() => this.setState({ bypass: this.props.bypass }));
+    }
+    const ACC = this.props.accent ?? '#c98f4e';
+    const cream = this.props.creamPanel ?? false;
+    const live = [];
+    const deg = 180 + s.mix * 360;
+    // the schmear covers the same footprint at every setting — more detune just
+    // piles more cream cheese ON TOP: 3 = one layer, 6 = two, 9 = a real heap
+    // Same schmear at every setting; the detune switch changes the TOPPING.
+    // 3 = plain, 6 = chives, 9 = chives + lox.
+    // schmeared right out to the rim — only a sliver of crust shows
+    const r1 = R_IN - 1, r2 = R_OUT - 8;
+    const spanDeg = s.mix * 360;
+
+    if (s.mix > 0.008) {
+      const full = s.mix > 0.995;
+      const op = s.bypass ? 0.45 : 1;
+
+      live.push({
+        t: '', d: full ? this.blob(BX, BY, r2, 55, 3) : this.ring(BX, BY, r1, r2, 180, deg, 55),
+        w: 2.2, f: '#fdf6e8', s: INK, o: op
+      });
+      live.push({
+        t: '', d: this.arcPath(BX, BY, (r1 + r2) / 2, 180, full ? 538 : deg, 57, 3),
+        w: 1.4, f: 'none', s: '#ecdcbc', o: 0.85
+      });
+      // hole punched here, so lox can drape across it
+      live.push({ t: '', d: this.blob(BX, BY, R_IN, 61, 2.2), w: 2.8, f: cream ? '#f6e7c8' : '#f2dcb6', s: INK, o: 1 });
+
+      const onSchmear = (a) => a <= spanDeg;
+
+      // 6 and 9: scallion flecks suspended IN the schmear
+      if (s.step >= 6) {
+        CHIVES.forEach((C, i) => {
+          if (!onSchmear(C.a)) return;
+          const p = this.pt(180 + C.a, r1 + 5 + C.r * (r2 - r1 - 10), BX, BY);
+          const t = `translate(${p[0].toFixed(1)} ${p[1].toFixed(1)}) rotate(${C.rot.toFixed(1)}) scale(1 ${(0.5 + (i % 4) * 0.14).toFixed(2)})`;
+          const green = C.deep ? '#6d8a46' : '#9cbd6e';
+          const o = op * (C.sunk ? 0.62 : 1);
+          if (C.ring) {
+            live.push({ t, d: this.arcPath(0, 0, C.s * 1.5, -120, 120, 700 + i, 0.6), w: 1.9, f: 'none', s: green, o });
+          } else {
+            live.push({ t, d: this.blob(0, 0, C.s, 700 + i, C.s * 0.75), w: 0, f: green, s: 'none', o });
+          }
+        });
+      }
+
+      // 9: draped lox, dill fronds, onion rings on top
+      if (s.step >= 9) {
+        const FACE = r2 - 4;
+        LOX.forEach((L, i) => {
+          if (!onSchmear(L.ang)) return;
+          const t = `translate(${(BX + L.x * FACE).toFixed(1)} ${(BY + L.y * FACE).toFixed(1)}) rotate(${L.rot.toFixed(1)}) scale(${L.sx.toFixed(2)} ${L.sy.toFixed(2)})`;
+          live.push({
+            t, d: this.blob(0, 0, L.s, 900 + i, L.s * 0.16),
+            w: 1.6, f: '#f4a894', s: '#e08e79', o: op
+          });
+          live.push({ t, d: this.arcPath(0, -L.s * 0.34, L.s * 0.62, -78, 78, 940 + i, 1.8), w: 1.7, f: 'none', s: '#fbd3c6', o: op });
+          live.push({ t, d: this.arcPath(0, L.s * 0.26, L.s * 0.5, -78, 78, 960 + i, 1.8), w: 1.5, f: 'none', s: '#fbd3c6', o: op * 0.9 });
+        });
+      }
+    }
+
+    if (s.mix <= 0.008) live.push({ t: '', d: this.blob(BX, BY, R_IN, 61, 2.2), w: 2.8, f: cream ? '#f6e7c8' : '#f2dcb6', s: INK, o: 1 });
+
+    // INPUT / OUTPUT trims: centred arc + pointer
+    [['inp', 100], ['out', 210]].forEach(([key, kx], k) => {
+      const oa = (s[key] / 12) * 135;
+      if (Math.abs(oa) > 1.5) live.push({ t: '', d: this.arcPath(kx, 264, 25, Math.min(0, oa), Math.max(0, oa), 85 + k, 1), w: 4, f: 'none', s: ACC, o: s.bypass ? .45 : 1 });
+      const p1 = this.pt(oa, 6, kx, 264), p2 = this.pt(oa, 19, kx, 264);
+      live.push({ t: '', d: `M ${p1[0].toFixed(2)} ${p1[1].toFixed(2)} L ${p2[0].toFixed(2)} ${p2[1].toFixed(2)}`, w: 3, f: 'none', s: INK, o: 1 });
+    });
+    if (s.abDiff.includes('mix')) live.push({ t: '', d: this.blob(BX, BY, R_OUT + 22, 86, 2), w: 3, f: 'none', s: '#a8712c', o: .9 });
+    if (s.abDiff.includes('out')) live.push({ t: '', d: this.blob(210, 264, 37, 87, 2), w: 3, f: 'none', s: '#a8712c', o: .9 });
+    if (s.abDiff.includes('inp')) live.push({ t: '', d: this.blob(100, 264, 37, 89, 2), w: 3, f: 'none', s: '#a8712c', o: .9 });
+    if (s.abDiff.includes('step')) live.push({ t: '', d: this.rrect(SX[0] - 6, SY - 6, SX[2] + SW - SX[0] + 12, SH + 12, 88, 1), w: 3, f: 'none', s: '#a8712c', o: .9 });
+
+    // knife mark at the current mix position
+    const a = this.pt(deg, R_IN + 4, BX, BY), b = this.pt(deg, R_OUT + 2, BX, BY);
+    live.push({ t: '', d: `M ${a[0].toFixed(2)} ${a[1].toFixed(2)} L ${b[0].toFixed(2)} ${b[1].toFixed(2)}`, w: 3.4, f: 'none', s: INK, o: 1 });
+    live.push({ t: '', d: this.dot(b[0], b[1], 4.4, 71), w: 2.4, f: '#fdf6e8', s: INK, o: 1 });
+
+    const steps = STEPS.map((st, i) => {
+      const on = st.v === s.step;
+      if (on) {
+        live.push({ t: '', d: this.rrect(SX[i], SY, SW, SH, 200 + i * 13, 1), w: 3, f: ACC, s: INK, o: 1 });
+        // two little detune voices: one bowing above the numeral, one below
+        const cx = SX[i] + SW / 2;
+        live.push({ t: '', d: this.arcPath(cx, SY + 40, 26, -34, 34, 250 + i * 5, 1), w: 2.2, f: 'none', s: INK, o: 0.5 });
+        live.push({ t: '', d: this.arcPath(cx, SY + 34, 26, 146, 214, 251 + i * 5, 1), w: 2.2, f: 'none', s: INK, o: 0.5 });
+      }
+      return {
+        label: String(st.v), left: SX[i], onStr: on ? 'true' : 'false',
+        color: on ? INK : '#8a7150',
+        onClick: () => this.commit({ step: st.v }),
+        onEnter: this.showTip('DETUNE ±' + st.v + ' cents — ' + (st.v === 3 ? 'plain: a hair of width, safe on anything.' : st.v === 6 ? 'scallion: a clear double, still tight.' : 'the works: big, obvious spread.'))
+      };
+    });
+
+    const ALL = this.allPresets(), curP = ALL[s.preset] || ALL[0];
+    const modified = JSON.stringify(this.snap(s)) !== JSON.stringify({ step: curP.step, mix: curP.mix, inp: curP.inp ?? 0, out: curP.out ?? 0 });
+    const NAMES = { mix: 'MIX', inp: 'INPUT', out: 'OUTPUT', step: 'DETUNE' };
+    const otherSlot = s.ab === 'A' ? 'B' : 'A', abDiffNow = s.abOther ? this.diffKeys(this.snap(s), s.abOther) : [];
+    const abText = !s.abOther ? 'A / B — two full states. Click ' + otherSlot + ' to start a second one from here.' : abDiffNow.length ? otherSlot + ' differs: ' + abDiffNow.map(k => NAMES[k]).join(', ') + '.' : otherSlot + ' is identical to ' + s.ab + '.';
+    const pItem = (p, i) => ({ name: p.name, folder: p.folder, color: i === s.preset ? '#a8712c' : '#40301d', onClick: () => this.applyPreset(i) });
+    const embed = !!this.props.embed;
+    const scale = this.props.fit ? (s.fitScale ?? Math.min(1, (this.wrapRef.current?.clientWidth || 600) / 600)) : (this.props.scale ?? 1);
+    return {
+      scale, frameW: 600 * scale, frameH: 380 * scale, wrapRef: this.wrapRef,
+      chrome: !embed, wrapBg: embed ? 'transparent' : '#17120c', wrapPad: embed ? '0' : '52px 24px 64px', wrapMinH: embed ? '0' : '100vh',
+      plate: this.plate(),
+      live, steps, step: s.step, mixVal: Math.round(s.mix * 100), inVal: +s.inp.toFixed(1), outVal: +s.out.toFixed(1), bypassStr: s.bypass ? 'true' : 'false',
+      paperWash: cream
+        ? 'linear-gradient(158deg, #fdf6e8 0%, #f8ecd6 56%, #f2e2c6 100%)'
+        : 'linear-gradient(158deg, #fbeed6 0%, #f2dcb6 56%, #e9cfa4 100%)',
+      bandTone: cream ? '#f2dcb6' : '#e8c58f',
+      accentInk: '#8a5a23',
+      mixReadout: s.bypass ? 'bypassed' : Math.round(s.mix * 100) + '%',
+      mixReset: () => this.commit({ mix: 1 }),
+      mixDown: this.drag('mix', 0, 1, 200), mixWheel: this.wheel('mix', 0, 1),
+      outReadout: (s.out >= 0 ? '+' : '−') + Math.abs(s.out).toFixed(1) + ' dB',
+      inReadout: (s.inp >= 0 ? '+' : '−') + Math.abs(s.inp).toFixed(1) + ' dB',
+      inReset: () => this.commit({ inp: 0 }), inDown: this.drag('inp', -12, 12, 160), inWheel: this.wheel('inp', -12, 12),
+      tipIn: this.showTip('INPUT ±12 dB — trim going in. Double-click resets to 0.'),
+      outReset: () => this.commit({ out: 0 }),
+      outDown: this.drag('out', -12, 12, 160), outWheel: this.wheel('out', -12, 12),
+      tipMix: this.showTip('MIX 0–100% — how much bagel gets schmeared. Drag or scroll · ⌘/shift fine · double-click resets to 100.'),
+      tipOut2: this.showTip('OUTPUT ±12 dB — two extra voices add level; trim it back here. Double-click resets to 0.'),
+      tipBypass: this.showTip('BYPASS — the whole box out of circuit.'),
+      tipPreset: this.showTip(modified ? 'PRESET — • means you\'ve moved off the saved state. ‹ › step, click to browse, ↑↓ while open.' : 'PRESET — ‹ › step, click to browse, ↑↓ while open.'),
+      undo: this.undo, undoOp: s.hist.length ? 1 : .4, tipUndo: this.showTip(s.hist.length ? 'UNDO the last change (⌘/Ctrl-Z).' : 'Nothing to undo yet.'),
+      savePreset: embed ? null : this.savePreset, saveAsPreset: this.saveAsPreset, delPreset: this.delPreset,
+      tipSave: this.showTip(s.preset >= PRESETS.length ? 'SAVE — overwrite this user preset.' : 'SAVE — factory presets stay put; this stores a new user preset.'),
+      tipSaveAs: this.showTip('SAVE AS — store the current state as a new user preset.'),
+      tipDel: this.showTip(s.preset >= PRESETS.length ? 'DELETE this user preset.' : 'DELETE — only user presets can be deleted.'),
+      setA: () => this.setAB('A'), setB: () => this.setAB('B'), tipAB: this.showTip(abText),
+      aBg: s.ab === 'A' ? INK : 'transparent', aFg: s.ab === 'A' ? '#fdf3e2' : INK, bBg: s.ab === 'B' ? INK : 'transparent', bFg: s.ab === 'B' ? '#fdf3e2' : INK,
+      tipsBg: s.tips ? INK : 'transparent', tipsColor: s.tips ? '#fdf3e2' : INK,
+      tipTips: this.showTip(s.tips ? 'Tooltips are on. Click to switch these little notes off.' : 'Tooltips are off. Click to switch them on; this one always shows.', true),
+      toggleTips: () => this.setState(st => ({ tips: !st.tips, tip: st.tip ? (st.tips ? 'Tooltips are off. Click to switch them on; this one always shows.' : 'Tooltips are on. Click to switch these little notes off.') : null })),
+      tip: s.tip, tipX: s.tipX, tipY: s.tipY,
+      tipShift: s.tipBelow ? 'translate(-50%, 0) rotate(-.6deg)' : 'translate(-50%, -100%) rotate(-.6deg)',
+      tipOut: this.hideTip, bypass: s.bypass,
+      bypassPlate: s.bypass ? ACC : 'transparent',
+      bypassLamp: s.bypass ? '#8a5a23' : 'transparent',
+      presetName: (modified ? '• ' : '') + curP.name,
+      presetOpen: !embed && s.presetOpen,
+      presetPrev: embed ? null : this.presetStep(-1),
+      presetNext: embed ? null : this.presetStep(1),
+      presetToggle: embed ? null : this.presetToggle,
+      delOp: s.preset >= PRESETS.length ? 1 : .4, delCursor: s.preset >= PRESETS.length ? 'pointer' : 'default', delHover: s.preset >= PRESETS.length ? '#c98f4e' : '#f2e2c6',
+      ...(this.pbVals ? this.pbVals({ ink: '#40301d', loaded: '#a8712c', muted: '#8f7550', section: '#a8712c', hoverBg: '#f2e2c6', font: "'Patrick Hand', cursive", fontSC: "'Patrick Hand SC', cursive", size: 15, secSize: 11, menuSize: 13, padX: 12, indent: 14, rowPad: '2px', secPad: '4px' }) : {}),
+      toggleBypass: () => this.setState(st => ({ bypass: !st.bypass }))
+    };
+  }
+}
+</script>
+</body>
+</html>
