@@ -36,7 +36,7 @@ window.PbDemo = {
       const module = await WebAssembly.compile(bytes);
       node = new AudioWorkletNode(ctx, 'pb-engine', { processorOptions: { module }, outputChannelCount: [2] });
       node.connect(ctx.destination);
-      if (cfg.meters) { window[cfg.meters] = { comp: 0, deess: 0, gate: 0 }; node.port.onmessage = (e) => { const m = e.data && e.data.meters; if (m) window[cfg.meters] = { comp: m[0], deess: m[1], gate: m[2] }; }; }
+      if (cfg.meters) { window[cfg.meters] = { comp: 0, deess: 0, gate: 0, raw: [0, 0, 0] }; node.port.onmessage = (e) => { const m = e.data && e.data.meters; if (m) window[cfg.meters] = { comp: m[0], deess: m[1], gate: m[2], raw: m }; }; }
       const cur = el.tryIt.getParams();
       for (const id in cur) fromUI(id, cur[id]);
       node.port.postMessage(msg);
@@ -69,7 +69,7 @@ window.PbDemo = {
         el.tryIt.fail(FAIL);
       }
     }
-    function stop() { token = {}; stopSrc(); playing = false; if (cfg.meters) window[cfg.meters] = { comp: 0, deess: 0, gate: 0 }; }
+    function stop() { token = {}; stopSrc(); playing = false; if (cfg.meters) window[cfg.meters] = { comp: 0, deess: 0, gate: 0, raw: [0, 0, 0] }; }
 
     function reportHeight() {
       if (window.parent === window || !el) return;

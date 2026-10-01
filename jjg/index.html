@@ -62,8 +62,16 @@
 
         <div style="display: flex; flex-direction: column; gap: 6px;">
           <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #6e675c;">
-            <div>CLIP · 20 SECOND LOOPS</div>
+            <div>CLIP · 22 SOURCES</div>
             <div style="color: #2a2622;">NOW: {{ clipLabel }}</div>
+          </div>
+          <div role="tablist" aria-label="Clip groups" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: 6px;">
+            <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
+              <button type="button" role="tab" aria-selected="{{ g.onStr }}" data-group="{{ g.id }}" onClick="{{ g.pick }}" style="min-width: 0; min-height: 44px; padding: 6px 10px; justify-content: center; border: 2.5px solid #2a2622; background: {{ g.bg }}; color: {{ g.fg }}; font-family: 'Patrick Hand SC', cursive; font-size: {{ tabSize }}; letter-spacing: .1em; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 7px;" style-hover="background: {{ g.hoverBg }};">
+                <span>{{ g.label }}</span>
+                <sc-if value="{{ g.holdsClip }}" hint-placeholder-val="{{ false }}"><span style="width: 7px; height: 7px; border-radius: 50%; background: #e0785c;"></span></sc-if>
+              </button>
+            </sc-for>
           </div>
           <div role="radiogroup" aria-label="Clip" style="display: grid; grid-template-columns: {{ clipCols }}; gap: 6px;">
             <sc-for list="{{ clips }}" as="c" hint-placeholder-count="3">
@@ -97,7 +105,7 @@
 
         <div style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.4; color: #4a443d; text-wrap: pretty;">
           <svg width="20" height="20" viewBox="0 0 20 20" style="flex: none; margin-top: 1px;"><path d="M 2.5 14 L 6 8 L 10 12.5 L 13.5 5 L 17.5 14" fill="none" stroke="#2a2622" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          <div>The panel opens on the settings Justin actually prints vocals with. Flip WITHOUT / WITH to hear the whole chain, then go exploring: every plate swaps a circuit. One thing you will not hear here: Wow / Flutter. The demo runs in LOW LAT mode, which turns the wow line off, exactly as it does in the plugin.</div>
+          <div>The panel opens on the settings Justin actually prints vocals with. It's built for vocals, but try the DRUMS, BASS, GUITARS and KEYS tabs too: people are running everything through it. Flip WITHOUT / WITH to hear the whole chain, then go exploring: every plate swaps a circuit. One thing you will not hear here: Wow / Flutter. The demo runs in LOW LAT mode, which turns the wow line off, exactly as it does in the plugin.</div>
         </div>
       </div>
     </sc-if>
@@ -113,23 +121,43 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;embed&quot;:{&quot;editor&quot;:null,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;simulate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Engine&quot;},&quot;previewState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;idle&quot;,&quot;loading&quot;,&quot;playing&quot;,&quot;ready&quot;,&quot;unsupported&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preview&quot;}}">
+const GROUPS = [
+  { id: 'vocals', label: 'VOCALS', short: 'VOX' },
+  { id: 'drums', label: 'DRUMS', short: 'DRUMS' },
+  { id: 'bass', label: 'BASS', short: 'BASS' },
+  { id: 'guitars', label: 'GUITARS', short: 'GTRS' },
+  { id: 'keys', label: 'KEYS', short: 'KEYS' }
+];
 const CLIPS = [
-  { id: 'female', label: 'FEMALE VOCAL 1', short: 'F VOCAL 1' },
-  { id: 'female2', label: 'FEMALE VOCAL 2', short: 'F VOCAL 2' },
-  { id: 'female3', label: 'FEMALE VOCAL 3', short: 'F VOCAL 3' },
-  { id: 'male', label: 'MALE VOCAL 1', short: 'M VOCAL 1' },
-  { id: 'male2', label: 'MALE VOCAL 2', short: 'M VOCAL 2' },
-  { id: 'male3', label: 'MALE VOCAL 3', short: 'M VOCAL 3' },
-  { id: 'male4', label: 'MALE VOCAL 4', short: 'M VOCAL 4' },
-  { id: 'male5', label: 'MALE VOCAL 5', short: 'M VOCAL 5' },
-  { id: 'backing', label: 'BACKING VOCALS', short: 'BACKING' },
-  { id: 'gang', label: 'GANG VOCAL', short: 'GANG' }
+  { id: 'female', label: 'FEMALE VOCAL 1', short: 'F VOCAL 1', group: 'vocals' },
+  { id: 'female2', label: 'FEMALE VOCAL 2', short: 'F VOCAL 2', group: 'vocals' },
+  { id: 'female3', label: 'FEMALE VOCAL 3', short: 'F VOCAL 3', group: 'vocals' },
+  { id: 'male', label: 'MALE VOCAL 1', short: 'M VOCAL 1', group: 'vocals' },
+  { id: 'male2', label: 'MALE VOCAL 2', short: 'M VOCAL 2', group: 'vocals' },
+  { id: 'male3', label: 'MALE VOCAL 3', short: 'M VOCAL 3', group: 'vocals' },
+  { id: 'male4', label: 'MALE VOCAL 4', short: 'M VOCAL 4', group: 'vocals' },
+  { id: 'male5', label: 'MALE VOCAL 5', short: 'M VOCAL 5', group: 'vocals' },
+  { id: 'backing', label: 'BACKING VOCALS', short: 'BACKING', group: 'vocals' },
+  { id: 'gang', label: 'GANG VOCAL', short: 'GANG', group: 'vocals' },
+  { id: 'drumkit', label: 'DRUM KIT', short: 'DRUM KIT', group: 'drums' },
+  { id: 'edrums1', label: 'ELECTRONIC DRUMS 1', short: 'E DRUMS 1', group: 'drums' },
+  { id: 'edrums2', label: 'ELECTRONIC DRUMS 2', short: 'E DRUMS 2', group: 'drums' },
+  { id: 'bass', label: 'BASS GUITAR', short: 'BASS GTR', group: 'bass' },
+  { id: 'synthbass', label: 'SYNTH BASS', short: 'SYN BASS', group: 'bass' },
+  { id: '808', label: '808', short: '808', group: 'bass' },
+  { id: 'acoustic', label: 'ACOUSTIC GUITAR', short: 'ACOUSTIC', group: 'guitars' },
+  { id: 'electric', label: 'ELECTRIC GUITAR', short: 'ELECTRIC', group: 'guitars' },
+  { id: 'electric2', label: 'ELECTRIC GUITAR 2', short: 'ELECTRIC 2', group: 'guitars' },
+  { id: 'rubber', label: 'RUBBER BRIDGE', short: 'RUBBER', group: 'guitars' },
+  { id: 'pad', label: 'SYNTH PAD', short: 'SYN PAD', group: 'keys' },
+  { id: 'mellotron', label: 'MELLOTRON FLUTES', short: 'MELLOTRON', group: 'keys' }
 ];
 const INK = '#2a2622', PAPER = '#fbf7ee', ACC = '#e0785c', TOAST = '#ecd3ae';
 const DEFAULT_FAIL = 'It needs WebAssembly and an AudioWorklet, which means a current Chrome, Firefox, Edge or Safari. Some in-app browsers (Instagram, Facebook) block them: open this page in your regular browser.';
 
 class Component extends DCLogic {
-  state = { status: 'idle', clip: 'female', bypass: false, failMsg: DEFAULT_FAIL };
+  state = { status: 'idle', clip: 'female', group: 'vocals', bypass: false, failMsg: DEFAULT_FAIL };
+  pickGroup = (group) => () => this.setState({ group });
   params = {};
   root = React.createRef();
   clipOf(id) { return CLIPS.find(c => c.id === id) || CLIPS[0]; }
@@ -205,7 +233,9 @@ class Component extends DCLogic {
       swipe: (s.w ?? 900) < 640, rackMin: (s.w ?? 900) < 640 ? '860px' : 'auto',
       statusLine: unsupported ? 'NO AUDIO IN THIS BROWSER' : idle ? 'NOT STARTED' : loading ? 'LOADING' : playing ? 'PLAYING · ' + cur.label : 'STOPPED',
       clipCols: 'repeat(' + (s.cols ?? 6) + ', minmax(0, 1fr))', clipSize: tiny ? '14px' : '15px',
-      clips: CLIPS.map(c => {
+      groups: GROUPS.map(g => { const on = g.id === (s.group || 'vocals'); return { id: g.id, label: tiny ? g.short : g.label, onStr: on ? 'true' : 'false', pick: this.pickGroup(g.id), holdsClip: g.id === cur.group && !on, bg: on ? INK : PAPER, fg: on ? PAPER : INK, hoverBg: on ? INK : TOAST }; }),
+      tabSize: tiny ? '13px' : '14px',
+      clips: CLIPS.filter(c => c.group === (s.group || 'vocals')).map(c => {
         const on = c.id === s.clip;
         return {
           id: c.id, label: tiny ? c.short : c.label,
