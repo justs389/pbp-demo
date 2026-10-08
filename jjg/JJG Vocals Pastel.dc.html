@@ -27,7 +27,7 @@
   </sc-if>
 
   <div style="position: relative; width: {{ frameW }}px; height: {{ frameH }}px;">
-  <div style="position: absolute; left: 0; top: 0; transform: scale({{ scale }}); transform-origin: top left;">
+  <div style="position: absolute; left: 0; top: 0; zoom: {{ scale }};">
     <div style="position: relative; width: 1200px; height: 710px; overflow: hidden; background: #ece5d8; box-shadow: 0 24px 50px -14px rgba(0,0,0,.78);">
 
       <div style="position: absolute; inset: 0; background: {{ chBg }};"></div>
@@ -138,7 +138,7 @@
     <div style="height: 1px; background: #332d28;"></div>
     <sc-if value="{{ sheetOn }}" hint-placeholder-val="{{ true }}">
   <div style="position: relative; width: {{ sheetW }}px; height: {{ sheetH }}px;">
-  <div style="position: absolute; left: 0; top: 0; transform: scale({{ scale }}); transform-origin: top left;">
+  <div style="position: absolute; left: 0; top: 0; zoom: {{ scale }};">
     <div style="position: relative; width: 1200px; height: 930px; overflow: hidden; background: #f6f0e4; box-shadow: 0 24px 50px -14px rgba(0,0,0,.78);">
       <svg width="1200" height="930" viewBox="0 0 1200 930" style="position: absolute; inset: 0;">
         <g stroke-linecap="round" stroke-linejoin="round">
