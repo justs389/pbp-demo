@@ -46,17 +46,26 @@
 
       <div style="position: absolute; left: 24px; top: 6px; display: flex; align-items: baseline; gap: 12px; white-space: nowrap; width: 400px;">
         <svg width="170" height="50" viewBox="0 0 170 50" style="display: block; overflow: visible;"><text x="0" y="40" font-family="Caveat Brush" font-size="44" fill="{{ chInk }}">JJG Vocals</text></svg>
-        <div style="white-space: nowrap; font-size: 16px; color: {{ chSub }}; line-height: 1.3;">channel strip</div>
+        <div style="position: relative; top: -10px; white-space: nowrap; font-size: 16px; color: {{ chSub }}; line-height: 1.3;">channel strip</div>
       </div>
 
-      <div onClick="{{ toggleDark }}" onMouseEnter="{{ darkTip }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 360px; top: 20px; width: 30px; height: 30px; box-sizing: border-box; border: 3px solid {{ chInk }}; border-radius: 50%; background: {{ darkBg }}; color: {{ darkFg }}; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; line-height: 1; z-index: 9; user-select: none;">◐</div>
-      <div style="position: absolute; left: 400px; top: 20px; width: 252px; height: 30px; box-sizing: border-box; display: flex; align-items: stretch; border: 3px solid {{ chInk }}; background: {{ chPaper }}; user-select: none; z-index: 9;">
+      <sc-if value="{{ modesLeft }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: 313px; top: 20px; height: 30px; display: flex; gap: 6px; z-index: 9; user-select: none; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .1em; line-height: 1;">
+        <div onClick="{{ toggleStereo }}" onMouseEnter="{{ stereoTip }}" onMouseLeave="{{ tipOut }}" style="width: 66px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ chPaper }}; color: {{ chInk }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">{{ stereoLabel }}</div>
+        <div onClick="{{ toggleLowLat }}" onMouseEnter="{{ lowLatTip }}" onMouseLeave="{{ tipOut }}" style="width: 72px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ lowLatBg }}; color: {{ chInk }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">LOW LAT</div>
+        <div role="switch" aria-label="HQ" aria-checked="{{ hqStr }}" onClick="{{ toggleHQ }}" onMouseEnter="{{ hqTip }}" onMouseLeave="{{ tipOut }}" style="width: 40px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ hqBg }}; color: {{ chInk }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">HQ</div>
+      </div>
+      </sc-if>
+      <sc-if value="{{ modesInRow }}" hint-placeholder-val="{{ true }}">
+      <div onClick="{{ toggleDark }}" onMouseEnter="{{ darkTip }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: {{ darkLeft }}px; top: 20px; width: 30px; height: 30px; box-sizing: border-box; border: 3px solid {{ chInk }}; border-radius: 50%; background: {{ darkBg }}; color: {{ darkFg }}; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; line-height: 1; z-index: 9; user-select: none;">◐</div>
+      </sc-if>
+      <div style="position: absolute; left: {{ presetLeft }}px; top: 20px; width: 252px; height: 30px; box-sizing: border-box; display: flex; align-items: stretch; border: 3px solid {{ chInk }}; background: {{ chPaper }}; user-select: none; z-index: 9;">
         <div onClick="{{ presetPrev }}" style="width: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-right: 1.5px solid {{ chFaint }}; font-family: 'Caveat Brush', cursive; font-size: 17px; color: {{ chSoft }}; line-height: 1;">‹</div>
         <div onClick="{{ presetToggle }}" onContextMenu="{{ presetContext }}" onMouseEnter="{{ presetTip }}" onMouseLeave="{{ tipOut }}" style="flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; cursor: pointer; font-family: 'Patrick Hand SC', cursive; font-size: 14px; letter-spacing: .06em; color: {{ chInk }}; line-height: 1;">{{ presetName }}</div>
         <div onClick="{{ presetNext }}" style="width: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-left: 1.5px solid {{ chFaint }}; font-family: 'Caveat Brush', cursive; font-size: 17px; color: {{ chSoft }}; line-height: 1;">›</div>
       </div>
 
-      <div style="position: absolute; left: 660px; top: 20px; height: 30px; display: flex; gap: 6px; z-index: 9; user-select: none; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .1em; line-height: 1;">
+      <div style="position: absolute; left: {{ rowLeft }}px; top: 20px; height: 30px; display: flex; gap: 6px; z-index: 9; user-select: none; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .1em; line-height: 1;">
         <div onClick="{{ savePreset }}" onMouseEnter="{{ saveTip }}" onMouseLeave="{{ tipOut }}" style="width: 54px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ chPaper }}; color: {{ chInk }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">SAVE</div>
         <div onClick="{{ delPreset }}" onMouseEnter="{{ delTip }}" onMouseLeave="{{ tipOut }}" style="width: 44px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ chPaper }}; color: {{ chInk }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">DEL</div>
         <div onMouseEnter="{{ abTip }}" onMouseLeave="{{ tipOut }}" style="width: 56px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ chPaper }}; display: flex; cursor: pointer;">
@@ -64,16 +73,22 @@
           <div onClick="{{ setB }}" style="flex: 1; display: flex; align-items: center; justify-content: center; background: {{ bBg }}; color: {{ bFg }};">B</div>
         </div>
         <div onClick="{{ copyAB }}" onMouseEnter="{{ copyTip }}" onMouseLeave="{{ tipOut }}" style="width: 48px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ chPaper }}; color: {{ chInk }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">COPY</div>
+        <sc-if value="{{ modesInRow }}" hint-placeholder-val="{{ true }}">
         <div onClick="{{ toggleStereo }}" onMouseEnter="{{ stereoTip }}" onMouseLeave="{{ tipOut }}" style="width: 66px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ chPaper }}; color: {{ chInk }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">{{ stereoLabel }}</div>
         <div onClick="{{ toggleLowLat }}" onMouseEnter="{{ lowLatTip }}" onMouseLeave="{{ tipOut }}" style="width: 72px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ lowLatBg }}; color: {{ chInk }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">LOW LAT</div>
+        <div role="switch" aria-label="HQ" aria-checked="{{ hqStr }}" onClick="{{ toggleHQ }}" onMouseEnter="{{ hqTip }}" onMouseLeave="{{ tipOut }}" style="width: 40px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ hqBg }}; color: {{ chInk }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">HQ</div>
+        </sc-if>
         <div id="engine-params" data-params="{{ paramsJson }}" style="display: none;"></div>
         <div id="masterBypass" role="switch" aria-label="Bypass" aria-checked="{{ bypassStr }}" data-value="{{ bypassStr }}" onClick="{{ toggleBypass }}" onMouseEnter="{{ bypassTip }}" onMouseLeave="{{ tipOut }}" style="width: 74px; box-sizing: border-box; border: 3px solid {{ chInk }}; background: {{ bypassBg }}; color: {{ bypassFg }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">BYPASS</div>
         <div onClick="{{ toggleTips }}" onMouseEnter="{{ tipTips }}" onMouseLeave="{{ tipOut }}" style="width: 30px; height: 30px; box-sizing: border-box; border: 3px solid {{ chInk }}; border-radius: 50%; background: {{ tipsBg }}; color: {{ tipsColor }}; display: flex; align-items: center; justify-content: center; cursor: pointer; font-family: 'Caveat Brush', cursive; font-size: 19px;">?</div>
         <div onClick="{{ undo }}" onMouseEnter="{{ undoTip }}" onMouseLeave="{{ tipOut }}" style="width: 30px; height: 30px; box-sizing: border-box; border: 3px solid {{ chInk }}; border-radius: 50%; background: {{ chPaper }}; color: {{ chInk }}; opacity: {{ undoOp }}; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg width="22" height="22" viewBox="0 0 16 16" style="display: block;"><path d="M 5.2 6.3 A 4.2 4.2 0 1 1 8.6 12.1" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path><path d="M 3.2 3.6 L 3.6 7.4 L 7.3 6.6" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+        <sc-if value="{{ modesLeft }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ toggleDark }}" onMouseEnter="{{ darkTip }}" onMouseLeave="{{ tipOut }}" style="width: 30px; height: 30px; box-sizing: border-box; border: 3px solid {{ chInk }}; border-radius: 50%; background: {{ darkBg }}; color: {{ darkFg }}; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; line-height: 1;">◐</div>
+        </sc-if>
       </div>
 
       <sc-if value="{{ presetOpen }}" hint-placeholder-val="{{ false }}">
-        <div ref="{{ pbBox }}" onClick="{{ pbClose }}" style="position: absolute; left: 400px; top: 56px; width: 252px; box-sizing: border-box; padding: 6px 0; background: {{ chPaper }}; border: 3px solid {{ chInk }}; box-shadow: 5px 6px 0 {{ chFaint }}; z-index: 20; font-family: 'Patrick Hand', cursive;">
+        <div ref="{{ pbBox }}" onClick="{{ pbClose }}" style="position: absolute; left: {{ presetLeft }}px; top: 56px; width: 252px; box-sizing: border-box; padding: 6px 0; background: {{ chPaper }}; border: 3px solid {{ chInk }}; box-shadow: 5px 6px 0 {{ chFaint }}; z-index: 20; font-family: 'Patrick Hand', cursive;">
           <div ref="{{ pbList }}" style="max-height: 520px; overflow-y: auto; overflow-x: hidden; scrollbar-width: thin; scrollbar-color: {{ chSoft }} transparent; padding: 2px 0;">
             <sc-for list="{{ pbRows }}" as="r" hint-placeholder-count="10">
               <div data-pb-key="{{ r.key }}" onClick="{{ r.onClick }}" onContextMenu="{{ r.onContext }}" onMouseEnter="{{ r.onEnter }}" onMouseLeave="{{ r.onLeave }}" style="display: flex; align-items: center; gap: 6px; padding: {{ r.pad }}; font-family: {{ r.font }}; font-size: {{ r.size }}; letter-spacing: {{ r.ls }}; color: {{ r.color }}; background: {{ r.bg }}; cursor: {{ r.cursor }}; white-space: nowrap; user-select: none; line-height: 1.25;">
@@ -128,7 +143,7 @@
       </sc-if>
 
       <div style="position: absolute; left: 24px; bottom: 9px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 11px; letter-spacing: .14em; color: {{ chSoft }}; line-height: 1;">PIZZA BAGEL PLUGINS</div>
-      <div style="position: absolute; right: 24px; bottom: 9px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 11px; letter-spacing: .14em; color: {{ chSoft }}; line-height: 1;">v0.6.31</div>
+      <div style="position: absolute; right: 24px; bottom: 9px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 11px; letter-spacing: .14em; color: {{ chSoft }}; line-height: 1;">v1.0.1</div>
     </div>
   </div>
   </div>
@@ -176,7 +191,7 @@
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:950},&quot;scale&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[0.6,0.8,1],&quot;default&quot;:0.8,&quot;tsType&quot;:&quot;number&quot;},&quot;eqPalette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Console&quot;,&quot;Console 70s&quot;,&quot;Console 80s&quot;,&quot;Console US&quot;,&quot;Kraft&quot;,&quot;Sage&quot;,&quot;Butter&quot;,&quot;Lilac&quot;,&quot;Mint&quot;,&quot;Slate&quot;],&quot;default&quot;:&quot;Mint&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Palettes&quot;},&quot;outPalette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Kraft&quot;,&quot;Sky&quot;,&quot;Blush&quot;,&quot;Mint&quot;,&quot;Butter&quot;,&quot;Ink&quot;],&quot;default&quot;:&quot;Butter&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Palettes&quot;},&quot;driveSheet&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;demoMeters&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;embed&quot;:{&quot;editor&quot;:null,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;fit&quot;:{&quot;editor&quot;:null,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:950},&quot;scale&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[0.6,0.8,1],&quot;default&quot;:0.8,&quot;tsType&quot;:&quot;number&quot;},&quot;eqPalette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Console&quot;,&quot;Console 70s&quot;,&quot;Console 80s&quot;,&quot;Console US&quot;,&quot;Kraft&quot;,&quot;Sage&quot;,&quot;Butter&quot;,&quot;Lilac&quot;,&quot;Mint&quot;,&quot;Slate&quot;],&quot;default&quot;:&quot;Mint&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Palettes&quot;},&quot;outPalette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Kraft&quot;,&quot;Sky&quot;,&quot;Blush&quot;,&quot;Mint&quot;,&quot;Butter&quot;,&quot;Ink&quot;],&quot;default&quot;:&quot;Butter&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Palettes&quot;},&quot;driveSheet&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;demoMeters&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;embed&quot;:{&quot;editor&quot;:null,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;fit&quot;:{&quot;editor&quot;:null,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;startHQ&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;States&quot;},&quot;startDeskOff&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;States&quot;},&quot;modesLeft&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Header&quot;}}">
 const INK = '#2a2430', PAPER = '#f6f0e4', RED = '#e0574a';
 const FONT = { sc: "'Patrick Hand SC', cursive", cb: "'Caveat Brush', cursive", ph: "'Patrick Hand', cursive" };
 const DEF = { ink: INK, legend: '#5a544c', screw: '#b9b1a4', onText: PAPER };
@@ -256,6 +271,7 @@ const PRESETS = [
   { name: 'Lunchbox Lead', group: 'Justin Gammella', pre: '73', tape: '800', speed: 1, comp: '76', ds: '536A', salt: 'Kosher', v: V0 },
   { name: 'Silk & Iron', group: 'Justin Gammella', pre: 'TG', tape: '37', speed: 1, comp: '2A', ds: '902', salt: 'Pink', v: { ...V0, drive: 2, amount: 30, high: 2.5, hmid: 0, low: 1, salt: 5 } },
   { name: 'Cassette Demo', group: 'Justin Gammella', pre: '60s', tape: 'Cheap Cassette', speed: 0, comp: '2A → 76', ds: '536A', salt: 'Pink', v: { ...V0, drive: 6, warmth: 70, wow: 55, amount: 60, hpf: 0.6 } },
+  { name: 'Clean Slate', group: 'Justin Gammella', pre: 'Off', tape: 'Off', speed: 1, comp: '76', ds: '536A', salt: 'Kosher', desk: false, v: { ...V0, high: 0, hmid: 0, lmid: 0, low: 0, salt: 0 } },
   { name: 'Radio Bright', group: 'Justin Gammella', pre: '511', tape: '102', speed: 2, comp: '76 → 2A', ds: '902', salt: 'Kosher', v: { ...V0, amount: 70, high: 4, hmid: 5, lmid: -5, deess: 5, salt: 6 } },
   { name: 'Pop Vocal Forward', group: 'Justin Gammella', pre: '511', tape: '800', speed: 1, comp: '76 → 2A', ds: '536A', salt: 'Kosher', v: { ...V0, drive: 2.5, amount: 55, high: 3, hmid: 3, lmid: -4, deess: 4, salt: 4 } },
   { name: 'Intimate Ballad', group: 'Justin Gammella', pre: 'TG', tape: '37', speed: 0, comp: '2A', ds: '902', salt: 'Pink', v: { ...V0, drive: 1.5, warmth: 55, amount: 35, high: 1, low: 1.5, deess: 2, salt: 2.5 } },
@@ -276,7 +292,7 @@ class Component extends DCLogic {
     pre: '73', tape: '800', speed: 1, comp: '76', ds: '536A', salt: 'Kosher', dsMode: 'HF ONLY', highV: '80s', lowV: '70s', autoGain: true, compAuto: true, ratio: 4,
     v: { ...V0 },
     pw: { drive: true, warmth: true, wow: true, comp: true, high: true, hmid: true, lmid: true, low: true, hpf: true, gate: true, deess: true, salt: true },
-    menu: null, live: null, preset: 1, presetOpen: false, folded: {}, pbHover: null, pbMenu: null, ab: 'A', abOther: null, abDiff: [], stereo: true, lowLat: false, bypass: false, dark: false, dsListen: false,
+    menu: null, live: null, preset: 1, presetOpen: false, folded: {}, pbHover: null, pbMenu: null, ab: 'A', abOther: null, abDiff: [], stereo: true, lowLat: false, hq: false, desk: true, bypass: false, dark: false, dsListen: false,
     hist: [], user: [
       { name: 'Verse take 3', group: 'Album mixes', pre: '73', tape: '800', speed: 1, comp: '76', ds: '536A', salt: 'Kosher', v: { ...V0, amount: 50 } },
       { name: 'Hook doubles', group: 'Album mixes', pre: '511', tape: '800', speed: 2, comp: '2A → 76', ds: '902', salt: 'Kosher', v: { ...V0, amount: 55, lmid: -5, mix: 80 } },
@@ -308,7 +324,7 @@ class Component extends DCLogic {
       driveOn: !!pw.drive, warmthOn: !!pw.warmth, wowOn: !!pw.wow, gateOn: !!pw.gate, hpfOn: !!pw.hpf,
       eqLowOn: !!pw.low, eqHighOn: !!pw.high, lowMidOn: !!pw.lmid, highMidOn: !!pw.hmid,
       compOn: !!pw.comp, deesserOn: !!pw.deess, saltOn: !!pw.salt,
-      masterBypass: !!s.bypass
+      masterBypass: !!s.bypass, hq: !!s.hq, lowLatency: !!s.lowLat, eqDesk: !!s.desk
     };
   }
   pumpParams() {
@@ -320,7 +336,9 @@ class Component extends DCLogic {
     if (moved.length) queueMicrotask(() => moved.forEach(id => f({ id, value: now[id] })));
   }
   componentDidMount() {
-    if (this.props.forceLowLat) this.setState({ lowLat: true });
+    if (this.props.forceLowLat) this.setState({ lowLat: true, hq: false });
+    else if (this.props.startHQ) this.setState({ hq: true, lowLat: false });
+    if (this.props.startDeskOff) this.setState({ desk: false });
     import(new URL('preset-browser.js', document.baseURI).href).then(m => { m.installPB(this, { factory: () => PRESETS, snap: (st) => this.snap(st), commit: this.commit }); this.forceUpdate(); });
     if (this.props.fit && this.wrapRef.current && window.ResizeObserver) {
       this.ro = new ResizeObserver(([e]) => { const w = e.contentRect.width; if (w > 0) this.setState({ fitScale: Math.min(1, w / 1200) }); });
@@ -341,8 +359,8 @@ class Component extends DCLogic {
   componentWillUnmount() { clearInterval(this.timer); window.removeEventListener('keydown', this.onKey); clearTimeout(this.tipT); clearTimeout(this.abT); }
 
   // ── snapshots, history, presets, A/B ────────────────────────────
-  snap = (s = this.state) => ({ pre: s.pre, tape: s.tape, speed: s.speed, comp: s.comp, ds: s.ds, salt: s.salt, dsMode: s.dsMode, highV: s.highV, lowV: s.lowV, autoGain: s.autoGain, compAuto: s.compAuto, ratio: s.ratio, v: { ...s.v }, pw: { ...s.pw } });
-  presetSnap = (p) => ({ pre: p.pre, tape: p.tape, speed: p.speed, comp: p.comp, ds: p.ds, salt: p.salt, dsMode: p.dsMode ?? 'HF ONLY', highV: p.highV ?? '80s', lowV: p.lowV ?? '70s', autoGain: p.autoGain ?? true, compAuto: p.compAuto ?? true, ratio: p.ratio ?? 4, v: { compMix: 100, ...p.v }, pw: p.pw ? { ...p.pw } : Object.fromEntries(Object.keys(this.state.pw).map(k => [k, true])) });
+  snap = (s = this.state) => ({ pre: s.pre, tape: s.tape, speed: s.speed, comp: s.comp, ds: s.ds, salt: s.salt, dsMode: s.dsMode, highV: s.highV, lowV: s.lowV, autoGain: s.autoGain, compAuto: s.compAuto, ratio: s.ratio, desk: s.desk, v: { ...s.v }, pw: { ...s.pw } });
+  presetSnap = (p) => ({ pre: p.pre, tape: p.tape, speed: p.speed, comp: p.comp, ds: p.ds, salt: p.salt, dsMode: p.dsMode ?? 'HF ONLY', highV: p.highV ?? '80s', lowV: p.lowV ?? '70s', autoGain: p.autoGain ?? true, compAuto: p.compAuto ?? true, ratio: p.ratio ?? 4, desk: p.desk ?? true, v: { compMix: 100, ...p.v }, pw: p.pw ? { ...p.pw } : Object.fromEntries(Object.keys(this.state.pw).map(k => [k, true])) });
   commit = (patch) => this.setState(st => ({ ...(typeof patch === 'function' ? patch(st) : patch), hist: [...st.hist.slice(-39), this.snap(st)] }));
   undo = () => this.setState(st => { const hh = st.hist; if (!hh.length) return null; return { ...hh[hh.length - 1], hist: hh.slice(0, -1), live: null }; });
   allPresets = () => [...PRESETS, ...this.state.user];
@@ -406,17 +424,30 @@ class Component extends DCLogic {
   }
   line(a, b) { return `M ${a[0].toFixed(2)} ${a[1].toFixed(2)} L ${b[0].toFixed(2)} ${b[1].toFixed(2)}`; }
 
-  drag = (key, min, max, span, at) => (e) => {
+  drag = (key, min, max, span, at, reset) => (e) => {
     e.preventDefault();
-    const y0 = e.clientY, v0 = this.state.v[key] ?? V0[key] ?? min;
+    // Alt+click resets (Pro Tools convention); Cmd/Ctrl+click without moving also resets.
+    if (e.altKey && reset != null) { this.commit({ v: { ...this.state.v, [key]: reset } }); return; }
+    // Speed-sensitive: 250px full travel at normal speed, slow drags up to ~3x finer, fast drags a bit coarser.
+    // Shift/Cmd/Ctrl = fine: fixed 1250px full travel. Incremental, so switching fine mid-drag never jumps.
+    const BASE = 250, FINE = 1250;
+    let y = e.clientY, t = performance.now(), moved = 0, val = this.state.v[key] ?? V0[key] ?? min;
+    const modDown = e.metaKey || e.ctrlKey;
     this.commit(at ? { live: { key, x: at.x, y: at.y } } : {});
-    const move = ev => this.setV(key, Math.max(min, Math.min(max, v0 + (y0 - ev.clientY) / (span * (ev.shiftKey || ev.metaKey || ev.ctrlKey ? 10 : 1)) * (max - min))));
-    const up = () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); this.setState({ live: null }); };
+    const move = ev => {
+      const dy = y - ev.clientY, now = performance.now(), dt = Math.max(1, now - t); y = ev.clientY; t = now; moved += Math.abs(dy);
+      const fine = ev.shiftKey || ev.metaKey || ev.ctrlKey;
+      const gain = fine ? 1 : Math.max(.33, Math.min(1.5, .3 + (Math.abs(dy) / dt) * .9));
+      val = Math.max(min, Math.min(max, val + dy * gain / (fine ? FINE : BASE) * (max - min)));
+      this.setV(key, val);
+    };
+    const up = () => {
+      if (modDown && moved < 3 && reset != null) this.commit({ v: { ...this.state.v, [key]: reset } }); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); this.setState({ live: null }); };
     window.addEventListener('pointermove', move); window.addEventListener('pointerup', up);
   };
   wheel = (key, min, max) => (e) => {
     const now = Date.now(); if (!this.lastWheel || now - this.lastWheel > 1200) this.commit({}); this.lastWheel = now;
-    const d = (e.deltaY < 0 ? 1 : -1) * (max - min) / (e.shiftKey || e.metaKey || e.ctrlKey ? 400 : 60);
+    const d = (e.deltaY < 0 ? 1 : -1) * (max - min) / (e.shiftKey || e.metaKey || e.ctrlKey ? 500 : 100);
     this.setV(key, Math.max(min, Math.min(max, (this.state.v[key] ?? V0[key] ?? min) + d)));
   };
 
@@ -711,7 +742,7 @@ class Component extends DCLogic {
     const NO_POP = { mix: 1, gate: 1, inT: 1, outT: 1 };
     const knobHit = (cx, cy, r, key, min, max, span, reset, tip) => {
       if (s.abDiff.includes(key)) add(this.blob(cx, cy, r + 8, cx + cy + 5, 2), 3, 'none', RED, .85);
-      H(cx - r, cy - r, r * 2, r * 2, { r: '50%', cursor: 'ns-resize', down: this.drag(key, min, max, span, NO_POP[key] ? null : { x: cx, y: cy + 10 }), dbl: () => this.commit({ v: { ...s.v, [key]: reset } }), wheel: this.wheel(key, min, max), tip: tip + ' Drag or scroll · ⌘/shift for fine · double-click resets.' });
+      H(cx - r, cy - r, r * 2, r * 2, { r: '50%', cursor: 'ns-resize', down: this.drag(key, min, max, span, NO_POP[key] ? null : { x: cx, y: cy + 10 }, reset), dbl: () => this.commit({ v: { ...s.v, [key]: reset } }), wheel: this.wheel(key, min, max), tip: tip + ' Drag or scroll · shift or ⌘ for fine · double-click or ⌥-click resets.' });
     };
 
     // ── rack ────────────────────────────────────────────────────────
@@ -761,7 +792,7 @@ class Component extends DCLogic {
       mod(X, 94, W, 580, C, 6);  plate('comp', C, s.comp);
       sw(cx - 48, 180, pw.comp, C, 'comp', 'COMP power.'); L(X + 10, 174, W, 'AMOUNT', { s: 13, c: C.legend, op });
       knob({ cx, cy: 271, r: 54, frac: v.amount / 100, C, on: pw.comp, ...C.knob, arcW: 6 });
-      knobHit(cx, 271, 54, 'amount', 0, 100, 220, 45, 'AMOUNT 0–100 — the one knob you ride. Drives input and makeup together against the model.');
+      knobHit(cx, 271, 54, 'amount', 0, 100, 220, 0, 'AMOUNT 0–100 — the one knob you ride. Drives input and makeup together against the model.');
       // MIX: tiny fixed knob tucked at the lower right of AMOUNT
       { const mx = cx + 56, my = 356, mr = 12, cm = v.compMix ?? 100;
         L(mx - 20, my + mr + 10, 40, 'MIX', { s: 9, c: C.legend, op });
@@ -775,7 +806,7 @@ class Component extends DCLogic {
         H(rx - rr, ry - rr, rr * 2, rr * 2, { r: '50%', click: () => this.commit(st => ({ ratio: (st.ratio ?? 4) === 4 ? 8 : 4 })), tip: 'RATIO — 4:1 for gentle vocal levelling, 8:1 to really clamp it down. Click to switch.' }); }
       L(X, 372, W, 'GR', { s: 16, c: C.legend });
       meter(cx, 400, 630, grC, C, pw.comp);
-      cell(cx - 42, 642, 84, 20, 'AUTO GAIN', s.compAuto, C, { s: 10, op, click: () => this.commit(st => ({ compAuto: !st.compAuto })), tip: 'AUTO GAIN — makes up the level the compressor takes away so A/B stays honest.', fill: C.accent });
+      cell(cx - 42, 642, 84, 20, 'AUTO GAIN', s.compAuto, C, { s: 10, op, click: () => this.commit(st => ({ compAuto: !st.compAuto })), tip: 'AUTO GAIN: measures what the compressor takes away and makes it up, so A/B stays honest. Takes a few seconds to settle after changes.', fill: C.accent });
     }
 
     // ── EQ ──────────────────────────────────────────────────────────
@@ -826,7 +857,7 @@ class Component extends DCLogic {
       plate(plateKey, C, model, { x: X + 14, y: Y + 22, w: 144 });
       sw(cx - 46, 180 + dy, pw.deess, C, 'deess', 'DE-ESS power.'); L(X + 10, 174 + dy, W, 'DE-ESS', { s: 13, c: C.legend, op });
       knob({ cx, cy: 271 + dy, r: 54, frac: v.deess / 10, C, on: pw.deess, ...C.knob, accent: C.accent, arcW: 6 });
-      knobHit(cx, 271 + dy, 54, 'deess', 0, 10, 220, 3, 'DE-ESS 0–10 — threshold and depth on one knob, tuned for sibilance.');
+      knobHit(cx, 271 + dy, 54, 'deess', 0, 10, 220, 0, 'DE-ESS 0–10 — threshold and depth on one knob, tuned for sibilance.');
       if (is902) ['HF ONLY', 'FULL BAND'].forEach((m, i) => cell(cx - 72 + i * 80, 346 + dy, 64, 20, m, s.dsMode === m, C, { s: 10, click: () => this.commit({ dsMode: m }), tip: modeTip }));
       L(X, 372 + dy, W, 'GR', { s: 16, c: C.legend }); meter(cx, 400 + dy, 630 + dy, grD, C, pw.deess);
       // LISTEN at the foot of the meter — same meter geometry as the compressor beside it
@@ -847,7 +878,7 @@ class Component extends DCLogic {
       mod(X, 94, W, 580, C, 11);  plate('salt', C, s.salt);
       sw(cx - 36, 180, pw.salt, C, 'salt', 'SALT power.'); L(X + 10, 174, W, 'SALT', { s: 13, c: C.legend, op });
       dish(cx, 347, 52, v.salt / 10, C, pw.salt);
-      knobHit(cx, 347, 52, 'salt', 0, 10, 240, 3.5, 'SALT 0–10 — the enhancer. Kosher: one gentle band. Pink: darkens low, brightens hard up top.');
+      knobHit(cx, 347, 52, 'salt', 0, 10, 240, 0, 'SALT 0–10 — the enhancer. Kosher: one gentle band. Pink: darkens low, brightens hard up top.');
       // doodles: a scattered pinch below the dish, a shaker in the corner, a wee pile by its foot
       {
         const rr = rndf(4242), d = (dd, w, f, sk, o, t) => add(dd, w, f, sk, (o ?? 1) * op, t);
@@ -895,6 +926,7 @@ class Component extends DCLogic {
         knobHit(kx, 542, 19, key, -24, 24, 200, 0, tip);
         L(kx - 35, 579, 70, sgn(v[key], 1), { f: 'cb', s: 15, c: C.ink });
       });
+      cell(cx - 42, 620, 84, 20, s.desk ? 'THD ON' : 'THD OFF', !!s.desk, C, { s: 10, click: () => this.commit(st => ({ desk: !st.desk })), tip: "THD: the console's own harmonics, a light base plus more as the shelves are worked. Off makes the EQ clean. Preamp and tape have their own Off." });
     }
 
     const FMT = {
@@ -943,7 +975,7 @@ class Component extends DCLogic {
       presetTip: this.showTip(modified ? 'Presets — • means you\'ve moved off the saved state. ‹ › step, click to browse, ↑↓ while open.' : 'Presets — ‹ › step, click to browse, ↑↓ while open.'),
       saveTip: this.showTip(s.preset >= PRESETS.length ? 'SAVE — overwrite this user preset.' : 'SAVE — store this state as a new user preset (factory ones stay put).'), delTip: this.showTip(s.preset >= PRESETS.length ? 'DEL — delete this user preset.' : 'DEL — only user presets can be deleted.'),
       abTip: this.showTip(abText), copyTip: this.showTip('COPY — copy this state into slot ' + otherSlot + '.'),
-      stereoTip: this.showTip('STEREO / MONO processing.'), lowLatTip: this.showTip('LOW LAT — tracking mode, shorter lookahead. Amber when on.'),
+      stereoTip: this.showTip('STEREO / MONO processing.'), lowLatTip: this.showTip('LOW LAT, tracking mode, no oversampling, zero added latency. Switches HQ off. Amber when on.'),
       bypassTip: this.showTip('BYPASS the whole strip. Red when on.'),
       setA: () => this.setAB('A'), setB: () => this.setAB('B'),
       aBg: s.ab === 'A' ? cI : 'transparent', aFg: s.ab === 'A' ? cP : cI, bBg: s.ab === 'B' ? cI : 'transparent', bFg: s.ab === 'B' ? cP : cI,
@@ -954,7 +986,10 @@ class Component extends DCLogic {
       toggleDark: () => this.setState(st => ({ dark: !st.dark })), darkTip: this.showTip(dk ? 'LIGHT — back to the paper desk.' : 'DARK — dim the room; the modules stay lit.'),
       darkBg: dk ? cI : 'transparent', darkFg: dk ? cP : cI,
       toggleStereo: () => this.setState(st => ({ stereo: !st.stereo })), stereoLabel: s.stereo ? 'STEREO' : 'MONO',
-      toggleLowLat: () => this.setState(st => ({ lowLat: !st.lowLat })), lowLatBg: s.lowLat ? '#f0c25c' : cP,
+      toggleLowLat: () => this.setState(st => ({ lowLat: !st.lowLat, hq: st.lowLat ? st.hq : false })), lowLatBg: s.lowLat ? '#f0c25c' : cP,
+      toggleHQ: () => this.setState(st => ({ hq: !st.hq, lowLat: st.hq ? st.lowLat : false })), hqBg: s.hq ? '#f0c25c' : cP, hqStr: s.hq ? 'true' : 'false',
+      ...(ml => ({ modesLeft: ml, modesInRow: !ml, darkLeft: 314, presetLeft: ml ? 509 : 354, rowLeft: ml ? 769 : 614 }))(this.props.modesLeft ?? true),
+      hqTip: this.showTip('HQ, 4x oversampling for the cleanest render. Adds a little latency, so it switches Low Lat off. Amber when on.'),
       bypassStr: s.bypass ? 'true' : 'false',
       paramsJson: JSON.stringify(this.engineParams(s)),
       toggleBypass: () => this.setState(st => ({ bypass: !st.bypass })), bypassBg: s.bypass ? RED : cP, bypassFg: s.bypass ? cP : cI, bypass: s.bypass,
