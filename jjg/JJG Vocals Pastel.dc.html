@@ -48,6 +48,9 @@
         <svg width="170" height="50" viewBox="0 0 170 50" style="display: block; overflow: visible;"><text x="0" y="40" font-family="Caveat Brush" font-size="44" fill="{{ chInk }}">JJG Vocals</text></svg>
         <div style="position: relative; top: -10px; white-space: nowrap; font-size: 16px; color: {{ chSub }}; line-height: 1.3;">channel strip</div>
       </div>
+      <sc-if value="{{ boxOff }}" hint-placeholder-val="{{ false }}">
+        <div onMouseEnter="{{ boxTagTip }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 28px; top: 53px; padding: 0 12px; border: 2.5px solid {{ chInk }}; background: {{ boxTagBg }}; color: {{ chInk }}; font-family: 'Patrick Hand SC', cursive; font-size: 16px; letter-spacing: .14em; line-height: 22px; transform: rotate(-2deg); user-select: none; z-index: 9;">NEUTRAL</div>
+      </sc-if>
 
       <sc-if value="{{ modesLeft }}" hint-placeholder-val="{{ false }}">
       <div style="position: absolute; left: 313px; top: 20px; height: 30px; display: flex; gap: 6px; z-index: 9; user-select: none; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .1em; line-height: 1;">
@@ -193,6 +196,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:950},&quot;scale&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[0.6,0.8,1],&quot;default&quot;:0.8,&quot;tsType&quot;:&quot;number&quot;},&quot;eqPalette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Console&quot;,&quot;Console 70s&quot;,&quot;Console 80s&quot;,&quot;Console US&quot;,&quot;Kraft&quot;,&quot;Sage&quot;,&quot;Butter&quot;,&quot;Lilac&quot;,&quot;Mint&quot;,&quot;Slate&quot;],&quot;default&quot;:&quot;Mint&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Palettes&quot;},&quot;outPalette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Kraft&quot;,&quot;Sky&quot;,&quot;Blush&quot;,&quot;Mint&quot;,&quot;Butter&quot;,&quot;Ink&quot;],&quot;default&quot;:&quot;Butter&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Palettes&quot;},&quot;driveSheet&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;demoMeters&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;embed&quot;:{&quot;editor&quot;:null,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;fit&quot;:{&quot;editor&quot;:null,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;startHQ&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;States&quot;},&quot;startDeskOff&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;States&quot;},&quot;modesLeft&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Header&quot;}}">
 const INK = '#2a2430', PAPER = '#f6f0e4', RED = '#e0574a';
+const GRID = (dk, base) => { const mi = dk ? 'rgba(150,190,240,.13)' : 'rgba(60,110,180,.16)', ma = dk ? 'rgba(150,190,240,.26)' : 'rgba(60,110,180,.32)'; return `linear-gradient(${ma} 1px, transparent 1px) 0 0 / 60px 60px, linear-gradient(90deg, ${ma} 1px, transparent 1px) 0 0 / 60px 60px, linear-gradient(${mi} 1px, transparent 1px) 0 0 / 12px 12px, linear-gradient(90deg, ${mi} 1px, transparent 1px) 0 0 / 12px 12px, ${base}`; };
 const FONT = { sc: "'Patrick Hand SC', cursive", cb: "'Caveat Brush', cursive", ph: "'Patrick Hand', cursive" };
 const DEF = { ink: INK, legend: '#5a544c', screw: '#b9b1a4', onText: PAPER };
 const OFF = { fill: '#e9e3d9', plate: PAPER, plateInk: '#8a8378', accent: '#b9b1a4', knob: { style: 'round', body: '#d9d2c7', mark: INK } };
@@ -271,7 +275,7 @@ const PRESETS = [
   { name: 'Lunchbox Lead', group: 'Justin Gammella', pre: '73', tape: '800', speed: 1, comp: '76', ds: '536A', salt: 'Kosher', v: V0 },
   { name: 'Silk & Iron', group: 'Justin Gammella', pre: 'TG', tape: '37', speed: 1, comp: '2A', ds: '902', salt: 'Pink', v: { ...V0, drive: 2, amount: 30, high: 2.5, hmid: 0, low: 1, salt: 5 } },
   { name: 'Cassette Demo', group: 'Justin Gammella', pre: '60s', tape: 'Cheap Cassette', speed: 0, comp: '2A → 76', ds: '536A', salt: 'Pink', v: { ...V0, drive: 6, warmth: 70, wow: 55, amount: 60, hpf: 0.6 } },
-  { name: 'Clean Slate', group: 'Justin Gammella', pre: 'Off', tape: 'Off', speed: 1, comp: '76', ds: '536A', salt: 'Kosher', desk: false, v: { ...V0, high: 0, hmid: 0, lmid: 0, low: 0, salt: 0 } },
+  { name: 'Clean Slate', group: 'Justin Gammella', pre: 'Off', tape: 'Off', speed: 1, comp: '76', ds: '536A', salt: 'Kosher', desk: false, box: false, v: { ...V0, high: 0, hmid: 0, lmid: 0, low: 0, salt: 0 } },
   { name: 'Radio Bright', group: 'Justin Gammella', pre: '511', tape: '102', speed: 2, comp: '76 → 2A', ds: '902', salt: 'Kosher', v: { ...V0, amount: 70, high: 4, hmid: 5, lmid: -5, deess: 5, salt: 6 } },
   { name: 'Pop Vocal Forward', group: 'Justin Gammella', pre: '511', tape: '800', speed: 1, comp: '76 → 2A', ds: '536A', salt: 'Kosher', v: { ...V0, drive: 2.5, amount: 55, high: 3, hmid: 3, lmid: -4, deess: 4, salt: 4 } },
   { name: 'Intimate Ballad', group: 'Justin Gammella', pre: 'TG', tape: '37', speed: 0, comp: '2A', ds: '902', salt: 'Pink', v: { ...V0, drive: 1.5, warmth: 55, amount: 35, high: 1, low: 1.5, deess: 2, salt: 2.5 } },
@@ -292,7 +296,7 @@ class Component extends DCLogic {
     pre: '73', tape: '800', speed: 1, comp: '76', ds: '536A', salt: 'Kosher', dsMode: 'HF ONLY', highV: '80s', lowV: '70s', autoGain: true, compAuto: true, ratio: 4,
     v: { ...V0 },
     pw: { drive: true, warmth: true, wow: true, comp: true, high: true, hmid: true, lmid: true, low: true, hpf: true, gate: true, deess: true, salt: true },
-    menu: null, live: null, preset: 1, presetOpen: false, folded: {}, pbHover: null, pbMenu: null, ab: 'A', abOther: null, abDiff: [], stereo: true, lowLat: false, hq: false, desk: true, bypass: false, dark: false, dsListen: false,
+    menu: null, live: null, preset: 1, presetOpen: false, folded: {}, pbHover: null, pbMenu: null, ab: 'A', abOther: null, abDiff: [], stereo: true, lowLat: false, hq: false, desk: true, box: true, bypass: false, dark: false, dsListen: false,
     hist: [], user: [
       { name: 'Verse take 3', group: 'Album mixes', pre: '73', tape: '800', speed: 1, comp: '76', ds: '536A', salt: 'Kosher', v: { ...V0, amount: 50 } },
       { name: 'Hook doubles', group: 'Album mixes', pre: '511', tape: '800', speed: 2, comp: '2A → 76', ds: '902', salt: 'Kosher', v: { ...V0, amount: 55, lmid: -5, mix: 80 } },
@@ -324,7 +328,7 @@ class Component extends DCLogic {
       driveOn: !!pw.drive, warmthOn: !!pw.warmth, wowOn: !!pw.wow, gateOn: !!pw.gate, hpfOn: !!pw.hpf,
       eqLowOn: !!pw.low, eqHighOn: !!pw.high, lowMidOn: !!pw.lmid, highMidOn: !!pw.hmid,
       compOn: !!pw.comp, deesserOn: !!pw.deess, saltOn: !!pw.salt,
-      masterBypass: !!s.bypass, hq: !!s.hq, lowLatency: !!s.lowLat, eqDesk: !!s.desk
+      masterBypass: !!s.bypass, hq: !!s.hq, lowLatency: !!s.lowLat, eqDesk: !!s.desk, boxSound: s.box !== false
     };
   }
   pumpParams() {
@@ -359,8 +363,8 @@ class Component extends DCLogic {
   componentWillUnmount() { clearInterval(this.timer); window.removeEventListener('keydown', this.onKey); clearTimeout(this.tipT); clearTimeout(this.abT); }
 
   // ── snapshots, history, presets, A/B ────────────────────────────
-  snap = (s = this.state) => ({ pre: s.pre, tape: s.tape, speed: s.speed, comp: s.comp, ds: s.ds, salt: s.salt, dsMode: s.dsMode, highV: s.highV, lowV: s.lowV, autoGain: s.autoGain, compAuto: s.compAuto, ratio: s.ratio, desk: s.desk, v: { ...s.v }, pw: { ...s.pw } });
-  presetSnap = (p) => ({ pre: p.pre, tape: p.tape, speed: p.speed, comp: p.comp, ds: p.ds, salt: p.salt, dsMode: p.dsMode ?? 'HF ONLY', highV: p.highV ?? '80s', lowV: p.lowV ?? '70s', autoGain: p.autoGain ?? true, compAuto: p.compAuto ?? true, ratio: p.ratio ?? 4, desk: p.desk ?? true, v: { compMix: 100, ...p.v }, pw: p.pw ? { ...p.pw } : Object.fromEntries(Object.keys(this.state.pw).map(k => [k, true])) });
+  snap = (s = this.state) => ({ pre: s.pre, tape: s.tape, speed: s.speed, comp: s.comp, ds: s.ds, salt: s.salt, dsMode: s.dsMode, highV: s.highV, lowV: s.lowV, autoGain: s.autoGain, compAuto: s.compAuto, ratio: s.ratio, desk: s.desk, box: s.box, v: { ...s.v }, pw: { ...s.pw } });
+  presetSnap = (p) => ({ pre: p.pre, tape: p.tape, speed: p.speed, comp: p.comp, ds: p.ds, salt: p.salt, dsMode: p.dsMode ?? 'HF ONLY', highV: p.highV ?? '80s', lowV: p.lowV ?? '70s', autoGain: p.autoGain ?? true, compAuto: p.compAuto ?? true, ratio: p.ratio ?? 4, desk: p.desk ?? true, box: p.box ?? true, v: { compMix: 100, ...p.v }, pw: p.pw ? { ...p.pw } : Object.fromEntries(Object.keys(this.state.pw).map(k => [k, true])) });
   commit = (patch) => this.setState(st => ({ ...(typeof patch === 'function' ? patch(st) : patch), hist: [...st.hist.slice(-39), this.snap(st)] }));
   undo = () => this.setState(st => { const hh = st.hist; if (!hh.length) return null; return { ...hh[hh.length - 1], hist: hh.slice(0, -1), live: null }; });
   allPresets = () => [...PRESETS, ...this.state.user];
@@ -458,7 +462,9 @@ class Component extends DCLogic {
       this._pBypass = this.props.bypass;
       if (this.props.bypass !== s.bypass) queueMicrotask(() => this.setState({ bypass: this.props.bypass }));
     }
-    const add = (d, w, f, st, o, t) => P.push({ d, t: t ?? '', w: w ?? 2.4, f: f || 'none', s: st || INK, o: o ?? 1 });
+    const DARK_COOL = { '#3a3342': '#343a44', '#2b2731': '#272b33', '#24202b': '#20242c', '#1c1922': '#191c24', '#4a4452': '#434855' };
+    const greyWhite = (f) => { if (s.box !== false || typeof f !== 'string' || !/^#[0-9a-f]{6}$/i.test(f)) return f; const lf = f.toLowerCase(); if (s.dark && DARK_COOL[lf]) return DARK_COOL[lf]; const c = [1, 3, 5].map(i => parseInt(f.slice(i, i + 2), 16)); return Math.min(...c) > 224 && Math.max(...c) - Math.min(...c) < 22 ? (s.dark ? '#cdd3d4' : '#dfe3e3') : f; };
+    const add = (d, w, f, st, o, t) => P.push({ d, t: t ?? '', w: w ?? 2.4, f: greyWhite(f) || 'none', s: st || INK, o: o ?? 1 });
     const L = (x, y, w, text, o = {}) => LB.push({ left: x, top: y, width: w, text, font: FONT[o.f || 'sc'], size: o.s || 12, color: o.c || DEF.legend, ls: o.ls ?? (o.f ? '0' : '.16em'), align: o.a || 'center', op: o.op ?? 1 });
     let hitsOn = true;
     const H = (x, y, w, h, o = {}) => hitsOn && HT.push({ left: x, top: y, width: w, height: h, radius: o.r || '0', cursor: o.cursor || 'pointer', onDown: o.down, onClick: o.click, onDbl: o.dbl, onEnter: (o.tip || o.hover) ? this.showTip(o.tip, o.hover) : undefined, onWheel: o.wheel });
@@ -746,7 +752,7 @@ class Component extends DCLogic {
     };
 
     // ── rack ────────────────────────────────────────────────────────
-    add(this.rrect(8, 84, 1184, 600, 900, 1.6), 3.4, s.dark ? '#3b3642' : '#cfc6b8', s.dark ? '#14111a' : INK);
+    add(this.rrect(8, 84, 1184, 600, 900, 1.6), 3.4, s.box === false ? (s.dark ? '#26324a' : '#c3d4ea') : (s.dark ? '#3b3642' : '#cfc6b8'), s.dark ? '#14111a' : INK);
 
     // ── PRE / TAPE (the 250-series pair) ───────────────────────────
     {
@@ -763,7 +769,7 @@ class Component extends DCLogic {
       L(X + 10, 161, W, 'DRIVE', { s: 13, c: CP.legend, op: dop });
       knob({ cx, cy: 316, r: DR, frac: v.drive / 10, C: CP, on: pw.drive, ...CP.knob, surround: tapeOn ? TAPE_SHAPE[s.tape] : null, accent: CP.accent === PAPER ? INK : CP.accent, arcW: 7 });
       knobHit(cx, 316, DR, 'drive', 0, 10, 220, 0, 'DRIVE 0–10 — how hard the preamp and the tape are pushed. One knob, both stages.');
-      cell(cx - 42, 406, 84, 20, 'AUTO GAIN', s.autoGain, CT, { s: 10, op: s.autoGain ? 1 : .4, click: () => this.commit(st => ({ autoGain: !st.autoGain })), tip: 'AUTO GAIN — compensates output level as DRIVE rises, so you hear tone, not volume.' });
+      cell(cx - 42, 406, 84, 20, s.autoGain ? 'AUTO GAIN ON' : 'AUTO GAIN OFF', s.autoGain, CT, { s: 10, op: s.autoGain ? 1 : .4, click: () => this.commit(st => ({ autoGain: !st.autoGain })), tip: 'AUTO GAIN — compensates output level as DRIVE rises, so you hear tone, not volume.' });
       plate('tape', CT, s.tape, { s: s.tape.length > 5 ? 18 : 22 });
       {
         const cass = s.tape === 'Cheap Cassette', names = cass ? ['Broker', 'Broke', 'Broke-ish'] : ['7.5', '15', '30'];
@@ -806,7 +812,7 @@ class Component extends DCLogic {
         H(rx - rr, ry - rr, rr * 2, rr * 2, { r: '50%', click: () => this.commit(st => ({ ratio: (st.ratio ?? 4) === 4 ? 8 : 4 })), tip: 'RATIO — 4:1 for gentle vocal levelling, 8:1 to really clamp it down. Click to switch.' }); }
       L(X, 372, W, 'GR', { s: 16, c: C.legend });
       meter(cx, 400, 630, grC, C, pw.comp);
-      cell(cx - 42, 642, 84, 20, 'AUTO GAIN', s.compAuto, C, { s: 10, op, click: () => this.commit(st => ({ compAuto: !st.compAuto })), tip: 'AUTO GAIN: measures what the compressor takes away and makes it up, so A/B stays honest. Takes a few seconds to settle after changes.', fill: C.accent });
+      cell(cx - 42, 642, 84, 20, s.compAuto ? 'AUTO GAIN ON' : 'AUTO GAIN OFF', s.compAuto, C, { s: 10, op, click: () => this.commit(st => ({ compAuto: !st.compAuto })), tip: 'AUTO GAIN: measures what the compressor takes away and makes it up, so A/B stays honest. Takes a few seconds to settle after changes.', fill: C.accent });
     }
 
     // ── EQ ──────────────────────────────────────────────────────────
@@ -914,18 +920,19 @@ class Component extends DCLogic {
       knobHit(cx, 249, 41, 'mix', 0, 100, 200, 100, 'MIX 0–100 % — blend the whole strip against dry. Default 100.');
       L(X, 306, W, Math.round(v.mix) + '%', { f: 'cb', s: 22, c: C.ink });
       const gop = pw.gate ? 1 : .4;
-      L(X, 350, W, 'GATE', { s: 13, c: C.legend, op: gop }); sw(cx - 44, 408, pw.gate, C, 'gate', 'GATE power.');
-      knob({ cx, cy: 408, r: 24, frac: (v.gate + 80) / 80, C, on: pw.gate, ...C.knob, arcW: 4 });
-      knobHit(cx, 408, 24, 'gate', -80, 0, 180, -80, 'GATE threshold −80 to 0 dB. The lamp lights while it attenuates.');
-      if (gateLit) add(this.blob(cx + 44, 408, 12, 71, 1.4), 0, RED, 'none', .28);
-      add(this.dot(cx + 44, 408, 6.5, 72), 2.2, gateLit ? RED : C.plate, C.ink, gop);
-      L(X, 446, W, v.gate <= -79.5 ? 'Off' : Math.round(v.gate) + ' dB', { f: 'cb', s: 18, c: C.ink, op: gop });
+      L(X, 344, W, 'GATE', { s: 13, c: C.legend, op: gop }); sw(cx - 44, 398, pw.gate, C, 'gate', 'GATE power.');
+      knob({ cx, cy: 398, r: 24, frac: (v.gate + 80) / 80, C, on: pw.gate, ...C.knob, arcW: 4 });
+      knobHit(cx, 398, 24, 'gate', -80, 0, 180, -80, 'GATE threshold −80 to 0 dB. The lamp lights while it attenuates.');
+      if (gateLit) add(this.blob(cx + 44, 398, 12, 71, 1.4), 0, RED, 'none', .28);
+      add(this.dot(cx + 44, 398, 6.5, 72), 2.2, gateLit ? RED : C.plate, C.ink, gop);
+      L(X, 434, W, v.gate <= -79.5 ? 'Off' : Math.round(v.gate) + ' dB', { f: 'cb', s: 18, c: C.ink, op: gop });
       [['inT', 'IN', cx - 36, 'IN trim ±24 dB, centred at 0.'], ['outT', 'OUT', cx + 36, 'OUT trim ±24 dB, centred at 0.']].forEach(([key, lab, kx, tip]) => {
-        L(kx - 35, 498, 70, lab, { s: 11, c: C.legend });
-        knob({ cx: kx, cy: 542, r: 19, frac: (v[key] + 24) / 48, mode: 'centre', C, ...C.knob, arcW: 4 });
-        knobHit(kx, 542, 19, key, -24, 24, 200, 0, tip);
-        L(kx - 35, 579, 70, sgn(v[key], 1), { f: 'cb', s: 15, c: C.ink });
+        L(kx - 35, 470, 70, lab, { s: 11, c: C.legend });
+        knob({ cx: kx, cy: 514, r: 19, frac: (v[key] + 24) / 48, mode: 'centre', C, ...C.knob, arcW: 4 });
+        knobHit(kx, 514, 19, key, -24, 24, 200, 0, tip);
+        L(kx - 35, 551, 70, sgn(v[key], 1), { f: 'cb', s: 15, c: C.ink });
       });
+      cell(cx - 42, 592, 84, 20, s.box === false ? 'BOX SOUND OFF' : 'BOX SOUND ON', s.box !== false, C, { s: 10, click: () => this.commit(st => ({ box: st.box === false })), tip: "BOX SOUND. The plug-in's own character, on under every module. ON is the sound JJG Vocals has always had. OFF makes it neutral when the modules are off." });
       cell(cx - 42, 620, 84, 20, s.desk ? 'THD ON' : 'THD OFF', !!s.desk, C, { s: 10, click: () => this.commit(st => ({ desk: !st.desk })), tip: "THD: the console's own harmonics, a light base plus more as the shelves are worked. Off makes the EQ clean. Preamp and tape have their own Off." });
     }
 
@@ -979,9 +986,10 @@ class Component extends DCLogic {
       bypassTip: this.showTip('BYPASS the whole strip. Red when on.'),
       setA: () => this.setAB('A'), setB: () => this.setAB('B'),
       aBg: s.ab === 'A' ? cI : 'transparent', aFg: s.ab === 'A' ? cP : cI, bBg: s.ab === 'B' ? cI : 'transparent', bFg: s.ab === 'B' ? cP : cI,
-      chBg: dk ? 'linear-gradient(158deg, #2b2731 0%, #24202b 56%, #1c1922 100%)' : 'linear-gradient(158deg, #f1ebe0 0%, #ebe4d6 56%, #e3dbcb 100%)',
-      chGrain: dk ? 'rgba(246,240,228,.35)' : 'rgba(42,36,48,.5)', chHead: dk ? '#3a3342' : '#e8d6b0', chSub: dk ? '#d9c9a6' : '#5a4a2a',
-      chInk: cI, chPaper: cP, chSoft: dk ? '#b8b0a4' : '#5a544c', chFaint: dk ? 'rgba(246,240,228,.25)' : 'rgba(42,36,48,.25)', chHover: dk ? '#4a4452' : '#ece5d8',
+      chBg: s.box === false ? GRID(dk, dk ? '#1d2738' : '#dde8f5') : (dk ? 'linear-gradient(158deg, #2b2731 0%, #24202b 56%, #1c1922 100%)' : 'linear-gradient(158deg, #f1ebe0 0%, #ebe4d6 56%, #e3dbcb 100%)'),
+      boxOff: s.box === false, boxTagBg: dk ? '#27334a' : '#eef4fb', boxTagTip: this.showTip('BOX SOUND is off: the plug-in is neutral when the modules are off. Switch it back on in the OUTPUT module.'),
+      chGrain: dk ? 'rgba(246,240,228,.35)' : 'rgba(42,36,48,.5)', chHead: s.box === false ? GRID(dk, dk ? '#27334a' : '#cddcf0') : (dk ? '#3a3342' : '#e8d6b0'), chSub: s.box === false ? (dk ? '#b9cce6' : '#2c4466') : (dk ? '#d9c9a6' : '#5a4a2a'),
+      chInk: cI, chPaper: cP, chSoft: dk ? '#b8b0a4' : '#5a544c', chFaint: dk ? 'rgba(246,240,228,.25)' : 'rgba(42,36,48,.25)', chHover: s.box === false ? (dk ? '#33405a' : '#e6eef8') : (dk ? '#4a4452' : '#ece5d8'),
       chPaperA: dk ? 'rgba(58,51,66,.88)' : 'rgba(246,240,228,.82)', chBypass: dk ? 'rgba(28,25,34,.6)' : 'rgba(236,229,216,.55)',
       toggleDark: () => this.setState(st => ({ dark: !st.dark })), darkTip: this.showTip(dk ? 'LIGHT — back to the paper desk.' : 'DARK — dim the room; the modules stay lit.'),
       darkBg: dk ? cI : 'transparent', darkFg: dk ? cP : cI,

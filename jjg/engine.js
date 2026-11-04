@@ -6,7 +6,7 @@ const ORDER = ['inputGain', 'outputGain', 'mix', 'autoGain', 'preampType', 'tape
   'compType', 'compAmount', 'compMix', 'compAutoGain', 'comp76Ratio', 'gateThreshold',
   'deesser', 'deesserModel', 'deesser902Hf', 'deesserListen', 'salt', 'saltCurve',
   'driveOn', 'warmthOn', 'wowOn', 'gateOn', 'hpfOn', 'eqLowOn', 'eqHighOn', 'lowMidOn', 'highMidOn', 'compOn', 'deesserOn', 'saltOn',
-  'masterBypass', 'lowLatency', 'monoInput'];
+  'boxSound', 'masterBypass', 'lowLatency', 'monoInput'];
 const INDEX = Object.fromEntries(ORDER.map((id, i) => [id, i]));
 PbDemo.start({
   root: '#jjg-try-it', wasm: 'jjg.wasm', debug: '__jjgDemo', meters: '__jjgMeters',
