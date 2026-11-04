@@ -1,20 +1,20 @@
 // JJG Vocals Try It -> the real JJG processor. The panel reports the plugin's own ids
 // (choices as index numbers, switches as booleans, knobs in plugin units); the engine takes
-// them by index in params.json order. lowLatency and monoInput are fixed by the wrapper.
+// them by index in params.json order. monoInput is fixed by the wrapper.
 const ORDER = ['inputGain', 'outputGain', 'mix', 'autoGain', 'preampType', 'tapeDrive', 'warmth', 'tapeMode', 'tapeSpeed', 'wowFlutter',
   'hpfFreq', 'eqLow', 'eqHigh', 'eqLowConsole', 'eqHighConsole', 'lowMidCut', 'lowMidFreq', 'highMidBoost',
   'compType', 'compAmount', 'compMix', 'compAutoGain', 'comp76Ratio', 'gateThreshold',
   'deesser', 'deesserModel', 'deesser902Hf', 'deesserListen', 'salt', 'saltCurve',
   'driveOn', 'warmthOn', 'wowOn', 'gateOn', 'hpfOn', 'eqLowOn', 'eqHighOn', 'lowMidOn', 'highMidOn', 'compOn', 'deesserOn', 'saltOn',
-  'boxSound', 'deskOn', 'masterBypass', 'lowLatency', 'monoInput'];
+  'boxSound', 'deskOn', 'hq', 'masterBypass', 'lowLatency', 'monoInput'];
 const INDEX = Object.fromEntries(ORDER.map((id, i) => [id, i]));
 PbDemo.start({
-  root: '#jjg-try-it', wasm: 'jjg.wasm?v=3698db362b', debug: '__jjgDemo', meters: '__jjgMeters',
+  root: '#jjg-try-it', wasm: 'jjg.wasm?v=7d19ebc3fb', debug: '__jjgDemo', meters: '__jjgMeters',
   clips: Object.fromEntries(['female', 'female2', 'female3', 'male', 'male2', 'male3', 'male4', 'male5', 'backing', 'gang', 'drumkit', 'edrums1', 'edrums2', 'bass', 'synthbass', '808', 'acoustic', 'electric', 'electric2', 'rubber', 'pad', 'mellotron'].map(id => [id, 'clips/' + id + '.m4a'])),
   toEngine(id, value) {
     if (id === 'bypass') id = 'masterBypass';          // the player's A/B rides the plugin's own bypass
     if (id === 'eqDesk') id = 'deskOn';                // the panel's THD switch is the plugin's deskOn
-    if (!(id in INDEX) || id === 'lowLatency' || id === 'monoInput') return null;
+    if (!(id in INDEX) || id === 'monoInput') return null;   // LOW LAT and HQ pass through (default mode, 2026-11-04)
     const v = typeof value === 'boolean' ? (value ? 1 : 0) : +value;
     return Number.isFinite(v) ? [INDEX[id], v] : null;
   }

@@ -42,7 +42,7 @@
     </sc-if>
     <div style="position: relative; overflow-x: auto; border: 2px solid #2a2622; box-shadow: 0 18px 40px -18px rgba(42,38,34,.7); line-height: 0; background: #eef1f3;">
       <div style="min-width: {{ rackMin }};">
-      <dc-import name="JJG Vocals Pastel" embed="{{ true }}" fit="{{ true }}" drive-sheet="{{ false }}" force-low-lat="{{ true }}" bypass="{{ bypass }}" on-param="{{ onParam }}" hint-size="100%,420px"></dc-import>
+      <dc-import name="JJG Vocals Pastel" embed="{{ true }}" fit="{{ true }}" drive-sheet="{{ false }}" force-low-lat="{{ false }}" bypass="{{ bypass }}" on-param="{{ onParam }}" hint-size="100%,420px"></dc-import>
       </div>
       <sc-if value="{{ veil }}" hint-placeholder-val="{{ false }}">
         <div style="position: absolute; inset: 0; background: rgba(251,247,238,.45); pointer-events: none;"></div>
@@ -105,7 +105,7 @@
 
         <div style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.4; color: #4a443d; text-wrap: pretty;">
           <svg width="20" height="20" viewBox="0 0 20 20" style="flex: none; margin-top: 1px;"><path d="M 2.5 14 L 6 8 L 10 12.5 L 13.5 5 L 17.5 14" fill="none" stroke="#2a2622" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          <div>The panel opens on the settings Justin actually prints vocals with. It's built for vocals, but try the DRUMS, BASS, GUITARS and KEYS tabs too: people are running everything through it. Flip WITHOUT / WITH to hear the whole chain, then go exploring: every plate swaps a circuit. One thing you will not hear here: Wow / Flutter. The demo runs in LOW LAT mode, which turns the wow line off, exactly as it does in the plugin.</div>
+          <div>The panel opens on the settings Justin actually prints vocals with. It's built for vocals, but try the DRUMS, BASS, GUITARS and KEYS tabs too: people are running everything through it. Flip WITHOUT / WITH to hear the whole chain, then go exploring: every plate swaps a circuit.</div>
         </div>
       </div>
     </sc-if>
@@ -238,7 +238,7 @@ class Component extends DCLogic {
   }
 }
 </script>
-<script src="./engine-core.js?v=ac70dd0c8b"></script>
-<script src="./engine.js?v=506e9d0475"></script>
+<script src="./engine-core.js?v=09f5936816"></script>
+<script src="./engine.js?v=0fc9f6cad1"></script>
 </body>
 </html>

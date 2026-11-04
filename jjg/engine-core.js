@@ -31,15 +31,15 @@ window.PbDemo = {
       if (node) return;
       const [bytes] = await Promise.all([
         fetch(new URL(cfg.wasm, base)).then(r => { if (!r.ok) throw new Error('wasm ' + r.status); return r.arrayBuffer(); }),
-        ctx.audioWorklet.addModule(new URL('worklet.js', base))
+        ctx.audioWorklet.addModule(new URL('worklet.js?v=068804997b', base))
       ]);
       const module = await WebAssembly.compile(bytes);
       node = new AudioWorkletNode(ctx, 'pb-engine', { processorOptions: { module }, outputChannelCount: [2] });
       node.connect(ctx.destination);
       if (cfg.meters) { window[cfg.meters] = { comp: 0, deess: 0, gate: 0, raw: [0, 0, 0] }; node.port.onmessage = (e) => { const m = e.data && e.data.meters; if (m) window[cfg.meters] = { comp: m[0], deess: m[1], gate: m[2], raw: m }; }; }
       const cur = el.tryIt.getParams();
-      for (const id in cur) fromUI(id, cur[id]);
-      node.port.postMessage(msg);
+      for (const id in cur) { const m = cfg.toEngine(id, cur[id]); if (m) msg[m[0]] = m[1]; }
+      node.port.postMessage({ ...msg, prepare: 1 });   // every value first, then prepare: the engine opens on the panel's state
     }
     async function clip(id) {
       const file = cfg.clips[id] || ('clips/' + id + '.m4a');   // never silently substitute another clip
