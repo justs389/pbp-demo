@@ -21,7 +21,7 @@ export function pbRows(o) {
     groups.forEach(g => {
       const key = sec + ':' + g, open = !o.folded[key], inside = items.filter(x => x.p.group === g), isUser = sec === 'U', h = o.hover === key;
       rows.push({
-        key, kind: 'folder', label: g, tri: open ? '▾' : '▸', count: isUser && h ? '' : String(inside.length), open, isUser,
+        key, kind: 'folder', label: g, tri: open ? '▾' : '▸', count: '', open, isUser,
         hovered: h, dots: isUser && h, onClick: () => o.toggleFold(key), ...hov(key),
         onDots: isUser ? (e) => o.openMenu({ kind: 'folder', name: g, key }, e) : null,
         onContext: isUser ? (e) => o.openMenu({ kind: 'folder', name: g, key }, e) : (e) => e.preventDefault(),

@@ -12,7 +12,13 @@ class PbEngine extends AudioWorkletProcessor {
     this.x.pb_prepare(sampleRate);
     this.pL = this.x.pb_bufL(); this.pR = this.x.pb_bufR(); this.max = this.x.pb_maxBlock();
     this.views();
-    this.port.onmessage = (e) => { for (const k in e.data) this.x.pb_set(+k, +e.data[k]); };
+    // {index: value} sets parameters; {prepare: 1} then re-runs pb_prepare so the engine starts
+    // from those values (the plugin's state-before-prepare load, 2026-11-04 JJG Vocals advice).
+    this.port.onmessage = (e) => {
+      const d = e.data || {};
+      for (const k in d) if (k !== 'prepare') this.x.pb_set(+k, +d[k]);
+      if (d.prepare) this.x.pb_prepare(sampleRate);
+    };
     this.meterEvery = Math.max(1, Math.round(sampleRate * 0.08 / 128)); this.quantum = 0;   // ~80 ms, the panel's own meter tick
   }
   views() {
