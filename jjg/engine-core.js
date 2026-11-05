@@ -7,12 +7,14 @@
 //   toEngine  (id, value) -> [paramIndex, number] or null (see <slug>/params.json)
 //   meters    optional window property name that receives {comp, deess, gate} GR in dB (~80 ms)
 //   debug     window property name for a small inspection handle
+//   inputDb   optional trim (dB) on the clip before the engine, for WITHOUT and WITH alike. The clips
+//             are peak-normalised to -1 dBFS, hotter than a tracked vocal (2026-11-05, Justin: -6 dB)
 window.PbDemo = {
   start(cfg) {
     const base = new URL('.', document.currentScript ? document.currentScript.src : location.href);
     const FAIL = 'The audio engine could not start here. It needs a current Chrome, Firefox, Edge or Safari; some in-app browsers (Instagram, Facebook) block it, so open this page in your regular browser.';
     const msg = {};                                   // engine index -> value, the full current state
-    let el, ctx, node, src, decoded = {}, token = null, playing = false;
+    let el, ctx, node, trim = null, src, decoded = {}, token = null, playing = false;
 
     function fromUI(id, value) {
       const m = cfg.toEngine(id, value);
@@ -36,6 +38,7 @@ window.PbDemo = {
       const module = await WebAssembly.compile(bytes);
       node = new AudioWorkletNode(ctx, 'pb-engine', { processorOptions: { module }, outputChannelCount: [2] });
       node.connect(ctx.destination);
+      if (cfg.inputDb) { trim = ctx.createGain(); trim.gain.value = Math.pow(10, cfg.inputDb / 20); trim.connect(node); }
       if (cfg.meters) { window[cfg.meters] = { comp: 0, deess: 0, gate: 0, raw: [0, 0, 0] }; node.port.onmessage = (e) => { const m = e.data && e.data.meters; if (m) window[cfg.meters] = { comp: m[0], deess: m[1], gate: m[2], raw: m }; }; }
       const cur = el.tryIt.getParams();
       for (const id in cur) { const m = cfg.toEngine(id, cur[id]); if (m) msg[m[0]] = m[1]; }
@@ -60,7 +63,9 @@ window.PbDemo = {
         const buf = await clip(id);
         if (token !== mine) return;                   // a newer play/stop won
         stopSrc();
-        src = ctx.createBufferSource(); src.buffer = buf; src.loop = true; src.connect(node); src.start();
+        src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+        src.connect(trim || node);
+        src.start();
         playing = true;
         el.tryIt.ready();
       } catch (e) {
