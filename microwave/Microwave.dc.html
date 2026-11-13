@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&amp;family=Patrick+Hand+SC&amp;family=Patrick+Hand&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #191512; }
+  a { color: #cf4a5c; text-decoration: none; }
+  a:hover { color: #f2ecdd; }
+</style>
+</helmet>
+
+<div ref="{{ wrapRef }}" style="min-height: {{ wrapMinH }}; background: {{ wrapBg }}; padding: {{ wrapPad }}; display: flex; flex-direction: column; align-items: center; gap: 38px; font-family: 'Patrick Hand', cursive;">
+
+  <sc-if value="{{ chrome }}" hint-placeholder-val="{{ true }}">
+  <div style="font-size: 14px; letter-spacing: .04em; color: #7a7062;">Microwave — cassette appliance — 900 × 712, uniform scale</div>
+  </sc-if>
+
+  <div style="width: {{ frameW }}px; height: {{ frameH }}px;">
+  <div style="zoom: {{ scale }};">
+    <div style="position: relative; width: 900px; height: 712px; overflow: hidden; box-shadow: 5px 6px 0 #241d1a, 0 26px 54px -16px rgba(0,0,0,.8);">
+
+      <div style="position: absolute; inset: 0; background: {{ plastic }};"></div>
+      <div style="position: absolute; left: 420px; top: 30px; width: 442px; height: 110px; opacity: .6; background-image: radial-gradient(#1b1e1d 1.7px, rgba(0,0,0,0) 1.8px); background-size: 11px 11px;"></div>
+
+      <svg width="900" height="712" viewBox="0 0 900 712" style="position: absolute; inset: 0;">
+        <g stroke="#241d1a" stroke-linecap="round" stroke-linejoin="round">
+          <sc-for list="{{ plate }}" as="p" hint-placeholder-count="60">
+            <path d="{{ p.d }}" stroke="{{ p.s }}" stroke-width="{{ p.w }}" opacity="{{ p.o }}" fill="{{ p.f }}"></path>
+          </sc-for>
+          <sc-for list="{{ live }}" as="p" hint-placeholder-count="40">
+            <path d="{{ p.d }}" transform="{{ p.t }}" stroke="{{ p.s }}" stroke-width="{{ p.w }}" opacity="{{ p.o }}" fill="{{ p.f }}" stroke-dasharray="{{ p.dash }}"></path>
+          </sc-for>
+        </g>
+      </svg>
+
+      <div style="position: absolute; left: 48px; top: 22px; font-family: 'Caveat Brush', cursive; font-size: 56px; color: #f6f1e4; line-height: 1;">MICROWAVE</div>
+      <div style="position: absolute; left: 52px; top: 86px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 15px; letter-spacing: .13em; color: #f0d3d6; line-height: 1;">CASSETTE RECORDER · DC/BATTERY</div>
+      <div style="position: absolute; left: 78px; top: 115px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .13em; color: #f0d3d6; line-height: 1;">RECORD / BATT</div>
+
+      <div onClick="{{ presetToggle }}" onContextMenu="{{ presetContext }}" onMouseEnter="{{ presetTip }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 330px; top: 196px; width: 240px; height: 28px; text-align: center; white-space: nowrap; overflow: hidden; cursor: pointer; font-family: 'Caveat Brush', cursive; font-size: 18px; color: #3a332b; line-height: 28px;">{{ tapeLabel }}</div>
+      <div onClick="{{ presetPrev }}" onMouseEnter="{{ presetTip }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 280px; top: 196px; width: 24px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; font-family: 'Caveat Brush', cursive; font-size: 18px; color: #6c6355; line-height: 1; opacity: {{ arrowOp }};">‹</div>
+      <div onClick="{{ presetNext }}" onMouseEnter="{{ presetTip }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 596px; top: 196px; width: 24px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; font-family: 'Caveat Brush', cursive; font-size: 18px; color: #6c6355; line-height: 1; opacity: {{ arrowOp }};">›</div>
+
+      <sc-if value="{{ presetOpen }}" hint-placeholder-val="{{ false }}">
+        <div ref="{{ pbBox }}" onClick="{{ pbClose }}" style="position: absolute; left: 306px; top: 230px; width: 288px; box-sizing: border-box; padding: 10px 0 8px; background: #f7f2e5; border: 2.4px solid #241d1a; border-radius: 12px 14px 10px 15px; box-shadow: 4px 5px 0 rgba(36,29,26,.6); z-index: 16; font-family: 'Patrick Hand', cursive;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; padding: 0 14px 7px; font-family: 'Patrick Hand SC', cursive; font-size: 10px; letter-spacing: .18em; color: #8a8172;">
+            <div style="white-space: nowrap;">PRESET FOLDERS</div>
+            <div onClick="{{ presetToggle }}" style="white-space: nowrap; cursor: pointer; color: #55503f;">CLOSE</div>
+          </div>
+          <div ref="{{ pbList }}" style="max-height: 330px; overflow-y: auto; overflow-x: hidden; scrollbar-width: thin; scrollbar-color: #b9b19e transparent; border-top: 1px solid #ded7c4; border-bottom: 1px solid #ded7c4; padding: 4px 0; margin: 0 8px;">
+            <sc-for list="{{ pbRows }}" as="r" hint-placeholder-count="8">
+              <div data-pb-key="{{ r.key }}" onClick="{{ r.onClick }}" onContextMenu="{{ r.onContext }}" onMouseEnter="{{ r.onEnter }}" onMouseLeave="{{ r.onLeave }}" style="display: flex; align-items: center; gap: 6px; padding: {{ r.pad }}; border-radius: 6px 7px 5px 8px; font-family: {{ r.font }}; font-size: {{ r.size }}; letter-spacing: {{ r.ls }}; color: {{ r.color }}; background: {{ r.bg }}; cursor: {{ r.cursor }}; white-space: nowrap; user-select: none; line-height: 1.25;">
+                <div style="width: {{ r.triW }}; flex: none; font-size: 12px; color: #8a8172;">{{ r.tri }}</div>
+                <div style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;">{{ r.label }}</div>
+                <div style="flex: none; font-family: 'Patrick Hand SC', cursive; font-size: 11px; letter-spacing: .08em; color: #8a8172;">{{ r.count }}</div>
+                <sc-if value="{{ r.dots }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ r.onDots }}" style="flex: none; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border: 2px solid #241d1a; border-radius: 6px 7px 5px 8px; font-family: 'Caveat Brush', cursive; font-size: 15px; line-height: 1; color: #241d1a; cursor: pointer;" style-hover="background: #6fc6bc;">⋮</div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display: flex; gap: 6px; padding: 8px 12px 0; font-family: 'Patrick Hand SC', cursive; font-size: 11px; letter-spacing: .12em;">
+            <div onClick="{{ savePreset }}" onMouseEnter="{{ tipSave }}" onMouseLeave="{{ tipOut }}" style="flex: 1; text-align: center; padding: 5px 0; border: 2px solid #241d1a; border-radius: 8px 9px 7px 10px; background: #e6e0cf; color: #241d1a; cursor: pointer;" style-hover="background: #6fc6bc;">SAVE</div>
+            <div onClick="{{ saveAsPreset }}" onMouseEnter="{{ tipSaveAs }}" onMouseLeave="{{ tipOut }}" style="flex: 1.3; text-align: center; padding: 5px 0; border: 2px solid #241d1a; border-radius: 9px 8px 10px 7px; background: #e6e0cf; color: #241d1a; cursor: pointer;" style-hover="background: #6fc6bc;">SAVE AS…</div>
+            <div onClick="{{ delPreset }}" onMouseEnter="{{ tipDel }}" onMouseLeave="{{ tipOut }}" style="flex: 1; text-align: center; padding: 5px 0; border: 2px solid #241d1a; border-radius: 8px 10px 7px 9px; background: #e6e0cf; color: #241d1a; cursor: {{ delCursor }}; opacity: {{ delOp }};" style-hover="background: {{ delHover }};">DELETE</div>
+          </div>
+          <sc-if value="{{ pbMenuOpen }}" hint-placeholder-val="{{ false }}">
+            <div onClick="{{ pbStop }}" style="position: absolute; right: 14px; top: {{ pbMenuY }}; transform: {{ pbMenuT }}; width: 176px; box-sizing: border-box; padding: 5px 0; background: #f7f2e5; border: 2px solid #241d1a; border-radius: 9px 11px 8px 12px; box-shadow: 3px 4px 0 rgba(36,29,26,.5); z-index: 5;">
+              <sc-for list="{{ pbMenuItems }}" as="m" hint-placeholder-count="3">
+                <div onClick="{{ m.onClick }}" style="padding: {{ m.pad }}; height: {{ m.h }}; font-family: {{ m.font }}; font-size: {{ m.size }}; letter-spacing: {{ m.ls }}; color: {{ m.color }}; cursor: {{ m.cursor }}; white-space: nowrap; line-height: 1.2;" style-hover="background: {{ m.hoverBg }};">{{ m.label }}</div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <div style="position: absolute; left: 262px; top: 309px; width: 376px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .24em; color: #d2ccbd; line-height: 1;">AUTOMATIC STOP</div>
+
+      <div style="position: absolute; left: 56px; top: 366px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .16em; color: #5c5445; line-height: 1;">CASSETTE</div>
+      <div style="position: absolute; left: 40px; top: 364px; width: 820px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 16px; letter-spacing: .3em; color: #b93f52; line-height: 1;">PIZZA BAGEL PLUGINS</div>
+      <div style="position: absolute; left: 764px; top: 366px; width: 50px; text-align: right; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .12em; color: #5c5445; line-height: 1;">v1.0.0</div>
+      <div style="position: absolute; left: 150px; top: 360px; height: 26px; display: flex; align-items: center; gap: 8px; z-index: 8; user-select: none;">
+        <div onClick="{{ undo }}" onMouseEnter="{{ tipUndo }}" onMouseLeave="{{ tipOut }}" style="width: 26px; height: 26px; box-sizing: border-box; border: 2.4px solid #241d1a; border-radius: 50%; background: #e6e0cf; color: #241d1a; opacity: {{ undoOp }}; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg width="18" height="18" viewBox="0 0 16 16" style="display: block;"><path d="M 5.2 6.3 A 4.2 4.2 0 1 1 8.6 12.1" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path><path d="M 3.2 3.6 L 3.6 7.4 L 7.3 6.6" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+        <div onMouseEnter="{{ tipAB }}" onMouseLeave="{{ tipOut }}" style="display: flex; height: 26px; box-sizing: border-box; border: 2.4px solid #241d1a; border-radius: 8px 9px 7px 10px; background: #e6e0cf; cursor: pointer; overflow: hidden; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .1em; line-height: 1;">
+          <div onClick="{{ setA }}" style="width: 24px; display: flex; align-items: center; justify-content: center; background: {{ aBg }}; color: {{ aFg }};">A</div>
+          <div onClick="{{ setB }}" style="width: 24px; display: flex; align-items: center; justify-content: center; background: {{ bBg }}; color: {{ bFg }};">B</div>
+        </div>
+      </div>
+      <div onClick="{{ toggleTips }}" onMouseEnter="{{ tipTips }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 826px; top: 360px; width: 26px; height: 26px; box-sizing: border-box; border: 2.4px solid #241d1a; border-radius: 50%; background: {{ tipsBg }}; display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; font-family: 'Caveat Brush', cursive; font-size: 18px; color: {{ tipsColor }}; line-height: 1; z-index: 8;">?</div>
+
+      <sc-for list="{{ knobs }}" as="k" hint-placeholder-count="6">
+        <div style="position: absolute; left: {{ k.colLeft }}px; top: {{ k.labelTop }}px; width: 190px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: {{ k.labelSize }}px; letter-spacing: .16em; color: {{ k.labelColor }}; line-height: 1;">{{ k.label }}</div>
+      </sc-for>
+      <sc-for list="{{ knobs }}" as="k" hint-placeholder-count="6">
+        <div onPointerDown="{{ k.onDown }}" onWheel="{{ k.onWheel }}" onDoubleClick="{{ k.onReset }}" onMouseEnter="{{ k.onEnter }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: {{ k.hitLeft }}px; top: {{ k.hitTop }}px; width: {{ k.hitSize }}px; height: {{ k.hitSize }}px; border-radius: 50%; cursor: ns-resize; touch-action: none;"></div>
+      </sc-for>
+      <sc-for list="{{ knobs }}" as="k" hint-placeholder-count="6">
+        <div style="position: absolute; left: {{ k.colLeft }}px; top: {{ k.readTop }}px; width: 190px; text-align: center; white-space: nowrap; font-family: 'Caveat Brush', cursive; font-size: {{ k.readSize }}px; color: {{ k.readColor }}; line-height: 1;">{{ k.readout }}</div>
+      </sc-for>
+
+      <div onClick="{{ toggleLink }}" onMouseEnter="{{ tipLink }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 748px; top: 544px; width: 34px; height: 24px; display: flex; align-items: center; justify-content: center; font-family: 'Patrick Hand SC', cursive; font-size: 10px; letter-spacing: .06em; color: {{ linkColor }}; line-height: 1; cursor: pointer; user-select: none; z-index: 6;">LINK</div>
+
+      <div style="position: absolute; left: 222px; top: 568px; width: 40px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 10px; letter-spacing: .1em; color: #4a4235; line-height: 1;">TAPE</div>
+      <div style="position: absolute; left: 452px; top: 561px; white-space: nowrap; font-family: 'Caveat Brush', cursive; font-size: 20px; color: {{ chainColor }}; line-height: 1;">{{ chainWord }}</div>
+
+      <sc-for list="{{ keys }}" as="k" hint-placeholder-count="4">
+        <div onClick="{{ k.onClick }}" onMouseEnter="{{ k.onEnter }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: {{ k.left }}px; top: 596px; width: 190px; height: 92px; cursor: pointer; user-select: none;"></div>
+      </sc-for>
+      <sc-for list="{{ keys }}" as="k" hint-placeholder-count="4">
+        <div style="position: absolute; left: {{ k.left }}px; top: {{ k.textTop }}px; width: 190px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 19px; letter-spacing: .16em; color: {{ k.color }}; line-height: 1; pointer-events: none; z-index: 6; opacity: {{ k.op }};">{{ k.label }}</div>
+      </sc-for>
+
+      <sc-if value="{{ bypassed }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; inset: 0; background: rgba(20,22,21,.55); pointer-events: none; z-index: 5;"></div>
+      </sc-if>
+
+      <div style="position: absolute; inset: 0; opacity: .22; pointer-events: none; z-index: 7; background-image: radial-gradient(rgba(36,29,26,.5) .5px, rgba(0,0,0,0) .6px); background-size: 3px 3px; left: 19px; top: 18px"></div>
+
+      <sc-if value="{{ tip }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; left: {{ tipX }}px; top: {{ tipY }}px; transform: {{ tipShift }}; width: 190px; box-sizing: border-box; padding: 5px 9px; background: #f7f2e5; border: 2px solid #241d1a; border-radius: 10px 12px 8px 12px; font-family: 'Patrick Hand', cursive; font-size: 14px; line-height: 1.16; color: #241d1a; pointer-events: none; z-index: 20; box-shadow: 3px 4px 0 rgba(36,29,26,.9);">{{ tip }}</div>
+      </sc-if>
+    </div>
+  </div>
+  </div>
+
+  <sc-if value="{{ chrome }}" hint-placeholder-val="{{ true }}">
+  <div style="width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 14px;">
+    <div style="height: 1px; background: #322a22;"></div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; font-size: 15px; line-height: 1.3; color: #9a8f7c;">
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #d8cdb6;">PALETTE</div>
+        <div style="display: flex; gap: 5px; margin: 7px 0;">
+          <div style="flex: 1; height: 26px; background: #f2ecdd;"></div>
+          <div style="flex: 1; height: 26px; background: #dfd9cb;"></div>
+          <div style="flex: 1; height: 26px; background: #5a5f5c;"></div>
+          <div style="flex: 1; height: 26px; background: #b93f52;"></div>
+          <div style="flex: 1; height: 26px; background: #2f8d86;"></div>
+          <div style="flex: 1; height: 26px; background: #241d1a;"></div>
+        </div>
+        <div>Graphite appliance plastic 5a5f5c off the real unit, chrome strip d5d0c2, silk-screen chalk ece7db, ink 1b1e1d. The box art comes onto the panel: a crimson b93f52 block behind the wordmark with the cream and teal 2f8d86 swoosh rules struck across it, teal 6fc6bc silk-screen legends, crimson badge line on the chrome. Crimson is heat and engagement, teal is print and WILD. Flat fills, 2.4px wobbled strokes, no bevels.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #d8cdb6;">THE WALL</div>
+        <div>DRIVE and WOBBLE draw noon as a real landmark: a heavy tick outside the ring, ink arc up to it, crimson arc past it, and the readout turns crimson with "past the wall". OUTPUT draws from noon outward in either direction, never a min-to-max sweep.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #d8cdb6;">CHAIN</div>
+        <div>A path is printed on the plastic above the keys: the raised mic boss → mic tap → TAPE → speaker tap → out arrow. The MIC key is wired to the first stub, SPEAKER to the last; the printed path stays inert; the keys and the note below it carry the state. The handwritten note beside it names the current path.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #d8cdb6;">WILD</div>
+        <div>Knob and key share the fourth column and are joined by a dashed bracket. Key off: knob greyed, bracket dashed grey, note reads "off — key it on". Key on: bracket teal and solid, knob live, key face teal — the panel stays still.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #d8cdb6;">MOTION</div>
+        <div>The transport has inertia — the reels ease into speed changes instead of stepping. Both turn the same way, the fuller reel turns slower, both packs are wound the same, a hair apart so they never lock. WOBBLE modulates their speed and drifts the whole shell in a slow wandering orbit — three incommensurate rates, so it never repeats on a beat — with a hair of rotation on top. Past noon on DRIVE the RECORD/BATT lamp swells and throws a pulsing halo across the crimson block — the wall, felt rather than metered. Bypass stops the transport and washes the panel out. No VU: the unit never had one.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #d8cdb6;">JUCE NOTES</div>
+        <div>900 × 700 base, uniform 0.5–2×, nothing finer than 2px. Every shape is a Path: wobbled rects/circles from a seeded jitter + Catmull-Rom, drawn once into a cached plate image; only knobs, reels, keys, chain and speckles redraw. Grille is a dot loop, not a texture. Caveat Brush for wordmark and values, Patrick Hand SC for legends, Patrick Hand for prose — same pair as Capsaicin and Schmear. Tooltips on every control, toggled by the "?" on the chrome strip.</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:960,&quot;height&quot;:900},&quot;scale&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[1,1.5,2],&quot;default&quot;:1,&quot;tsType&quot;:&quot;number&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;options&quot;:[&quot;#cf4a5c&quot;,&quot;#d98a2b&quot;,&quot;#2f8d86&quot;,&quot;#8a6bbf&quot;],&quot;default&quot;:&quot;#cf4a5c&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Look&quot;},&quot;bodyTone&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;options&quot;:[&quot;#5a5f5c&quot;,&quot;#4b504e&quot;,&quot;#6d726c&quot;,&quot;#bcb5a5&quot;],&quot;default&quot;:&quot;#5a5f5c&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Look&quot;}}">
+const INK = '#1b1e1d', DIM = '#a3a49b', SILVER = '#d5d0c2', CREAM = '#f2ecdd', DARK = '#1e211f', TEAL = '#54b3aa', GREY = '#6f7570', CHALK = '#ece7db', ETCH = '#b4b6ac';
+
+const COLS = [40, 250, 460, 670];      // key slots, 190 wide
+const CX = [135, 345, 555, 765];       // column centres
+const WCX = 450, WCY = 250;            // cassette window centre
+const HUB = [372, 528];
+const WOB = 0.5;                        // hand-drawn wobble amount on every outline
+
+const V0 = { drive: 0.5, wobble: 0.5, noise: 0.1, mix: 1, input: 0.5, output: 0.5, wild: 1 }, K0 = { mic: false, speaker: false, wild: false };
+// demo/microwave/make_presets.py: the plugin's own presets (Init + Factory packs)
+const PRESETS = [{"name": "Init", "vals": {"drive": 0.5, "wobble": 0.5, "noise": 0.1, "mix": 1.0, "input": 0.5, "output": 0.5, "wild": 1.0}, "on": {"mic": false, "speaker": false, "wild": false}}, {"name": "Too Much Voltage", "vals": {"drive": 1.0, "wobble": 0.647, "noise": 1.0, "mix": 1.0, "input": 0.5, "output": 0.325, "wild": 1.0}, "on": {"mic": true, "speaker": true, "wild": true}, "group": "Al Portera"}, {"name": "90s Acoustic Demo", "vals": {"drive": 0.385, "wobble": 0.5, "noise": 0.156, "mix": 1.0, "input": 0.5, "output": 0.5, "wild": 1.0}, "on": {"mic": true, "speaker": true, "wild": false}, "group": "Justin Gammella"}, {"name": "Add Some Weight", "vals": {"drive": 0.467, "wobble": 0.0, "noise": 0.0, "mix": 0.43, "input": 0.5, "output": 0.4306, "wild": 1.0}, "on": {"mic": true, "speaker": false, "wild": false}, "group": "Justin Gammella"}, {"name": "Burnt Out", "vals": {"drive": 0.067, "wobble": 0.774, "noise": 0.0, "mix": 1.0, "input": 0.5, "output": 0.5, "wild": 1.0}, "on": {"mic": true, "speaker": false, "wild": false}, "group": "Justin Gammella"}, {"name": "Chorus Me Up", "vals": {"drive": 0.355, "wobble": 0.638, "noise": 0.0, "mix": 0.49, "input": 0.5, "output": 0.5, "wild": 1.0}, "on": {"mic": true, "speaker": false, "wild": false}, "group": "Justin Gammella"}, {"name": "Drum Bus Nice", "vals": {"drive": 0.724, "wobble": 0.0, "noise": 0.0, "mix": 0.045, "input": 0.5, "output": 0.5, "wild": 1.0}, "on": {"mic": true, "speaker": false, "wild": false}, "group": "Justin Gammella"}, {"name": "F Me Up A Lil Bit", "vals": {"drive": 0.786, "wobble": 0.0, "noise": 0.0, "mix": 0.105, "input": 0.5, "output": 0.5, "wild": 1.0}, "on": {"mic": true, "speaker": false, "wild": false}, "group": "Justin Gammella"}, {"name": "Oh Hi Kick!", "vals": {"drive": 0.428, "wobble": 0.0, "noise": 0.017, "mix": 0.35, "input": 0.5, "output": 0.5, "wild": 1.0}, "on": {"mic": true, "speaker": false, "wild": false}, "group": "Justin Gammella"}, {"name": "Old Timey Piano", "vals": {"drive": 0.225, "wobble": 0.713, "noise": 0.01, "mix": 1.0, "input": 0.5, "output": 0.5, "wild": 1.0}, "on": {"mic": false, "speaker": true, "wild": false}, "group": "Justin Gammella"}, {"name": "The Actual Unit", "vals": {"drive": 0.5, "wobble": 0.5, "noise": 0.497, "mix": 1.0, "input": 0.5, "output": 0.5, "wild": 1.0}, "on": {"mic": false, "speaker": false, "wild": false}, "group": "Justin Gammella"}, {"name": "The Actual Unit + Mic", "vals": {"drive": 0.5, "wobble": 0.5, "noise": 0.497, "mix": 1.0, "input": 0.5, "output": 0.5, "wild": 1.0}, "on": {"mic": true, "speaker": false, "wild": false}, "group": "Justin Gammella"}, {"name": "The Actual Unit + Mic & Spkr", "vals": {"drive": 0.5, "wobble": 0.5, "noise": 0.497, "mix": 1.0, "input": 0.5, "output": 0.5, "wild": 1.0}, "on": {"mic": true, "speaker": true, "wild": false}, "group": "Justin Gammella"}, {"name": "The Actual Unit + Spkr", "vals": {"drive": 0.5, "wobble": 0.5, "noise": 0.497, "mix": 1.0, "input": 0.5, "output": 0.5, "wild": 1.0}, "on": {"mic": false, "speaker": true, "wild": false}, "group": "Justin Gammella"}, {"name": "Transition Me", "vals": {"drive": 0.24, "wobble": 0.424, "noise": 0.19, "mix": 1.0, "input": 0.6583, "output": 0.3417, "wild": 1.0}, "on": {"mic": false, "speaker": true, "wild": false}, "group": "Justin Gammella"}, {"name": "Watch Me Cut Thru", "vals": {"drive": 0.731, "wobble": 0.0, "noise": 0.077, "mix": 0.15, "input": 0.5, "output": 0.3167, "wild": 1.0}, "on": {"mic": true, "speaker": false, "wild": false}, "group": "Justin Gammella"}, {"name": "Wild But Be Careful in Mono", "vals": {"drive": 0.385, "wobble": 0.5, "noise": 0.156, "mix": 1.0, "input": 0.5, "output": 0.5, "wild": 1.0}, "on": {"mic": true, "speaker": true, "wild": true}, "group": "Justin Gammella"}];
+const NAMES = { drive: 'DRIVE', wobble: 'WOBBLE', noise: 'NOISE', mix: 'MIX', input: 'INPUT', output: 'OUTPUT', wild: 'WILD', 'key:mic': 'MIC', 'key:speaker': 'SPEAKER', 'key:wild': 'WILD KEY' };
+
+const KNOBS = [
+  { id: 'drive', label: 'DRIVE', cx: 135, cy: 246, r: 46, def: 0.5, noon: true, big: true, seed: 20,
+    tip: 'DRIVE 0–10. Noon is the measured hardware. Past noon the output pins and breaks into square-wave crunch.' },
+  { id: 'wobble', label: 'WOBBLE', cx: 765, cy: 246, r: 46, def: 0.5, noon: true, big: true, seed: 40,
+    tip: 'WOBBLE 0–10. Noon is the real wow and flutter; past it the transport falls apart, up to 20×. At 0 there is no pitch movement at all.' },
+  { id: 'noise', label: 'NOISE', cx: 135, cy: 482, r: 34, def: 0.1, seed: 60,
+    tip: 'NOISE 0–10. Tape hiss plus the unit\u2019s own motor whine. 0 is silent, 5 is the true machine.' },
+  { id: 'mix', label: 'MIX', cx: 345, cy: 482, r: 34, def: 1, seed: 70,
+    tip: 'MIX 0–100%. Blend against dry. 100% is the deck alone.' },
+  { id: 'input', label: 'INPUT', cx: 710, cy: 482, r: 28, def: 0.5, centre: true, noon: true, small: true, seed: 76,
+    tip: 'INPUT −18 … 0 … +18 dB into the deck. Hit the tape harder or softer before DRIVE. With LINK on, OUTPUT moves the opposite way.' },
+  { id: 'output', label: 'OUTPUT', cx: 820, cy: 482, r: 28, def: 0.5, centre: true, noon: true, small: true, seed: 80,
+    tip: 'OUTPUT −18 … 0 … +18 dB. Centre-anchored: 0 dB is home, the arc grows either side of noon.' },
+  { id: 'wild', label: 'WILD', cx: 555, cy: 482, r: 34, def: 1, seed: 90, gated: true,
+    tip: 'WILD amount 0–10. 10 is the unit as wired. Only live when the WILD key is down. Stereo only — it vanishes in mono.' }
+];
+
+const KEYS = [
+  { id: 'mic', label: 'MIC', tip: 'MIC — records through the unit\u2019s built-in microphone at the head of the chain: hotter, fuller lows, much wobblier.' },
+  { id: 'speaker', label: 'SPEAKER', tip: 'SPEAKER — plays the tail of the chain back through the little built-in speaker: boxy, no bass. Stacks with MIC.' },
+  { id: 'wild', label: 'WILD', tip: 'WILD — the headphone jack is wired backwards. Huge phasey stereo that disappears completely in mono.' },
+  { id: 'bypass', label: 'BYPASS', tip: 'BYPASS — out of circuit. The transport stops and the panel washes out.' }
+];
+
+class Component extends DCLogic {
+  state = {
+    preset: 0, presetOpen: false, folded: {}, pbHover: null, pbMenu: null,
+    vals: { ...V0 }, link: false,
+    on: { mic: false, speaker: false, bypass: false, wild: false },
+    spin: 0, angL: 0, angR: 0, sp: 2.3, fill: 0.72, phase: 0, tips: false, tip: null, tipX: 0, tipY: 0, tipBelow: false,
+    hist: [], user: [], folders: [], ab: 'A', abOther: null, abDiff: []
+  };
+  snap = (s = this.state) => ({ vals: { ...s.vals }, on: { mic: s.on.mic, speaker: s.on.speaker, wild: s.on.wild } });
+  commit = (patch) => this.setState(st => ({ ...(typeof patch === 'function' ? patch(st) : patch), hist: [...st.hist.slice(-39), this.snap(st)] }));
+  undo = () => this.setState(st => { const hh = st.hist; if (!hh.length) return null; const p = hh[hh.length - 1]; return { vals: p.vals, on: { ...st.on, ...p.on }, hist: hh.slice(0, -1) }; });
+  allPresets = () => [...PRESETS, ...this.state.user];
+  applyPreset = (i) => { const p = this.allPresets()[i]; if (!p) return; this.commit(st => ({ preset: i, presetOpen: false, vals: { ...p.vals }, on: { ...st.on, ...p.on } })); };
+  savePreset = () => { if (!this.pbAct) return; if (this.state.preset < PRESETS.length) this.pbAct.saveAs(); else this.pbAct.save(this.state.preset); };
+  saveAsPreset = () => this.pbAct && this.pbAct.saveAs();
+  delPreset = () => { if (this.pbAct && this.state.preset >= PRESETS.length) this.pbAct.del(this.state.preset); };
+  diffKeys = (a, b) => Object.keys(a.vals).filter(k => Math.abs(a.vals[k] - b.vals[k]) > 1e-6).concat(Object.keys(a.on).filter(k => a.on[k] !== b.on[k]).map(k => 'key:' + k));
+  setAB = (slot) => this.setState(st => {
+    if (st.ab === slot) return null;
+    const cur = this.snap(st), other = st.abOther || cur, diff = this.diffKeys(cur, other);
+    clearTimeout(this.abT); this.abT = setTimeout(() => this.setState({ abDiff: [] }), 1800);
+    return { vals: other.vals, on: { ...st.on, ...other.on }, ab: slot, abOther: cur, abDiff: diff, hist: [...st.hist.slice(-39), cur] };
+  });
+
+  wrapRef = React.createRef();
+  // engine seam: controlled bypass in, parameter changes out (same contract as the other canvases)
+  paramOf = {
+    drive: s => +(s.vals.drive * 10).toFixed(2), wobble: s => +(s.vals.wobble * 10).toFixed(2), noise: s => +(s.vals.noise * 10).toFixed(2),
+    mix: s => Math.round(s.vals.mix * 100), input: s => +((s.vals.input - 0.5) * 36).toFixed(1), output: s => +((s.vals.output - 0.5) * 36).toFixed(1),
+    wild: s => +(s.vals.wild * 10).toFixed(2), wildOn: s => s.on.wild, mic: s => s.on.mic, speaker: s => s.on.speaker, link: s => s.link, bypass: s => s.on.bypass
+  };
+  pumpParams() {
+    const f = this.props.onParam; if (!f) return;
+    const now = {}; Object.entries(this.paramOf).forEach(([id, fn]) => { now[id] = fn(this.state); });
+    const prev = this._lastParams; this._lastParams = now;
+    if (!prev) return;
+    const moved = Object.keys(now).filter(id => now[id] !== prev[id]);
+    if (moved.length) queueMicrotask(() => moved.forEach(id => f({ id, value: now[id] })));
+  }
+  componentDidMount() {
+    if (this.props.fit && this.wrapRef.current && window.ResizeObserver) {
+      this.ro = new ResizeObserver(([e]) => { const w = e.contentRect.width; if (w > 0) this.setState({ fitScale: Math.min(1, w / 900) }); });
+      this.ro.observe(this.wrapRef.current);
+    }
+    import(new URL('preset-browser.js', document.baseURI).href).then(m => { m.installPB(this, { factory: () => PRESETS, snap: (st) => this.snap(st), commit: this.commit }); this.forceUpdate(); });
+    this.onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); this.undo(); return; }
+      if (e.key === 'Escape') { this.setState(st => st.pbMenu ? { pbMenu: null } : { presetOpen: false }); return; }
+      const d = e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' ? -1 : 0;
+      if (d && this.state.presetOpen) { e.preventDefault(); const n = this.allPresets().length; this.applyPreset((this.state.preset + d + n) % n); this.setState({ presetOpen: true }); }
+    };
+    window.addEventListener('keydown', this.onKey);
+    this.timer = setInterval(() => {
+      const s = this.state, w = s.vals.wobble;
+      const phase = s.phase + 0.09;
+      let angL = s.angL, angR = s.angR, fill = s.fill, sp = s.sp;
+      // target speed wanders gently; the transport has inertia, so ease toward it
+      const flutter = w * 0.22 * Math.sin(phase * 0.9) + (w > 0.5 ? (w - 0.5) * 0.5 * Math.sin(phase * 1.7 + 0.8) : 0);
+      const target = s.on.bypass ? 0 : 2.3 * (1 + flutter);
+      sp = sp + (target - sp) * 0.06;
+      angL = (angL + sp) % 360;                           // both reels, same way, same rate
+      angR = (angR + sp * 0.99) % 360;                    // a hair apart so they never lock
+      this.setState({ phase, angL, angR, fill, sp });
+    }, 40);
+  }
+  componentWillUnmount() { if (this.ro) this.ro.disconnect(); clearInterval(this.timer); window.removeEventListener('keydown', this.onKey); clearTimeout(this.tipT); clearTimeout(this.abT); }
+
+  // ---- wobbled geometry ------------------------------------------------
+  rnd(seed) { let a = (seed * 2654435761) >>> 0; return () => { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; }; }
+
+  smooth(pts, closed) {
+    const n = pts.length, at = i => pts[closed ? (i + n) % n : Math.max(0, Math.min(n - 1, i))];
+    let d = 'M ' + pts[0][0].toFixed(2) + ' ' + pts[0][1].toFixed(2);
+    const last = closed ? n : n - 1;
+    for (let i = 0; i < last; i++) {
+      const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+      const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      d += ' C ' + c1[0].toFixed(2) + ' ' + c1[1].toFixed(2) + ', ' + c2[0].toFixed(2) + ' ' + c2[1].toFixed(2) + ', ' + p2[0].toFixed(2) + ' ' + p2[1].toFixed(2);
+    }
+    return closed ? d + ' Z' : d;
+  }
+
+  pt(deg, r, cx, cy) { const a = deg * Math.PI / 180; return [cx + Math.sin(a) * r, cy - Math.cos(a) * r]; }
+
+  wCircle(cx, cy, r, seed, amp) {
+    const rr = this.rnd(seed), n = 16, pts = [];
+    for (let i = 0; i < n; i++) pts.push(this.pt(i * 360 / n, r + (rr() - 0.5) * 2 * (amp == null ? 0.8 : amp) * WOB, cx, cy));
+    return this.smooth(pts, true);
+  }
+
+  wArc(cx, cy, r, a1, a2, seed, amp) {
+    const rr = this.rnd(seed), span = Math.abs(a2 - a1);
+    const n = Math.max(3, Math.round(span / 11)), pts = [];
+    for (let i = 0; i <= n; i++) {
+      const t = a1 + (a2 - a1) * i / n;
+      pts.push(this.pt(t, r + (rr() - 0.5) * 2 * (amp == null ? 0.7 : amp) * WOB, cx, cy));
+    }
+    return this.smooth(pts, false);
+  }
+
+  wRect(x, y, w, h, seed, amp) {
+    const rr = this.rnd(seed), a = (amp == null ? 1.2 : amp) * WOB, pts = [], step = 22;
+    const edge = (x1, y1, x2, y2, nx, ny) => {
+      const len = Math.hypot(x2 - x1, y2 - y1), n = Math.max(2, Math.round(len / step));
+      for (let i = 0; i < n; i++) {
+        const t = i / n, o = (rr() - 0.5) * 2 * a;
+        pts.push([x1 + (x2 - x1) * t + nx * o, y1 + (y2 - y1) * t + ny * o]);
+      }
+    };
+    edge(x, y, x + w, y, 0, -1);
+    edge(x + w, y, x + w, y + h, 1, 0);
+    edge(x + w, y + h, x, y + h, 0, 1);
+    edge(x, y + h, x, y, -1, 0);
+    return this.smooth(pts, true);
+  }
+
+  wLine(x1, y1, x2, y2, seed, amp) {
+    const rr = this.rnd(seed), a = (amp == null ? 1 : amp) * WOB;
+    const mx = (x1 + x2) / 2 + (rr() - 0.5) * 2 * a, my = (y1 + y2) / 2 + (rr() - 0.5) * 2 * a;
+    return 'M ' + x1.toFixed(2) + ' ' + y1.toFixed(2) + ' Q ' + mx.toFixed(2) + ' ' + my.toFixed(2) + ', ' + x2.toFixed(2) + ' ' + y2.toFixed(2);
+  }
+
+  // ---- static plate ----------------------------------------------------
+  plate(plastic) {
+    if (this._plate && this._tone === plastic) return this._plate;
+    this._tone = plastic;
+    const P = [], add = (d, w, o, s, f) => P.push({ d: d, w: w == null ? 2.4 : w, o: o == null ? 1 : o, s: s || INK, f: f || 'none' });
+
+    add(this.wRect(14, 14, 872, 684, 3, 1.6), 3.4);
+
+    add(this.wRect(26, 22, 382, 118, 6, 1.5), 2.6, 1, INK, '#b93f52');
+    add(this.wLine(238, 130, 396, 112, 8, 0.7), 4, 1, '#2f8d86');
+    add(this.wLine(238, 121, 396, 103, 10, 0.7), 2.2, 0.95, '#f0e7d6');
+    add(this.wRect(420, 30, 442, 110, 7, 1.3), 2.2, 0.5, '#8b908b');
+    add(this.wCircle(60, 127, 7, 9, 0.4), 2, 1, '#f6f1e4');
+
+    // cassette well
+    add(this.wRect(252, 164, 396, 172, 11, 1.4), 2.6, 1, SILVER, SILVER);
+    add(this.wRect(262, 174, 376, 152, 13, 1.2), 2.6, 1, INK, DARK);
+    add(this.wRect(276, 188, 348, 116, 15, 1.1), 2.2, 1, INK, CREAM);
+    add(this.wRect(300, 199, 300, 22, 17, 0.9), 1.5, 0.5);
+    HUB.forEach((hx, i) => {
+      add(this.wCircle(hx, WCY + 12, 28, 19 + i * 4, 0.7), 2.2, 1, INK, '#e2d9c4');
+      add(this.wCircle(hx, WCY + 12, 12, 27 + i * 4, 0.5), 2, 1, INK, DARK);
+    });
+
+    // chrome strip
+    add(this.wRect(40, 354, 820, 38, 41, 1.2), 2.4, 1, INK, SILVER);
+
+    // knob rings + ticks
+    KNOBS.forEach(k => {
+      add(this.wCircle(k.cx, k.cy, k.r, k.seed, 0.8), 2.6, 1, INK, '#cec7b7');
+      add(this.wCircle(k.cx, k.cy, k.r - 8, k.seed + 1, 0.6), 1.4, 0.35);
+      add(this.wArc(k.cx, k.cy, k.r + 11, -135, 135, k.seed + 2, 0.6), 1.6, 0.4, ETCH);
+      for (let j = 0; j <= 10; j++) {
+        const t = -135 + j * 27, p = this.pt(t, k.r + 16, k.cx, k.cy);
+        add(this.wCircle(p[0], p[1], j % 5 === 0 ? 2.1 : 1.4, k.seed + 5 + j, 0.2), 0.8, j % 5 === 0 ? 0.95 : 0.6, ETCH, ETCH);
+      }
+      if (k.noon) {
+        const a = this.pt(0, k.r + 13, k.cx, k.cy), b = this.pt(0, k.r + 21, k.cx, k.cy);
+        add(this.wLine(a[0], a[1], b[0], b[1], k.seed + 3, 0.5), 3.4, 1, CHALK);
+      }
+    });
+
+    // key slots
+    COLS.forEach((x, i) => add(this.wRect(x, 596, 190, 92, 120 + i * 6, 1.2), 2.4, 1, INK, '#3a3f3d'));
+
+    // printed signal path
+    add(this.wLine(80, 572, 220, 572, 150, 1), 2, 0.4, ETCH);
+    add(this.wLine(264, 572, 430, 572, 151, 1), 2, 0.4, ETCH);
+    add(this.wRect(222, 560, 40, 26, 152, 0.8), 1.8, 0.8, INK, '#c6c1b1');
+    add(this.wLine(424, 566, 434, 572, 154, 0.4), 1.8, 0.6, ETCH);
+    add(this.wLine(424, 578, 434, 572, 155, 0.4), 1.8, 0.6, ETCH);
+
+    this._plate = P;
+    return P;
+  }
+
+  // ---- interaction -----------------------------------------------------
+  showTip = (text, force) => (e) => {
+    if (!this.state.tips && !force) return;
+    const el = e.currentTarget, r = el.getBoundingClientRect();
+    let n = el;
+    while (n && !(n.style && n.style.width === '900px')) n = n.parentElement;
+    const f = n ? n.getBoundingClientRect() : { left: 0, top: 0 };
+    const sc = n ? (n.getBoundingClientRect().width / 900) : 1;
+    const cx = (r.left - f.left + r.width / 2) / sc, top = (r.top - f.top) / sc;
+    const below = top < 96;
+    clearTimeout(this.tipT);
+    this.tipT = setTimeout(() => this.setState({ tip: text, tipX: Math.max(120, Math.min(780, cx)), tipY: below ? top + r.height / sc + 8 : top - 8, tipBelow: below }), 400);
+  };
+  hideTip = () => { clearTimeout(this.tipT); this.setState(st => (st.tip ? { tip: null } : null)); };
+
+  startDrag = (id) => (e) => {
+    e.preventDefault();
+    const def = KNOBS.find(k => k.id === id).def, reset = () => this.commit(st => ({ vals: Object.assign({}, st.vals, { [id]: def }) }));
+    if (e.altKey) { reset(); return; }
+    const BASE = 250, FINE = 1250;
+    let y = e.clientY, t = performance.now(), moved = 0;
+    const modDown = e.metaKey || e.ctrlKey;
+    const delta = ev => { const dy = y - ev.clientY, now = performance.now(), dt = Math.max(1, now - t); y = ev.clientY; t = now; moved += Math.abs(dy); const fine = ev.shiftKey || ev.metaKey || ev.ctrlKey; const gain = fine ? 1 : Math.max(.33, Math.min(1.5, .3 + (Math.abs(dy) / dt) * .9)); return dy * gain / (fine ? FINE : BASE); };
+    let val = this.state.vals[id];
+    this.commit({});
+    const move = ev => { val = Math.max(0, Math.min(1, val + delta(ev))); const nv = val; this.setState(s => ({ vals: this.withLink(s, id, nv) })); };
+    const up = () => { if (modDown && moved < 3) reset(); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  wheel = (id) => (e) => {
+    const now = Date.now(); if (!this.lastWheel || now - this.lastWheel > 1200) this.commit({}); this.lastWheel = now;
+    const d = (e.deltaY < 0 ? 1 : -1) / (e.shiftKey || e.metaKey || e.ctrlKey ? 500 : 100);
+    this.setState(s => ({ vals: this.withLink(s, id, Math.max(0, Math.min(1, s.vals[id] + d))) }));
+  };
+  withLink = (s, id, nv) => {
+    const o = Object.assign({}, s.vals, { [id]: nv });
+    if (s.link && (id === 'input' || id === 'output')) { const ot = id === 'input' ? 'output' : 'input'; o[ot] = Math.max(0, Math.min(1, s.vals[ot] - (nv - s.vals[id]))); }
+    return o;
+  };
+
+  renderVals() {
+    const s = this.state, v = s.vals, on = s.on;
+    const ACC = this.props.accent || '#cf4a5c';
+    const plastic = this.props.bodyTone || '#5a5f5c';
+    const live = [], add = (d, w, o, st, f, t, dash) => live.push({ d: d, w: w, o: o, s: st, f: f || 'none', t: t || '', dash: dash || 'none' });
+
+    // record lamp
+    const over = on.bypass ? 0 : Math.max(0, (v.drive - 0.5) * 2);   // 0 at noon → 1 wide open
+    if (over > 0.01) {
+      const pulse = 0.75 + 0.25 * Math.sin(s.phase * 1.6);
+      [11, 15.5, 20].forEach((rr, i) => add(this.wCircle(60, 127, rr + i * 0.6 * over, 204 + i, 0.7), 3 - i * 0.6, over * pulse * (0.85 - i * 0.22), '#ffcabf'));
+      for (let i = 0; i < 6; i++) {
+        const a1 = i * 60 + 12, p1 = this.pt(a1, 22, 60, 127), p2 = this.pt(a1, 22 + 6 * over, 60, 127);
+        add(this.wLine(p1[0], p1[1], p2[0], p2[1], 220 + i, 0.5), 2.4, over * pulse * 0.95, '#ffe3d8');
+      }
+    }
+    add(this.wCircle(60, 127, 4.6 + over * 1.4, 200, 0.3), 1, 1, '#f6f1e4', on.bypass ? '#8c3242' : (over > 0.5 ? '#ff8f80' : '#ff3b30'));
+
+    // ---- cassette: rock + reels ----
+    const w = v.wobble;
+    // shell drift: a small, slowly-wandering orbit from three incommensurate rates,
+    // so it never repeats on a beat — plus a hair of rotation
+    const p = s.phase;
+    const wob = on.bypass ? 0 : (w <= 0.5 ? w * 0.9 : 0.45 + (w - 0.5) * 3.4);
+    const dx = wob * (0.95 * Math.sin(p * 0.83) + 0.45 * Math.sin(p * 1.97 + 1.1));
+    const dy = wob * (0.75 * Math.cos(p * 0.71 + 0.4) + 0.35 * Math.sin(p * 2.31 + 2.6));
+    const rot = wob * 0.5 * Math.sin(p * 0.61 + 2.2);
+    const rock = 'translate(' + dx.toFixed(2) + ' ' + dy.toFixed(2) + ') rotate(' + rot.toFixed(2) + ' ' + WCX + ' ' + (WCY + 12) + ')';
+    const packR = [22.4, 21.6];
+    HUB.forEach((hx, i) => {
+      const ang = i === 0 ? s.angL : s.angR;
+      const t = rock + ' rotate(' + ang.toFixed(1) + ' ' + hx + ' ' + (WCY + 12) + ')';
+      add(this.wCircle(hx, WCY + 12, packR[i], 240 + i, 0.6), 1.6, 1, '#4a4235', '#6b6152', rock);
+      for (let k = 0; k < 3; k++) {
+        const a = k * 120, p1 = this.pt(a, 13, hx, WCY + 12), p2 = this.pt(a, packR[i] - 3.5, hx, WCY + 12);
+        add(this.wLine(p1[0], p1[1], p2[0], p2[1], 210 + i * 9 + k, 0.5), 3, 1, '#d8d3c5', null, t);
+      }
+    });
+
+    // ---- knobs ----
+    const knobs = KNOBS.map((k, i) => {
+      const val = v[k.id];
+      const dis = k.gated && !on.wild;
+      const deg = -135 + val * 270;
+      const past = k.noon && !k.centre && val > 0.5;
+      const arcCol = dis ? GREY : (past ? ACC : '#e2ddcf');
+      if (k.centre) {
+        if (Math.abs(val - 0.5) > 0.004) add(this.wArc(k.cx, k.cy, k.r + 11, Math.min(0, deg), Math.max(0, deg), 300 + i * 7, 0.6), 5, dis ? 0.4 : 1, ACC);
+      } else {
+        if (val > 0.004) add(this.wArc(k.cx, k.cy, k.r + 11, -135, Math.min(deg, k.noon ? 0 : deg), 300 + i * 7, 0.6), 5, dis ? 0.4 : 1, dis ? GREY : '#e2ddcf');
+        if (past) add(this.wArc(k.cx, k.cy, k.r + 11, 0, deg, 320 + i * 7, 0.6), 5.5, 1, ACC);
+      }
+      const linked = s.link && (k.id === 'input' || k.id === 'output');
+      if (linked) { add(this.wCircle(k.cx, k.cy, k.r, k.seed + 71, 0.8), 3.4, 1, ACC); add(this.wCircle(k.cx, k.cy, k.r - 8, k.seed + 72, 0.6), 1.6, 0.7, ACC); }
+      const a = this.pt(deg, 5, k.cx, k.cy), b = this.pt(deg, k.r - 11, k.cx, k.cy);
+      add(this.wLine(a[0], a[1], b[0], b[1], 340 + i * 7, 0.6), 4, dis ? 0.75 : 1, INK);
+      if (s.abDiff.includes(k.id)) add(this.wCircle(k.cx, k.cy, k.r + 24, k.seed + 61, 1.2), 3, 0.9, ACC);
+
+      let readout;
+      if (k.id === 'mix') readout = Math.round(val * 100) + ' %';
+      else if (k.id === 'output' || k.id === 'input') { const db = (val - 0.5) * 36; readout = (db >= 0 ? '+' : '−') + Math.abs(db).toFixed(1) + ' dB'; }
+      else readout = (val * 10).toFixed(1) + (past && k.big ? ' · past the wall' : '');
+
+      const col = CX.indexOf(k.cx);
+      return {
+        label: k.label, readout: readout,
+        colLeft: k.cx - 95,
+        labelTop: k.big ? k.cy - k.r - 44 : k.small ? k.cy - k.r - 36 : k.cy - k.r - 40,
+        readTop: k.big ? k.cy + k.r + 10 : k.small ? k.cy + k.r + 8 : k.cy + k.r + 5,
+        labelSize: k.big ? 17 : k.small ? 13 : 15,
+        readSize: k.big ? 26 : k.small ? 17 : 21,
+        labelColor: dis ? '#b6bbb2' : linked ? '#f3a3ae' : (k.big ? CHALK : '#a8e6dd'),
+        readColor: dis ? '#b6bbb2' : (past ? ACC : CHALK),
+        hitLeft: k.cx - k.r - 16, hitTop: k.cy - k.r - 16, hitSize: k.r * 2 + 32,
+        onDown: dis ? (e => e.preventDefault()) : this.startDrag(k.id),
+        onWheel: dis ? undefined : this.wheel(k.id),
+        onReset: () => this.commit(st => ({ vals: Object.assign({}, st.vals, { [k.id]: k.def }) })),
+        onEnter: this.showTip((dis ? k.tip + ' Currently greyed out — press the WILD key.' : k.tip) + ' Drag or scroll · shift or ⌘ fine · double-click or ⌥-click resets.')
+      };
+    });
+
+    // ---- link ----
+    add(this.wRect(748, 545, 34, 22, 700, 0.6), 2.2, 1, INK, s.link ? ACC : '#4a504d');
+    add(this.wLine(712, 556, 744, 556, 701, 0.4), 1.8, s.link ? 0.95 : 0.45, s.link ? ACC : ETCH);
+    add(this.wLine(786, 556, 818, 556, 702, 0.4), 1.8, s.link ? 0.95 : 0.45, s.link ? ACC : ETCH);
+
+    // ---- keys ----
+    const keys = KEYS.map((k, i) => {
+      const down = on[k.id];
+      const lit = k.id === 'bypass' ? down : down;
+      const col = k.id === 'wild' ? TEAL : ACC;
+      add(this.wRect(COLS[i] + 6, down ? 608 : 600, 178, down ? 74 : 80, 400 + i * 11, 1.2), 2.6, 1, INK, down ? col : '#4a504d');
+      add(this.wLine(COLS[i] + 16, down ? 618 : 610, COLS[i] + 168, down ? 618 : 610, 430 + i, 0.8), 1.6, down ? 0.45 : 0.5, down ? '#ffffff' : '#7f857f');
+      add(this.wCircle(COLS[i] + 95, down ? 668 : 662, 5, 440 + i, 0.35), 1.8, 1, INK, down ? CREAM : '#2b302e');
+      if (s.abDiff.includes('key:' + k.id)) add(this.wRect(COLS[i] - 4, 592, 198, 100, 450 + i, 1.2), 3, 0.9, ACC);
+      return {
+        label: k.label, left: COLS[i],
+        textTop: down ? 632 : 624,
+        color: down ? (k.id === 'wild' ? INK : CREAM) : '#ded9cc', op: (on.bypass && k.id !== 'bypass') ? .45 : 1,
+        onClick: k.id === 'bypass' ? () => this.setState(st => ({ on: Object.assign({}, st.on, { bypass: !st.on.bypass }) })) : () => this.commit(st => ({ on: Object.assign({}, st.on, { [k.id]: !st.on[k.id] }) })),
+        onEnter: this.showTip(k.tip)
+      };
+    });
+
+    // ---- printed chain ----
+    add(this.wCircle(58, 572, 16, 600, 0.8), 2.4, 1, INK, '#4a504d');
+    add(this.wCircle(58, 572, 11, 601, 0.5), 1.4, on.mic ? 0.9 : 0.55, on.mic ? '#e6e2d6' : '#8b908b');
+    [-5, 0, 5].forEach((dy, i) => add(this.wLine(50, 572 + dy, 66, 572 + dy, 602 + i, 0.4), 2, 0.9, on.mic ? '#e6e2d6' : '#9aa09a'));
+    const seg = (x1, x2, hot, seed) => add(this.wLine(x1, 572, x2, 572, seed, 0.8), 2.4, 0.6, ETCH);
+    seg(80, 135, on.mic, 500);
+    seg(135, 220, on.mic, 501);
+    seg(264, 345, on.mic, 502);
+    seg(345, 430, on.speaker, 503);
+    add(this.wLine(135, 572, 135, 596, 510, 0.6), 2.2, 0.6, ETCH);
+    add(this.wLine(345, 572, 345, 596, 511, 0.6), 2.2, 0.6, ETCH);
+
+    const chainWord = on.mic && on.speaker ? 'mic → tape → spkr'
+      : on.mic ? 'mic → tape → line'
+      : on.speaker ? 'line → tape → spkr'
+      : 'line → tape → line';
+
+    const ALL = this.allPresets(), curP = ALL[s.preset] || ALL[0];
+    const modified = JSON.stringify(this.snap(s)) !== JSON.stringify({ vals: { ...curP.vals }, on: { mic: curP.on.mic, speaker: curP.on.speaker, wild: curP.on.wild } });
+    const otherSlot = s.ab === 'A' ? 'B' : 'A', abDiffNow = s.abOther ? this.diffKeys(this.snap(s), s.abOther) : [];
+    const abText = !s.abOther ? 'A / B — two full states. Click ' + otherSlot + ' to start a second one from here.' : abDiffNow.length ? otherSlot + ' differs: ' + abDiffNow.map(k => NAMES[k]).join(', ') + '.' : otherSlot + ' is identical to ' + s.ab + '.';
+    const pItem = (p, i) => ({ name: p.name, folder: p.folder, color: i === s.preset ? ACC : INK, onClick: () => this.applyPreset(i) });
+    this.pumpParams();
+    if (this.props.bypass !== undefined && this.props.bypass !== this._pBypass) {
+      this._pBypass = this.props.bypass;
+      if (this.props.bypass !== on.bypass) queueMicrotask(() => this.setState(st => ({ on: Object.assign({}, st.on, { bypass: this.props.bypass }) })));
+    }
+    const embed = !!this.props.embed;
+    const scale = this.props.fit ? (s.fitScale ?? Math.min(1, (this.wrapRef.current?.clientWidth || 900) / 900)) : (this.props.scale || 1);
+    return {
+      scale, frameW: 900 * scale, frameH: 712 * scale, wrapRef: this.wrapRef,
+      chrome: !embed, wrapBg: embed ? 'transparent' : '#191512', wrapPad: embed ? '0' : '48px 24px 64px', wrapMinH: embed ? '0' : '100vh',
+      plastic: plastic,
+      plate: this.plate(plastic),
+      live: live, knobs: knobs, keys: keys,
+      bypassed: on.bypass,
+      tapeLabel: on.bypass ? 'stopped' : (modified ? '• ' : '') + curP.name,
+      arrowOp: on.bypass ? .35 : 1,
+      presetOpen: s.presetOpen,
+      presetToggle: () => this.setState(st => ({ presetOpen: !st.presetOpen, pbMenu: null, tip: null })),
+      presetPrev: () => { if (!on.bypass) this.applyPreset((s.preset + ALL.length - 1) % ALL.length); },
+      presetNext: () => { if (!on.bypass) this.applyPreset((s.preset + 1) % ALL.length); },
+      presetTip: this.showTip(modified ? 'Presets — • means you\'ve moved off the saved state. Arrows step, the label opens the browser, ↑↓ while open.' : 'Presets — arrows step through the folder, the label opens the browser, ↑↓ while open. FACTORY is read-only; USER is yours.'),
+      ...(this.pbVals ? this.pbVals({ ink: INK, loaded: ACC, muted: '#8a8172', section: '#2f8d86', hoverBg: '#ece5d2', font: "'Patrick Hand', cursive", fontSC: "'Patrick Hand SC', cursive", size: 15, secSize: 10, menuSize: 14, padX: 8, indent: 16, rowPad: '3px', secPad: '4px' }) : {}),
+      delOp: s.preset >= PRESETS.length ? 1 : .4, delCursor: s.preset >= PRESETS.length ? 'pointer' : 'default', delHover: s.preset >= PRESETS.length ? '#6fc6bc' : '#e6e0cf',
+      savePreset: this.savePreset, saveAsPreset: this.saveAsPreset, delPreset: this.delPreset,
+      tipSave: this.showTip(s.preset >= PRESETS.length ? 'SAVE — overwrite this user preset.' : 'SAVE — factory presets stay put; this stores a new user preset.'),
+      tipSaveAs: this.showTip('SAVE AS — store the current state as a new user preset.'),
+      tipDel: this.showTip(s.preset >= PRESETS.length ? 'DELETE this user preset.' : 'DELETE — only user presets can be deleted.'),
+      undo: this.undo, undoOp: s.hist.length ? 1 : .4, tipUndo: this.showTip(s.hist.length ? 'UNDO the last change (⌘/Ctrl-Z).' : 'Nothing to undo yet.'),
+      setA: () => this.setAB('A'), setB: () => this.setAB('B'), tipAB: this.showTip(abText),
+      aBg: s.ab === 'A' ? INK : 'transparent', aFg: s.ab === 'A' ? CREAM : INK, bBg: s.ab === 'B' ? INK : 'transparent', bFg: s.ab === 'B' ? CREAM : INK,
+      tipsBg: s.tips ? INK : 'transparent', tipTips: this.showTip(s.tips ? 'Tooltips are on. Click to switch these little notes off.' : 'Tooltips are off. Click to switch them on; this one always shows.', true),
+      toggleLink: () => this.setState(st => ({ link: !st.link })),
+      linkColor: s.link ? CREAM : '#ded9cc',
+      tipLink: this.showTip(s.link ? 'LINK is on: INPUT and OUTPUT move in opposite directions, so the level stays put while you push the tape.' : 'LINK is off. Click to tie INPUT and OUTPUT together in opposite directions, keeping the level steady.'),
+      chainWord: chainWord,
+      chainColor: on.mic || on.speaker ? '#e6e2d6' : '#cdd1c8',
+      wildNote: on.wild ? 'wide open, mono kills it' : 'off: key it on',
+      wildNoteColor: on.wild ? '#a8e6dd' : '#c3c8bf',
+      tipsColor: s.tips ? CREAM : INK,
+      toggleTips: () => this.setState(st => ({ tips: !st.tips, tip: st.tip ? (st.tips ? 'Tooltips are off. Click to switch them on; this one always shows.' : 'Tooltips are on. Click to switch these little notes off.') : null })),
+      tip: s.tip,
+      tipX: s.tipX, tipY: s.tipY,
+      tipShift: s.tipBelow ? 'translate(-50%, 0) rotate(-.6deg)' : 'translate(-50%, -100%) rotate(-.6deg)',
+      tipOut: this.hideTip
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Schmear · try it in your browser</title>
 <meta name="robots" content="noindex">
+<script>if (window.parent !== window) document.documentElement.classList.add("pb-embed");</script>
+<style>html.pb-embed, html.pb-embed body { margin: 0 !important; overflow: hidden !important; background: transparent !important; }</style>
 <script>window.__resources={"https://unpkg.com/react@18.3.1/umd/react.production.min.js":"./vendor/react.production.min.js","https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js":"./vendor/react-dom.production.min.js"};</script>
 <script src="./support.js"></script>
 </head>
@@ -24,9 +24,9 @@
 
   <sc-if value="{{ chrome }}" hint-placeholder-val="{{ false }}">
     <div style="width: 100%; max-width: 680px; display: flex; flex-direction: column; gap: 6px;">
-      <div style="font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .14em; color: #8a8378;">SCHMEAR · TRY IT PLAYER</div>
+      <div style="font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .14em; color: #8a8378;">SCHMEAR 2.0 · TRY IT PLAYER</div>
       <div style="font-family: 'Caveat Brush', cursive; font-size: 40px; line-height: 1;">Hear it before you download it</div>
-      <div style="font-size: 17px; line-height: 1.45; color: #4a443d; text-wrap: pretty;">This block sits at the top of the Schmear page, in place of the static panel. <a href="Pizza Bagel Site.dc.html#schmear" style="border-bottom: 2px solid #2a2622;">See it in place</a>.</div>
+      <div style="font-size: 17px; line-height: 1.45; color: #4a443d; text-wrap: pretty;">This block sits at the top of the Schmear page, in place of the static panel. <a href="Pizza Bagel Site Black Friday.dc.html#schmear" style="border-bottom: 2px solid #2a2622;">See it in place</a>.</div>
     </div>
   </sc-if>
 
@@ -56,7 +56,15 @@
       <div style="display: flex; flex-direction: column; gap: clamp(10px, 3vw, 14px);">
 
         <div style="display: flex; flex-direction: column; gap: 6px;">
-          <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #8a8378;">CLIP · 20 SECOND LOOPS</div>
+          <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #8a8378;">CLIP · 22 SOURCES</div>
+          <div role="tablist" aria-label="Clip groups" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px;">
+            <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
+              <button type="button" role="tab" aria-selected="{{ g.onStr }}" data-group="{{ g.id }}" onClick="{{ g.pick }}" style="min-width: 0; min-height: 44px; padding: 6px 10px; justify-content: center; border: 2.5px solid #2a2622; background: {{ g.bg }}; color: {{ g.fg }}; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .1em; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 7px;" style-hover="background: {{ g.hoverBg }};">
+                <span>{{ g.label }}</span>
+                <sc-if value="{{ g.holdsClip }}" hint-placeholder-val="{{ false }}"><span style="width: 7px; height: 7px; border-radius: 50%; background: #e0785c;"></span></sc-if>
+              </button>
+            </sc-for>
+          </div>
           <div role="radiogroup" aria-label="Clip" style="display: grid; grid-template-columns: {{ clipCols }}; gap: 6px;">
             <sc-for list="{{ clips }}" as="c" hint-placeholder-count="5">
               <button type="button" role="radio" aria-checked="{{ c.onStr }}" data-clip="{{ c.id }}" onClick="{{ c.pick }}" style="min-width: 0; min-height: 44px; padding: 8px 12px; border: 2.5px solid #2a2622; background: {{ c.bg }}; color: {{ c.fg }}; font-family: 'Patrick Hand SC', cursive; font-size: {{ clipSize }}; letter-spacing: .1em; cursor: pointer; text-align: center; line-height: 1.2;" style-hover="background: {{ c.hoverBg }};">{{ c.label }}</button>
@@ -89,7 +97,7 @@
 
         <div style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.4; color: #4a443d; text-wrap: pretty;">
           <svg width="20" height="20" viewBox="0 0 20 20" style="flex: none; margin-top: 1px;"><path d="M 3 12 V 10 a 7 7 0 0 1 14 0 v 2" fill="none" stroke="#2a2622" stroke-width="2.2" stroke-linecap="round"></path><rect x="2" y="11" width="4.5" height="6" rx="1" fill="#2a2622"></rect><rect x="13.5" y="11" width="4.5" height="6" rx="1" fill="#2a2622"></rect></svg>
-          <div>Schmear is stereo width. Listen on headphones or two speakers. A phone speaker is mono, so it will sound like nothing is happening.</div>
+          <div>Try both flavors: LOX for detune, and BERRY, the new chorus. BERRY is part of Schmear 2.0, coming Monday, Nov 16: you can play with it here now, and today's download is still LOX only. Schmear is stereo width. Listen on headphones or two speakers. A phone speaker is mono, so it will sound like nothing is happening.</div>
         </div>
       </div>
     </sc-if>
@@ -97,34 +105,28 @@
 
   <sc-if value="{{ chrome }}" hint-placeholder-val="{{ false }}">
     <div style="width: 100%; max-width: 680px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px 24px; font-size: 15px; line-height: 1.4; color: #4a443d; border-top: 2px solid #2a2622; padding-top: 14px;">
-      <div><div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #8a8378;">EVENTS ON #schmear-try-it</div><div>change: { id, value } for detune (3, 6, 9), mix (0 to 100), input and output (dB), bypass (true or false). transport: { action: play, stop or clip, clip: female, male, guitar, electric or bass }.</div></div>
-      <div><div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #8a8378;">ENGINE HOOKS</div><div>el.tryIt.ready() ends the loading state, el.tryIt.fail(msg) shows the fallback, el.tryIt.getParams() reads every current value. Controls carry ids detune, mix, input, output, bypass with data-value. Set the simulate tweak off when wiring.</div></div>
+      <div><div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #8a8378;">EVENTS ON #schmear-try-it</div><div>change: { id, value } for flavor (0 Lox, 1 Berry), detune (3, 6, 9), chorus (1 or 2), bump (0 or 1), hiss (0 to 100), hissOn (0 or 1), mix (0 to 100), input and output (dB), bypass (true or false). transport: { action: play, stop or clip, clip: female, male, guitar, electric or bass }.</div></div>
+      <div><div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #8a8378;">ENGINE HOOKS</div><div>el.tryIt.ready() ends the loading state, el.tryIt.fail(msg) shows the fallback, el.tryIt.getParams() reads every current value. getParams() returns the ids listed under events. Set the simulate tweak off when wiring.</div></div>
     </div>
   </sc-if>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;embed&quot;:{&quot;editor&quot;:null,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;simulate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Engine&quot;},&quot;previewState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;idle&quot;,&quot;loading&quot;,&quot;playing&quot;,&quot;ready&quot;,&quot;unsupported&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preview&quot;}}">
-const CLIPS = [
-  { id: 'female', label: 'FEMALE VOCAL 1', short: 'F VOCAL 1' },
-  { id: 'female2', label: 'FEMALE VOCAL 2', short: 'F VOCAL 2' },
-  { id: 'female3', label: 'FEMALE VOCAL 3', short: 'F VOCAL 3' },
-  { id: 'male', label: 'MALE VOCAL 1', short: 'M VOCAL 1' },
-  { id: 'male2', label: 'MALE VOCAL 2', short: 'M VOCAL 2' },
-  { id: 'male3', label: 'MALE VOCAL 3', short: 'M VOCAL 3' },
-  { id: 'male4', label: 'MALE VOCAL 4', short: 'M VOCAL 4' },
-  { id: 'male5', label: 'MALE VOCAL 5', short: 'M VOCAL 5' },
-  { id: 'backing', label: 'BACKING VOCALS', short: 'BACKING' },
-  { id: 'gang', label: 'GANG VOCAL', short: 'GANG' },
-  { id: 'guitar', label: 'ACOUSTIC GUITAR', short: 'ACOUSTIC' },
-  { id: 'electric', label: 'ELECTRIC GUITAR', short: 'ELECTRIC' },
-  { id: 'bass', label: 'BASS GUITAR', short: 'BASS GTR' }
+// demo pin (2026-11-13, Justin: "like Salt, all the clips"): the 22 sources in Salt's five tabs
+const GROUPS = [
+  { id: 'vocals', label: 'VOCALS', short: 'VOX', clips: [['female', 'FEMALE VOCAL 1', 'F VOCAL 1'], ['female2', 'FEMALE VOCAL 2', 'F VOCAL 2'], ['female3', 'FEMALE VOCAL 3', 'F VOCAL 3'], ['male', 'MALE VOCAL 1', 'M VOCAL 1'], ['male2', 'MALE VOCAL 2', 'M VOCAL 2'], ['male3', 'MALE VOCAL 3', 'M VOCAL 3'], ['male4', 'MALE VOCAL 4', 'M VOCAL 4'], ['male5', 'MALE VOCAL 5', 'M VOCAL 5'], ['backing', 'BACKING VOCALS', 'BACKING'], ['gang', 'GANG VOCAL', 'GANG']] },
+  { id: 'guitars', label: 'GUITARS', short: 'GTRS', clips: [['acoustic', 'ACOUSTIC GUITAR', 'ACOUSTIC'], ['electric', 'ELECTRIC GUITAR', 'ELECTRIC'], ['electric2', 'ELECTRIC GUITAR 2', 'ELECTRIC 2'], ['rubber', 'RUBBER BRIDGE', 'RUBBER']] },
+  { id: 'bass', label: 'BASS', short: 'BASS', clips: [['bass', 'BASS GUITAR', 'BASS GTR'], ['synthbass', 'SYNTH BASS', 'SYN BASS'], ['808', '808', '808']] },
+  { id: 'drums', label: 'DRUMS', short: 'DRUMS', clips: [['drumkit', 'DRUM KIT', 'DRUM KIT'], ['edrums1', 'ELECTRONIC DRUMS 1', 'E DRUMS 1'], ['edrums2', 'ELECTRONIC DRUMS 2', 'E DRUMS 2']] },
+  { id: 'keys', label: 'KEYS', short: 'KEYS', clips: [['pad', 'SYNTH PAD', 'SYN PAD'], ['mellotron', 'MELLOTRON FLUTES', 'MELLOTRON']] }
 ];
+const CLIPS = GROUPS.flatMap(g => g.clips.map(([id, label, short]) => ({ id, label, short, group: g.id })));
 const INK = '#2a2622', PAPER = '#fbf7ee', ACC = '#e0785c', TOAST = '#ecd3ae';
 const DEFAULT_FAIL = 'It needs WebAssembly and an AudioWorklet, which means a current Chrome, Firefox, Edge or Safari. Some in-app browsers (Instagram, Facebook) block them: open this page in your regular browser.';
 
 class Component extends DCLogic {
-  state = { status: 'idle', clip: 'female', bypass: false, failMsg: DEFAULT_FAIL };
-  params = { detune: 9, mix: 100, input: 0, output: 0, bypass: false };
+  state = { status: 'idle', clip: 'female', group: 'vocals', bypass: false, failMsg: DEFAULT_FAIL };
+  params = { flavor: 0, detune: 3, chorus: 1, bump: 0, hiss: 50, hissOn: 1, mix: 100, input: 0, output: 0, bypass: false };
   root = React.createRef();
   componentDidMount() {
     const AC = window.AudioContext || window.webkitAudioContext;
@@ -168,6 +170,7 @@ class Component extends DCLogic {
     this.setState({ status: 'playing' }); this.emit('transport', { action: 'play', clip });
   };
   pick = (clip) => () => { if (clip === this.state.clip) return; this.setState({ clip }); this.emit('transport', { action: 'clip', clip }); };
+  pickGroup = (group) => () => this.setState({ group });
   setBypass = (v) => () => { if (v !== this.state.bypass) this.setState({ bypass: v }); };
   dots() {
     return React.createElement('span', { style: { display: 'inline-flex', gap: 4 } }, [0, 1, 2].map(i =>
@@ -179,7 +182,8 @@ class Component extends DCLogic {
     const status = pv && pv !== 'auto' ? pv : s.status;
     const embed = !!this.props.embed;
     const idle = status === 'idle', loading = status === 'loading', playing = status === 'playing', unsupported = status === 'unsupported';
-    const clipLabel = (CLIPS.find(c => c.id === s.clip) || CLIPS[0]).label;
+    const curClip = CLIPS.find(c => c.id === s.clip) || CLIPS[0], clipLabel = curClip.label;
+    const grp = GROUPS.find(g => g.id === s.group) || GROUPS[0], tiny = (s.cols ?? 5) <= 2;
     const primary = idle || loading;
     return {
       clipCols: 'repeat(' + (s.cols ?? 5) + ', minmax(0, 1fr))',
@@ -189,7 +193,8 @@ class Component extends DCLogic {
       veil: idle || loading || unsupported,
       statusLine: unsupported ? 'NO AUDIO IN THIS BROWSER' : idle ? 'NOT STARTED' : loading ? 'LOADING' : playing ? 'PLAYING · ' + clipLabel : 'STOPPED',
       clipSize: (s.cols ?? 5) <= 2 ? '14px' : '15px',
-      clips: CLIPS.map(c => { const on = c.id === s.clip; return { id: c.id, label: (s.cols ?? 5) <= 2 ? c.short : c.label, onStr: on ? 'true' : 'false', pick: this.pick(c.id), bg: on ? INK : PAPER, fg: on ? PAPER : INK, hoverBg: on ? INK : TOAST }; }),
+      groups: GROUPS.map(g => { const on = g.id === grp.id; return { id: g.id, label: tiny ? g.short : g.label, onStr: on ? 'true' : 'false', pick: this.pickGroup(g.id), holdsClip: g.id === curClip.group && !on, bg: on ? INK : PAPER, fg: on ? PAPER : INK, hoverBg: on ? INK : TOAST }; }),
+      clips: CLIPS.filter(c => c.group === grp.id).map(c => { const on = c.id === s.clip; return { id: c.id, label: (s.cols ?? 5) <= 2 ? c.short : c.label, onStr: on ? 'true' : 'false', pick: this.pick(c.id), bg: on ? INK : PAPER, fg: on ? PAPER : INK, hoverBg: on ? INK : TOAST }; }),
       playLabel: idle ? 'STEP 1 · START HERE' : loading ? 'LOADING THE ENGINE AND CLIP' : playing ? 'LOOPING' : 'READY',
       playText: idle ? 'PLAY THE DEMO' : loading ? 'LOADING' : playing ? 'STOP' : 'PLAY',
       playGlyph: loading ? this.dots() : playing
@@ -208,7 +213,7 @@ class Component extends DCLogic {
   }
 }
 </script>
-<script src="./engine-core.js?v=adb80308da"></script>
-<script src="./engine.js?v=759026810c"></script>
+<script src="./engine-core.js?v=e57e7768a2"></script>
+<script src="./engine.js?v=56a5a689aa"></script>
 </body>
 </html>

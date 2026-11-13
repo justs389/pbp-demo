@@ -78,6 +78,10 @@ window.PbDemo = {
 
     function reportHeight() {
       if (window.parent === window || !el) return;
+      // 2026-11-13: the player box, as before. The "vibrating" panel came from the iframe's scrollbar
+      // (box a few px short of the page -> scrollbar -> narrower panel -> new height -> no scrollbar...);
+      // build_demo now turns iframe scrollbars off, which breaks that loop. Measuring the page instead
+      // does not work: its wrappers stretch to the iframe, so the height could only ever grow.
       const r = el.getBoundingClientRect();
       parent.postMessage({ type: 'pbp-height', height: Math.ceil(r.bottom + window.scrollY + 4) }, '*');
     }

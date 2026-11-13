@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
@@ -23,7 +21,7 @@
 <div ref="{{ wrapRef }}" style="min-height: {{ wrapMinH }}; background: {{ wrapBg }}; padding: {{ wrapPad }}; display: flex; flex-direction: column; align-items: center; gap: 40px; font-family: 'Patrick Hand', cursive;">
 
   <sc-if value="{{ chrome }}" hint-placeholder-val="{{ true }}">
-  <div style="font-size: 14px; letter-spacing: .04em; color: #7d6a4f;">Schmear, vocal widener, bagel &amp; cream cheese — 600 × 380 (2× of 300 × 190)</div>
+  <div style="font-size: 14px; letter-spacing: .04em; color: #7d6a4f;">Schmear, vocal widener, bagel &amp; cream cheese — two flavors: Lox (detune) or Berry (chorus) — 600 × 380 (2× of 300 × 190)</div>
   </sc-if>
 
   <div style="width: {{ frameW }}px; height: {{ frameH }}px;">
@@ -39,7 +37,7 @@
       <svg width="600" height="380" viewBox="0 0 600 380" style="position: absolute; inset: 0;">
         <g stroke="#2b1f14" stroke-linecap="round" stroke-linejoin="round">
           <sc-for list="{{ plate }}" as="p" hint-placeholder-count="30">
-            <path d="{{ p.d }}" stroke="{{ p.s }}" stroke-width="{{ p.w }}" opacity="{{ p.o }}" fill="{{ p.f }}"></path>
+            <path d="{{ p.d }}" transform="{{ p.t }}" stroke="{{ p.s }}" stroke-width="{{ p.w }}" opacity="{{ p.o }}" fill="{{ p.f }}"></path>
           </sc-for>
           <sc-for list="{{ live }}" as="p" hint-placeholder-count="24">
             <path d="{{ p.d }}" transform="{{ p.t }}" stroke="{{ p.s }}" stroke-width="{{ p.w }}" opacity="{{ p.o }}" fill="{{ p.f }}"></path>
@@ -47,14 +45,14 @@
         </g>
       </svg>
 
-      <div style="position: absolute; left: 22px; top: 6px; display: flex; align-items: baseline; gap: 9px;">
+      <div style="position: absolute; left: 22px; top: 6px; display: flex; align-items: baseline; gap: 7px;">
         <div style="font-family: 'Caveat Brush', cursive; font-size: 38px; color: #2b1f14; line-height: 1.3;">Schmear</div>
-        <div style="white-space: nowrap; font-size: 15px; color: #5a4426; line-height: 1.3;">vocal widener</div>
+        <div style="white-space: nowrap; font-size: 13px; color: #5a4426; line-height: 1.3;">widener &amp; chorus</div>
       </div>
 
       <div style="position: absolute; left: 296px; top: 20px; width: 120px; height: 26px; box-sizing: border-box; display: flex; align-items: stretch; border: 3px solid #2b1f14; background: #fdf3e2; user-select: none; z-index: 9;">
         <div onClick="{{ presetPrev }}" style="width: 19px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-right: 1.5px solid rgba(43,31,20,.25); font-family: 'Caveat Brush', cursive; font-size: 16px; color: #6b5335; line-height: 1;">‹</div>
-        <div onClick="{{ presetToggle }}" onContextMenu="{{ presetContext }}" onMouseEnter="{{ tipPreset }}" onMouseLeave="{{ tipOut }}" style="flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; cursor: pointer; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .06em; color: #2b1f14; line-height: 1;">{{ presetName }}</div>
+        <div onClick="{{ presetToggle }}" onContextMenu="{{ presetContext }}" onMouseEnter="{{ tipPreset }}" onMouseLeave="{{ tipOut }}" style="flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; cursor: pointer; font-family: 'Patrick Hand SC', cursive; font-size: {{ presetFs }}; letter-spacing: {{ presetLs }}; color: #2b1f14; line-height: 1;">{{ presetName }}</div>
         <div onClick="{{ presetNext }}" style="width: 19px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-left: 1.5px solid rgba(43,31,20,.25); font-family: 'Caveat Brush', cursive; font-size: 16px; color: #6b5335; line-height: 1;">›</div>
       </div>
 
@@ -106,11 +104,15 @@
         <div style="white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 15px; letter-spacing: .1em; color: #2b1f14; line-height: 1;">BYPASS</div>
       </div>
 
-      <div style="position: absolute; left: 40px; top: 92px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 15px; letter-spacing: .14em; color: #6b5335; line-height: 1;">DETUNE</div>
+      <div id="flavor" role="radiogroup" aria-label="Schmear flavor" data-value="{{ mode }}" style="position: absolute; left: 36px; top: 82px; width: 238px; height: 26px; box-sizing: border-box; display: flex; border: 3px solid #2b1f14; background: #fdf3e0; user-select: none; font-family: 'Patrick Hand SC', cursive; font-size: 14px; letter-spacing: .12em; line-height: 1;">
+        <div role="radio" aria-checked="{{ detuneOnStr }}" onClick="{{ setDetune }}" onMouseEnter="{{ tipDetuneMode }}" onMouseLeave="{{ tipOut }}" style="flex: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; background: {{ detuneBg }}; color: {{ detuneFg }};">LOX</div>
+        <div style="width: 3px; background: #2b1f14;"></div>
+        <div role="radio" aria-checked="{{ chorusOnStr }}" onClick="{{ setChorus }}" onMouseEnter="{{ tipChorusMode }}" onMouseLeave="{{ tipOut }}" style="flex: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; background: {{ chorusBg }}; color: {{ chorusFg }};">BERRY</div>
+      </div>
 
-      <div id="detune" role="radiogroup" aria-label="Detune" data-value="{{ step }}">
+      <div id="detune" role="radiogroup" aria-label="{{ cellsLabel }}" data-value="{{ cellsValue }}">
       <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
-        <div role="radio" aria-checked="{{ s.onStr }}" data-value="{{ s.label }}" onClick="{{ s.onClick }}" onMouseEnter="{{ s.onEnter }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: {{ s.left }}px; top: 118px; width: 74px; height: 74px; display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; font-family: 'Caveat Brush', cursive; font-size: 36px; color: {{ s.color }}; line-height: 1;">{{ s.label }}</div>
+        <div role="radio" aria-checked="{{ s.onStr }}" data-value="{{ s.label }}" onClick="{{ s.onClick }}" onMouseEnter="{{ s.onEnter }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: {{ s.left }}px; top: 118px; width: 74px; height: 74px; display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; font-family: {{ s.ff }}; font-size: {{ s.fs }}; letter-spacing: {{ s.ls }}; padding-top: {{ s.pt }}; box-sizing: border-box; color: {{ s.color }}; line-height: 1;">{{ s.label }}</div>
       </sc-for>
       </div>
 
@@ -120,6 +122,13 @@
       <div style="position: absolute; left: 160px; top: 212px; width: 100px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 13px; letter-spacing: .14em; color: #6b5335; line-height: 1;">OUTPUT</div>
       <div id="output" role="slider" aria-label="Output" aria-valuemin="-12" aria-valuemax="12" aria-valuenow="{{ outVal }}" data-value="{{ outVal }}" onPointerDown="{{ outDown }}" onWheel="{{ outWheel }}" onDoubleClick="{{ outReset }}" onMouseEnter="{{ tipOut2 }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 186px; top: 240px; width: 48px; height: 48px; border-radius: 50%; cursor: ns-resize; touch-action: none;"></div>
       <div style="position: absolute; left: 160px; top: 306px; width: 100px; text-align: center; white-space: nowrap; font-family: 'Caveat Brush', cursive; font-size: 17px; color: #40301d; line-height: 1;">{{ outReadout }}</div>
+
+      <sc-if value="{{ chorusOn }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: 300px; top: 122px; width: 50px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #6b5335; line-height: 1; opacity: {{ hissOp }};">HISS</div>
+      <div id="hiss" role="slider" aria-label="Hiss" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ hissVal }}" data-value="{{ hissVal }}" onPointerDown="{{ hissDown }}" onWheel="{{ hissWheel }}" onDoubleClick="{{ hissReset }}" onMouseEnter="{{ tipHiss }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 301px; top: 151px; width: 32px; height: 32px; border-radius: 50%; cursor: ns-resize; touch-action: none;"></div>
+      <div id="hissOn" role="switch" aria-label="Hiss on" aria-checked="{{ hissOnStr }}" onClick="{{ toggleHiss }}" onMouseEnter="{{ tipHissOn }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 293px; top: 117px; width: 16px; height: 16px; border-radius: 50%; cursor: pointer;"></div>
+      <div style="position: absolute; left: 287px; top: 194px; width: 60px; text-align: center; white-space: nowrap; font-family: 'Caveat Brush', cursive; font-size: 15px; color: #40301d; line-height: 1; opacity: {{ hissOp }};">{{ hissReadout }}</div>
+      </sc-if>
 
       <div style="position: absolute; left: 340px; top: 92px; width: 220px; text-align: center; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 15px; letter-spacing: .14em; color: #6b5335; line-height: 1;">MIX</div>
       <div id="mix" role="slider" aria-label="Mix" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ mixVal }}" data-value="{{ mixVal }}" onPointerDown="{{ mixDown }}" onWheel="{{ mixWheel }}" onDoubleClick="{{ mixReset }}" onMouseEnter="{{ tipMix }}" onMouseLeave="{{ tipOut }}" style="position: absolute; left: 372px; top: 128px; width: 156px; height: 156px; border-radius: 50%; cursor: ns-resize; touch-action: none;"></div>
@@ -132,7 +141,7 @@
         <div style="position: absolute; left: {{ tipX }}px; top: {{ tipY }}px; transform: {{ tipShift }}; width: 176px; box-sizing: border-box; padding: 5px 8px; background: #fdf3e2; border: 3px solid #2b1f14; font-family: 'Patrick Hand', cursive; font-size: 12px; line-height: 1.16; color: #2b1f14; pointer-events: none; z-index: 30; box-shadow: 4px 5px 0 rgba(43,31,20,.3);">{{ tip }}</div>
       </sc-if>
       <div style="position: absolute; left: 26px; bottom: 14px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #6b5335; line-height: 1;">PIZZA BAGEL PLUGINS</div>
-      <div style="position: absolute; right: 26px; bottom: 14px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #6b5335; line-height: 1;">v0.0.0.1.6</div>
+      <div style="position: absolute; right: 26px; bottom: 14px; white-space: nowrap; font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #6b5335; line-height: 1;">v2.0.0</div>
     </div>
   </div>
   </div>
@@ -154,7 +163,7 @@
       </div>
       <div>
         <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #e8c58f;">MIX = THE SCHMEAR</div>
-        <div style="color: #9c8365;">The knob is a sliced bagel seen top-down. Mix spreads cream cheese clockwise from 6 o'clock all the way round to 6 o'clock again; bare crust keeps its poppy seeds. 0% is a dry bagel, 100% is fully covered. Cream cheese goes out to the rim at every setting, so only a sliver of seeded crust shows. The detune switch changes the topping: 3 plain, 6 scallion (green folded through the cheese), 9 piles on draped lox until it overtakes the bagel, a few scallion bits riding on top.</div>
+        <div style="color: #9c8365;">The knob is a sliced bagel seen top-down. Mix spreads cream cheese clockwise from 6 o'clock all the way round to 6 o'clock again; bare crust keeps its everything-bagel seeds. 0% is a dry bagel, 100% is fully covered. Cream cheese goes out to the rim at every setting, so only a sliver of seeded crust shows. The detune switch changes the topping: 3 plain, 6 scallion (green folded through the cheese), 9 piles on draped lox until it overtakes the bagel, a few scallion bits riding on top. The LOX / BERRY switch changes the flavor: LOX is the detune; BERRY is a vintage bucket-brigade chorus, the bagel turns cinnamon raisin and the cheese strawberry. I is strawberry cream cheese with red strawberry bits; II adds blueberries on top. BUMP is a little low-end lift under the chorus, drawn as a heaped schmear. HISS is the chorus's own noise: 50% is the real unit, 0 is none, and the small button beside it switches it off.</div>
       </div>
       <div>
         <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .14em; color: #e8c58f;">TYPE</div>
@@ -250,29 +259,31 @@ const LOX = (() => {
   return out;
 })();
 
-const PRESETS = [
-  { name: 'Init', folder: 0, step: 9, mix: 1 },
-  { name: 'Just A Hair', folder: 0, step: 3, mix: 0.62 },
-  { name: 'Wide Spread', folder: 0, step: 6, mix: 0.85 },
-  { name: 'Full Schmear', folder: 0, step: 9, mix: 1 },
-  { name: 'Guitar Doubler', folder: 1, step: 6, mix: 0.7 },
-  { name: 'Vocal Sheen', folder: 1, step: 3, mix: 0.5 }
-];
+// demo/schmear/make_presets.py: the plugin's own presets (built-ins + Factory packs)
+const PRESETS = [{"name": "Init", "mode": "detune", "step": 3, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 1.0, "inp": 0.0, "out": 0.0}, {"name": "Just A Hair", "mode": "detune", "step": 3, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.62, "inp": 0.0, "out": 0.0}, {"name": "Wide Spread", "mode": "detune", "step": 6, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.85, "inp": 0.0, "out": 0.0}, {"name": "Full Schmear", "mode": "detune", "step": 9, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 1.0, "inp": 0.0, "out": 0.0}, {"name": "The Real Berry I", "mode": "chorus", "step": 3, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.5, "inp": 0.0, "out": 0.0}, {"name": "The Real Berry II", "mode": "chorus", "step": 3, "chorus": 2, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.5, "inp": 0.0, "out": 0.0}, {"name": "Strawberry I", "mode": "chorus", "step": 9, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.7, "inp": 0.0, "out": 0.0}, {"name": "Berry Wash II", "mode": "chorus", "step": 9, "chorus": 2, "bump": true, "hiss": 0.5, "hissOn": true, "mix": 0.8, "inp": 0.0, "out": 0.0}, {"name": "A Little Fuzzy", "mode": "detune", "step": 9, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.492, "inp": 12.0, "out": -12.0, "group": "Justin Gammella"}, {"name": "Fave On Mellotron", "mode": "chorus", "step": 3, "chorus": 1, "bump": false, "hiss": 0.099, "hissOn": true, "mix": 0.557, "inp": -0.0, "out": -0.0, "group": "Justin Gammella"}, {"name": "Fuller Harms", "mode": "detune", "step": 6, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.385, "inp": -0.0, "out": -0.0, "group": "Justin Gammella"}, {"name": "Guitar Nice", "mode": "detune", "step": 9, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.39, "inp": -0.0, "out": -0.0, "group": "Justin Gammella"}, {"name": "On Every Vocal SEND", "mode": "detune", "step": 3, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 1.0, "inp": -0.0, "out": -0.0, "group": "Justin Gammella"}, {"name": "Reese Bass Widener", "mode": "chorus", "step": 3, "chorus": 2, "bump": true, "hiss": 0.129, "hissOn": true, "mix": 0.447, "inp": -0.0, "out": -0.0, "group": "Justin Gammella"}, {"name": "Tame That Guitar", "mode": "chorus", "step": 3, "chorus": 1, "bump": false, "hiss": 0.036, "hissOn": true, "mix": 0.567, "inp": -0.0, "out": -0.0, "group": "Justin Gammella"}, {"name": "WIIIIDE Synth Bass", "mode": "chorus", "step": 3, "chorus": 2, "bump": true, "hiss": 0.149, "hissOn": true, "mix": 1.0, "inp": -0.0, "out": -0.0, "group": "Justin Gammella"}, {"name": "1 Vocal Double Fix", "mode": "detune", "step": 9, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.298, "inp": -0.0, "out": -0.0, "group": "Lizzy Campbell"}, {"name": "BGV Stack Space", "mode": "detune", "step": 6, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.25, "inp": -0.0, "out": -0.0, "group": "Lizzy Campbell"}, {"name": "Drum Loop Spacing", "mode": "detune", "step": 6, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.349, "inp": -0.0, "out": -0.0, "group": "Lizzy Campbell"}, {"name": "Electric Body", "mode": "detune", "step": 9, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.3, "inp": -0.0, "out": -0.0, "group": "Lizzy Campbell"}, {"name": "Piano Width", "mode": "detune", "step": 6, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.251, "inp": -0.0, "out": -0.0, "group": "Lizzy Campbell"}, {"name": "50 50 Vocal", "mode": "detune", "step": 9, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.504, "inp": -0.0, "out": -0.0, "group": "Lucas Arens"}, {"name": "Keep It Tight Vocal", "mode": "detune", "step": 3, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.153, "inp": -0.0, "out": -0.0, "group": "Lucas Arens"}, {"name": "School Bus Vocal (aux track)", "mode": "detune", "step": 6, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 1.0, "inp": -0.0, "out": -0.0, "group": "Lucas Arens"}];
+const PINK = '#ec9aa8';
+// norm: every preset reads as a full state, older ones default to the plain detune flavor
+const norm = (p) => ({ mode: p.mode ?? 'detune', step: p.step ?? 9, chorus: p.chorus ?? 1, bump: p.bump ?? false, hiss: p.hiss ?? 0.5, hissOn: p.hissOn ?? true, mix: p.mix, inp: p.inp ?? 0, out: p.out ?? 0 });
+// strawberry bits folded through the pink cheese, and blueberries sitting on top (II)
+const BERRY = (() => {
+  let a = 31 * 2654435761 >>> 0;
+  const r = () => { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; };
+  const bits = [], blue = [];
+  [[0.18, 6], [0.5, 9], [0.82, 12]].forEach(([rr, n]) => { const off = r() * 360; for (let i = 0; i < n; i++) bits.push({ a: (off + (i + 0.5 + (r() - 0.5) * 0.6) * 360 / n) % 360, r: Math.max(0.05, Math.min(0.95, rr + (r() - 0.5) * 0.22)), rot: r() * 360, s: 2.6 + r() * 2 }); });
+  [[0.3, 4], [0.72, 8]].forEach(([rr, n]) => { const off = r() * 360; for (let i = 0; i < n; i++) blue.push({ a: (off + (i + 0.5 + (r() - 0.5) * 0.5) * 360 / n) % 360, r: Math.max(0.1, Math.min(0.92, rr + (r() - 0.5) * 0.16)), s: 5 + r() * 1.2, rot: r() * 72 }); });
+  return { bits, blue };
+})();
 
 class Component extends DCLogic {
-  state = { step: 9, mix: 1, inp: 0, out: 0, bypass: false, preset: 0, presetOpen: false, folded: {}, pbHover: null, pbMenu: null, tips: false, tip: null, tipX: 0, tipY: 0, tipBelow: false, hist: [], user: [
-    { name: 'Lead wide', group: 'Mixes', step: 6, mix: .8, inp: 0, out: 0 },
-    { name: 'BGV spread', group: 'Mixes', step: 12, mix: 1, inp: 0, out: -1 },
-    { name: 'Subtle stack', step: 4, mix: .5, inp: 0, out: 0 },
-  ], folders: [], ab: 'A', abOther: null, abDiff: [] };
-  snap = (s = this.state) => ({ step: s.step, mix: s.mix, inp: s.inp, out: s.out });
+  state = { mode: 'detune', chorus: 1, bump: false, hiss: 0.5, hissOn: true, step: 3, mix: 1, inp: 0, out: 0, bypass: false, preset: 0, presetOpen: false, folded: {}, pbHover: null, pbMenu: null, tips: false, tip: null, tipX: 0, tipY: 0, tipBelow: false, hist: [], user: [{"name": "Guitar Doubler", "mode": "detune", "step": 6, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.7, "inp": 0.0, "out": 0.0}, {"name": "Vocal Sheen", "mode": "detune", "step": 3, "chorus": 1, "bump": false, "hiss": 0.5, "hissOn": true, "mix": 0.5, "inp": 0.0, "out": 0.0}], folders: [], ab: 'A', abOther: null, abDiff: [] };
+  snap = (s = this.state) => ({ mode: s.mode, step: s.step, chorus: s.chorus, bump: s.bump, hiss: s.hiss, hissOn: s.hissOn, mix: s.mix, inp: s.inp, out: s.out });
   commit = (patch) => this.setState(st => ({ ...(typeof patch === 'function' ? patch(st) : patch), hist: [...st.hist.slice(-39), this.snap(st)] }));
   undo = () => this.setState(st => { const hh = st.hist; if (!hh.length) return null; return { ...hh[hh.length - 1], hist: hh.slice(0, -1) }; });
   allPresets = () => [...PRESETS, ...this.state.user];
   savePreset = () => { if (!this.pbAct) return; if (this.state.preset < PRESETS.length) this.pbAct.saveAs(); else this.pbAct.save(this.state.preset); };
   saveAsPreset = () => this.pbAct && this.pbAct.saveAs();
   delPreset = () => { if (this.pbAct && this.state.preset >= PRESETS.length) this.pbAct.del(this.state.preset); };
-  diffKeys = (a, b) => ['mix', 'inp', 'out'].filter(k => Math.abs(a[k] - b[k]) > 1e-6).concat(a.step !== b.step ? ['step'] : []);
+  diffKeys = (a, b) => ['mix', 'inp', 'out', 'hiss'].filter(k => Math.abs(a[k] - b[k]) > 1e-6).concat(['mode', 'step', 'chorus', 'bump', 'hissOn'].filter(k => a[k] !== b[k]));
   setAB = (slot) => this.setState(st => {
     if (st.ab === slot) return null;
     const cur = this.snap(st), other = st.abOther || cur, diff = this.diffKeys(cur, other);
@@ -295,7 +306,7 @@ class Component extends DCLogic {
     window.addEventListener('keydown', this.onKey);
   }
   // engine seam: controlled bypass in, parameter changes out
-  paramOf = { detune: ['step', v => v], mix: ['mix', v => Math.round(v * 100)], input: ['inp', v => +v.toFixed(1)], output: ['out', v => +v.toFixed(1)], bypass: ['bypass', v => v] };
+  paramOf = { flavor: ['mode', v => v === 'chorus' ? 1 : 0], detune: ['step', v => v], chorus: ['chorus', v => v], bump: ['bump', v => v ? 1 : 0], hiss: ['hiss', v => Math.round(v * 100)], hissOn: ['hissOn', v => v ? 1 : 0], mix: ['mix', v => Math.round(v * 100)], input: ['inp', v => +v.toFixed(1)], output: ['out', v => +v.toFixed(1)], bypass: ['bypass', v => v] };
   pumpParams() {
     const f = this.props.onParam; if (!f) return;
     const now = {};
@@ -323,7 +334,7 @@ class Component extends DCLogic {
 
   applyPreset = (i) => {
     const p = this.allPresets()[i]; if (!p) return;
-    this.commit({ preset: i, presetOpen: false, step: p.step, mix: p.mix, inp: p.inp ?? 0, out: p.out ?? 0 });
+    this.commit({ preset: i, presetOpen: false, ...norm(p) });
   };
   presetStep = (d) => () => { const n = this.allPresets().length; this.applyPreset((this.state.preset + d + n) % n); };
   presetToggle = () => this.setState(s => ({ presetOpen: !s.presetOpen, pbMenu: null }));
@@ -400,7 +411,7 @@ class Component extends DCLogic {
 
   plate() {
     if (this._plate) return this._plate;
-    const P = [], add = (d, w, f, s, o) => P.push({ d, w: w ?? 2.4, f: f || 'none', s: s || INK, o: o ?? 1 });
+    const P = [], add = (d, w, f, s, o) => P.push({ d, w: w ?? 2.4, f: f || 'none', s: s || INK, o: o ?? 1, t: '' });
 
     // three detune cells
     SX.forEach((x, i) => add(this.rrect(x, SY, SW, SH, 200 + i * 13, 1), 2.4, '#fdf3e0'));
@@ -409,12 +420,14 @@ class Component extends DCLogic {
     add(this.blob(BX, BY, R_OUT, 41, 3.4), 3, '#e8c58f');
     add(this.blob(BX, BY, R_OUT - 7, 47, 2.6), 1.6, 'none', '#c98f4e', 0.9);
 
-    // poppy seeds on the crust, under the schmear
-    const rr = this.rnd(9);
-    for (let i = 0; i < 14; i++) {
-      const a = rr() * 360, r = R_OUT - 6 + rr() * 5;
-      const p = this.pt(a, r, BX, BY);
-      add(this.dot(p[0], p[1], 1.5 + rr() * 0.9, 300 + i), 0, INK, INK, 0.72);
+    // everything-bagel crust, under the schmear: poppy, sesame, dried onion and garlic, a few salt flakes
+    const rr = this.rnd(9), addT = (d, w, f, s, o, t) => P.push({ d, w, f, s, o, t });
+    for (let i = 0; i < 60; i++) {
+      const a = rr() * 360, r = R_OUT - 9 + rr() * 7, p = this.pt(a, r, BX, BY), k = i % 5, t = `translate(${p[0].toFixed(1)} ${p[1].toFixed(1)}) rotate(${(rr() * 180).toFixed(0)}) scale(1.2)`;
+      if (k === 0 || k === 3) add(this.dot(p[0], p[1], 1.5 + rr() * 0.6, 300 + i), 0, INK, INK, 0.75);
+      else if (k === 1) addT('M -2.4 0 C -0.9 -1.5 1.3 -1.4 2.3 0 C 1.3 1.4 -0.9 1.5 -2.4 0 Z', 0.7, '#fbf1d9', '#a87a3e', 0.95, t);
+      else if (k === 2) addT(this.blob(0, 0, 2.1, 330 + i, 1.1), 0, rr() > .5 ? '#c7954f' : '#efe2c2', 'none', 0.95, t);
+      else addT('M -1.3 -1.3 L 1.3 -1.1 L 1.1 1.3 L -1.2 1.1 Z', 0.6, '#ffffff', '#b9a98a', 0.95, t);
     }
 
     // INPUT / OUTPUT trims: small plain bagel-crust knobs under the switch
@@ -436,16 +449,22 @@ class Component extends DCLogic {
 
   drag = (key, min, max, span) => (e) => {
     e.preventDefault();
-    const y0 = e.clientY, v0 = this.state[key];
+    const reset = () => this.commit({ [key]: { mix: 1, inp: 0, out: 0, hiss: 0.5 }[key] });
+    if (e.altKey) { reset(); return; }
+    const BASE = 250, FINE = 1250;
+    let y = e.clientY, t = performance.now(), moved = 0;
+    const modDown = e.metaKey || e.ctrlKey;
+    const delta = ev => { const dy = y - ev.clientY, now = performance.now(), dt = Math.max(1, now - t); y = ev.clientY; t = now; moved += Math.abs(dy); const fine = ev.shiftKey || ev.metaKey || ev.ctrlKey; const gain = fine ? 1 : Math.max(.33, Math.min(1.5, .3 + (Math.abs(dy) / dt) * .9)); return dy * gain / (fine ? FINE : BASE); };
+    let val = this.state[key];
     this.commit({});
-    const move = ev => this.setState({ [key]: Math.max(min, Math.min(max, v0 + (y0 - ev.clientY) / (span * (ev.shiftKey || ev.metaKey || ev.ctrlKey ? 10 : 1)) * (max - min))) });
-    const up = () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
+    const move = ev => { val = Math.max(min, Math.min(max, val + delta(ev) * (max - min))); this.setState({ [key]: val }); };
+    const up = () => { if (modDown && moved < 3) reset(); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
     window.addEventListener('pointermove', move);
     window.addEventListener('pointerup', up);
   };
   wheel = (key, min, max) => (e) => {
     const now = Date.now(); if (!this.lastWheel || now - this.lastWheel > 1200) this.commit({}); this.lastWheel = now;
-    const d = (e.deltaY < 0 ? 1 : -1) * (max - min) / (e.shiftKey || e.metaKey || e.ctrlKey ? 400 : 60);
+    const d = (e.deltaY < 0 ? 1 : -1) * (max - min) / (e.shiftKey || e.metaKey || e.ctrlKey ? 500 : 100);
     this.setState(s => ({ [key]: Math.max(min, Math.min(max, s[key] + d)) }));
   };
 
@@ -465,28 +484,48 @@ class Component extends DCLogic {
     // Same schmear at every setting; the detune switch changes the TOPPING.
     // 3 = plain, 6 = chives, 9 = chives + lox.
     // schmeared right out to the rim — only a sliver of crust shows
-    const r1 = R_IN - 1, r2 = R_OUT - 8;
-    const spanDeg = s.mix * 360;
+    // BUMP on (Berry): a thicker schmear, heaped out over the rim. The hole stays the same size at every mix setting.
+    const heap = s.mode === 'chorus' && s.bump;
+    const r1 = R_IN - 1, r2 = heap ? R_OUT - 3 : s.mode === 'chorus' ? R_OUT - 6 : R_OUT - 8;
+    const spanDeg = s.mix * 360, berry = s.mode === 'chorus';
+
+    // Berries sits on its own bagel: cinnamon raisin, a touch bigger and rounder, browner, with a cinnamon swirl and raisins
+    if (s.mode === 'chorus') {
+      live.push({ t: '', d: this.blob(BX, BY, R_OUT + 3, 141, 4.2), w: 3, f: '#ddae74', s: INK, o: 1 });
+      // cinnamon swirl: brown streaks winding round the crust
+      [[R_OUT - 3, 20, 150], [R_OUT - 8, 200, 320], [R_OUT - 4, 120, 230], [R_OUT - 9, 300, 420], [R_IN + 14, 60, 190], [R_IN + 24, 230, 370], [R_IN + 34, 10, 120], [R_IN + 20, 140, 250]].forEach(([r, a1, a2], k) => live.push({ t: '', d: this.arcPath(BX, BY, r, a1, a2, 150 + k, 2.4), w: 2.6, f: 'none', s: '#9a5b2c', o: 0.75 }));
+      live.push({ t: '', d: this.blob(BX, BY, R_OUT - 5, 147, 3), w: 1.6, f: 'none', s: '#b07638', o: 0.8 });
+      const sr = this.rnd(19);
+      for (let i = 0; i < 24; i++) {
+        const a = i * 360 / 24 * 7 % 360 + sr() * 14, r = R_IN + 8 + sr() * (R_OUT - R_IN - 11), p = this.pt(a, r, BX, BY);
+        live.push({ t: `translate(${p[0].toFixed(1)} ${p[1].toFixed(1)}) rotate(${(sr() * 180).toFixed(0)}) scale(1 .7)`, d: this.blob(0, 0, 3.4, 160 + i, 1.4), w: 1, f: '#5a2e2a', s: '#3a1c18', o: 1 });
+      }
+    }
 
     if (s.mix > 0.008) {
       const full = s.mix > 0.995;
       const op = s.bypass ? 0.45 : 1;
 
       live.push({
-        t: '', d: full ? this.blob(BX, BY, r2, 55, 3) : this.ring(BX, BY, r1, r2, 180, deg, 55),
-        w: 2.2, f: '#fdf6e8', s: INK, o: op
+        t: '', d: full ? this.blob(BX, BY, r2, berry ? 155 : 55, heap ? 5.5 : berry ? 5.5 : 3) : this.ring(BX, BY, r1, r2, 180, deg, berry ? 155 : 55),
+        w: 2.2, f: berry ? '#f8d0d6' : '#fdf6e8', s: INK, o: op
       });
       live.push({
-        t: '', d: this.arcPath(BX, BY, (r1 + r2) / 2, 180, full ? 538 : deg, 57, 3),
-        w: 1.4, f: 'none', s: '#ecdcbc', o: 0.85
+        t: '', d: this.arcPath(BX, BY, (r1 + r2) / 2, 180, full ? 538 : deg, berry ? 157 : 57, 3),
+        w: 1.4, f: 'none', s: berry ? '#efb2bc' : '#ecdcbc', o: 0.85
       });
+      if (heap) {
+        // extra swirls in the heaped cheese
+        live.push({ t: '', d: this.arcPath(BX, BY, r1 + (r2 - r1) * 0.25, 190, full ? 520 : Math.max(192, deg - 12), 58, 3.4), w: 1.6, f: 'none', s: '#efb2bc', o: 0.8 });
+        live.push({ t: '', d: this.arcPath(BX, BY, r1 + (r2 - r1) * 0.78, 200, full ? 530 : Math.max(202, deg - 6), 59, 3.4), w: 1.6, f: 'none', s: '#fbe3e7', o: 0.9 });
+      }
       // hole punched here, so lox can drape across it
       live.push({ t: '', d: this.blob(BX, BY, R_IN, 61, 2.2), w: 2.8, f: cream ? '#f6e7c8' : '#f2dcb6', s: INK, o: 1 });
 
       const onSchmear = (a) => a <= spanDeg;
 
       // 6 and 9: scallion flecks suspended IN the schmear
-      if (s.step >= 6) {
+      if (!berry && s.step >= 6) {
         CHIVES.forEach((C, i) => {
           if (!onSchmear(C.a)) return;
           const p = this.pt(180 + C.a, r1 + 5 + C.r * (r2 - r1 - 10), BX, BY);
@@ -502,7 +541,7 @@ class Component extends DCLogic {
       }
 
       // 9: draped lox, dill fronds, onion rings on top
-      if (s.step >= 9) {
+      if (!berry && s.step >= 9) {
         const FACE = r2 - 4;
         LOX.forEach((L, i) => {
           if (!onSchmear(L.ang)) return;
@@ -517,6 +556,26 @@ class Component extends DCLogic {
       }
     }
 
+    // strawberry cream cheese (chorus): red strawberry bits through the pink, blueberries on top for II
+    if (berry && s.mix > 0.008) {
+      const op = s.bypass ? 0.45 : 1, onS = (a) => a <= spanDeg;
+      BERRY.bits.forEach((B, i) => {
+        if (!onS(B.a)) return;
+        const p = this.pt(180 + B.a, r1 + 5 + B.r * (r2 - r1 - 10), BX, BY);
+        const t = `translate(${p[0].toFixed(1)} ${p[1].toFixed(1)}) rotate(${B.rot.toFixed(1)})`;
+        live.push({ t, d: this.blob(0, 0, B.s, 1100 + i, B.s * 0.5), w: 0, f: i % 3 ? '#e0566e' : '#ec7a8c', s: 'none', o: op * 0.95 });
+        if (B.s > 3.4) live.push({ t, d: this.dot(B.s * 0.25, -B.s * 0.2, 0.55, 1150 + i), w: 0, f: '#f6e3a0', s: 'none', o: op });
+      });
+      if (s.chorus === 2) BERRY.blue.forEach((U, i) => {
+        if (!onS(U.a)) return;
+        const p = this.pt(180 + U.a, r1 + 6 + U.r * (r2 - r1 - 12), BX, BY);
+        live.push({ t: '', d: this.dot(p[0], p[1], U.s, 1200 + i), w: 1.8, f: '#4d4f96', s: INK, o: op });
+        live.push({ t: '', d: this.dot(p[0] - U.s * 0.38, p[1] - U.s * 0.38, U.s * 0.26, 1230 + i), w: 0, f: '#9a9ee0', s: 'none', o: op * 0.9 });
+        const c = [], n = 5; for (let k = 0; k < n * 2; k++) c.push(this.pt(U.rot + k * 36, k % 2 ? 0.8 : 2, p[0] + U.s * 0.2, p[1] + U.s * 0.15));
+        live.push({ t: '', d: 'M ' + c.map(q => q[0].toFixed(2) + ' ' + q[1].toFixed(2)).join(' L ') + ' Z', w: 0, f: '#23224a', s: 'none', o: op });
+      });
+    }
+
     if (s.mix <= 0.008) live.push({ t: '', d: this.blob(BX, BY, R_IN, 61, 2.2), w: 2.8, f: cream ? '#f6e7c8' : '#f2dcb6', s: INK, o: 1 });
 
     // INPUT / OUTPUT trims: centred arc + pointer
@@ -526,17 +585,58 @@ class Component extends DCLogic {
       const p1 = this.pt(oa, 6, kx, 264), p2 = this.pt(oa, 19, kx, 264);
       live.push({ t: '', d: `M ${p1[0].toFixed(2)} ${p1[1].toFixed(2)} L ${p2[0].toFixed(2)} ${p2[1].toFixed(2)}`, w: 3, f: 'none', s: INK, o: 1 });
     });
+    // HISS (Berries only): a small crust trim with its own on/off button. 50% (12 o'clock) is the real unit's noise.
+    if (s.mode === 'chorus') {
+      const kx = 317, ky = 167, on = s.hissOn, dim = on ? 1 : 0.4;
+      live.push({ t: '', d: this.blob(kx, ky, 14, 93, 1.3), w: 2.3, f: '#e8c58f', s: INK, o: 1 });
+      live.push({ t: '', d: this.blob(kx, ky, 9.5, 95, 1), w: 1.2, f: 'none', s: '#c98f4e', o: 0.9 });
+      for (let j = 0; j <= 8; j++) { const big = j === 0 || j === 4 || j === 8, p = this.pt(-135 + j * 33.75, 20.5, kx, ky); live.push({ t: '', d: this.dot(p[0], p[1], big ? 1.8 : 1.1, 470 + j), w: 0, f: INK, s: INK, o: big ? 1 : 0.6 }); }
+      const ha = -135 + s.hiss * 270;
+      if (s.hiss > 0.005) live.push({ t: '', d: this.arcPath(kx, ky, 17, -135, ha, 97, 0.7), w: 3.2, f: 'none', s: PINK, o: (s.bypass ? .45 : 1) * dim });
+      // a little static fizz around the knob, more as HISS rises; none when it's off
+      if (on) { const hr = this.rnd(33); for (let k = 0; k < Math.round(s.hiss * 8); k++) { const p = this.pt(-150 + hr() * 300, 24 + hr() * 4, kx, ky); live.push({ t: '', d: this.dot(p[0], p[1], 0.8, 480 + k), w: 0, f: '#b07a8a', s: 'none', o: 0.7 }); } }
+      const p1 = this.pt(ha, 3, kx, ky), p2 = this.pt(ha, 12, kx, ky);
+      live.push({ t: '', d: `M ${p1[0].toFixed(2)} ${p1[1].toFixed(2)} L ${p2[0].toFixed(2)} ${p2[1].toFixed(2)}`, w: 2.5, f: 'none', s: INK, o: dim });
+      // on/off button beside the legend: pink and lit when on, hollow with a slash when off
+      // on/off button beside the legend: pink and lit when on, hollow with a slash when off
+      live.push({ t: '', d: this.dot(301, 125, 5.6, 501), w: 2, f: on ? PINK : '#fdf3e0', s: INK, o: 1 });
+      if (on) live.push({ t: '', d: this.dot(301, 125, 2, 502), w: 0, f: INK, s: INK, o: 1 });
+      else live.push({ t: '', d: 'M 298 128 L 304 122', w: 1.7, f: 'none', s: INK, o: 0.7 });
+      if (s.abDiff.includes('hiss') || s.abDiff.includes('hissOn')) live.push({ t: '', d: this.blob(kx, ky, 27, 99, 2), w: 3, f: 'none', s: '#a8712c', o: .9 });
+    }
     if (s.abDiff.includes('mix')) live.push({ t: '', d: this.blob(BX, BY, R_OUT + 22, 86, 2), w: 3, f: 'none', s: '#a8712c', o: .9 });
     if (s.abDiff.includes('out')) live.push({ t: '', d: this.blob(210, 264, 37, 87, 2), w: 3, f: 'none', s: '#a8712c', o: .9 });
     if (s.abDiff.includes('inp')) live.push({ t: '', d: this.blob(100, 264, 37, 89, 2), w: 3, f: 'none', s: '#a8712c', o: .9 });
-    if (s.abDiff.includes('step')) live.push({ t: '', d: this.rrect(SX[0] - 6, SY - 6, SX[2] + SW - SX[0] + 12, SH + 12, 88, 1), w: 3, f: 'none', s: '#a8712c', o: .9 });
+    if (['step', 'chorus', 'bump', 'mode'].some(k => s.abDiff.includes(k))) live.push({ t: '', d: this.rrect(SX[0] - 6, SY - 6, SX[2] + SW - SX[0] + 12, SH + 12, 88, 1), w: 3, f: 'none', s: '#a8712c', o: .9 });
 
     // knife mark at the current mix position
     const a = this.pt(deg, R_IN + 4, BX, BY), b = this.pt(deg, R_OUT + 2, BX, BY);
     live.push({ t: '', d: `M ${a[0].toFixed(2)} ${a[1].toFixed(2)} L ${b[0].toFixed(2)} ${b[1].toFixed(2)}`, w: 3.4, f: 'none', s: INK, o: 1 });
     live.push({ t: '', d: this.dot(b[0], b[1], 4.4, 71), w: 2.4, f: '#fdf6e8', s: INK, o: 1 });
 
-    const steps = STEPS.map((st, i) => {
+    // the three cells: DETUNE 3 / 6 / 9, or CHORUS I / II plus BUMP
+    const wave = (cx, y, amp, cyc, seed) => { const pts = []; for (let k = 0; k <= 16; k++) { const x = cx - 24 + k * 3; pts.push([x, y + Math.sin(k / 16 * cyc * Math.PI * 2) * amp]); } return this.smooth(pts, false); };
+    const caveat = "'Caveat Brush', cursive", sc = "'Patrick Hand SC', cursive";
+    const steps = s.mode === 'chorus' ? [1, 2, 'bump'].map((v, i) => {
+      const isBump = v === 'bump', on = isBump ? s.bump : s.chorus === v, cx = SX[i] + SW / 2;
+      if (on) {
+        live.push({ t: '', d: this.rrect(SX[i], SY, SW, SH, 200 + i * 13, 1), w: 3, f: isBump ? '#f6c9cf' : PINK, s: INK, o: 1 });
+        // the chorus sweep, drawn as a wavy line above and below: I slow and gentle, II faster and deeper
+        if (!isBump) { live.push({ t: '', d: wave(cx, SY + 13, v === 1 ? 2.2 : 3.4, v === 1 ? 1 : 2, 260 + i), w: 2.2, f: 'none', s: INK, o: 0.5 }); live.push({ t: '', d: wave(cx, SY + SH - 13, v === 1 ? 2.2 : 3.4, v === 1 ? 1 : 2, 262 + i), w: 2.2, f: 'none', s: INK, o: 0.5 }); }
+      }
+      if (isBump) {
+        // a lamp and a little low-shelf lift
+        live.push({ t: '', d: this.dot(cx, SY + 18, 5, 271), w: 2.2, f: on ? '#c8334a' : 'transparent', s: INK, o: 1 });
+        live.push({ t: '', d: `M ${cx - 20} ${SY + 56} C ${cx - 12} ${SY + 50}, ${cx - 6} ${SY + 50}, ${cx} ${SY + 59} L ${cx + 20} ${SY + 59}`, w: 2, f: 'none', s: INK, o: on ? 0.75 : 0.4 });
+      }
+      return {
+        label: isBump ? 'BUMP' : v === 1 ? 'I' : 'II', left: SX[i], onStr: on ? 'true' : 'false',
+        ff: isBump ? sc : caveat, fs: isBump ? '17px' : '36px', ls: isBump ? '.1em' : '0', pt: isBump ? '2px' : '0',
+        color: on ? INK : '#8a7150',
+        onClick: isBump ? () => this.commit(st => ({ bump: !st.bump })) : () => this.commit({ chorus: v }),
+        onEnter: this.showTip(isBump ? (s.bump ? 'BUMP on — a little low-end lift under the chorus. Click for flat.' : 'BUMP off — flat. Click for a little low-end lift.') : v === 1 ? 'CHORUS I — slow and gentle, a soft shimmer. Strawberry.' : 'CHORUS II — faster and deeper, the big wide wash. Strawberry with blueberries.')
+      };
+    }) : STEPS.map((st, i) => {
       const on = st.v === s.step;
       if (on) {
         live.push({ t: '', d: this.rrect(SX[i], SY, SW, SH, 200 + i * 13, 1), w: 3, f: ACC, s: INK, o: 1 });
@@ -546,7 +646,7 @@ class Component extends DCLogic {
         live.push({ t: '', d: this.arcPath(cx, SY + 34, 26, 146, 214, 251 + i * 5, 1), w: 2.2, f: 'none', s: INK, o: 0.5 });
       }
       return {
-        label: String(st.v), left: SX[i], onStr: on ? 'true' : 'false',
+        label: String(st.v), left: SX[i], onStr: on ? 'true' : 'false', ff: caveat, fs: '36px', ls: '0', pt: '0',
         color: on ? INK : '#8a7150',
         onClick: () => this.commit({ step: st.v }),
         onEnter: this.showTip('DETUNE ±' + st.v + ' cents — ' + (st.v === 3 ? 'plain: a hair of width, safe on anything.' : st.v === 6 ? 'scallion: a clear double, still tight.' : 'the works: big, obvious spread.'))
@@ -554,8 +654,8 @@ class Component extends DCLogic {
     });
 
     const ALL = this.allPresets(), curP = ALL[s.preset] || ALL[0];
-    const modified = JSON.stringify(this.snap(s)) !== JSON.stringify({ step: curP.step, mix: curP.mix, inp: curP.inp ?? 0, out: curP.out ?? 0 });
-    const NAMES = { mix: 'MIX', inp: 'INPUT', out: 'OUTPUT', step: 'DETUNE' };
+    const modified = JSON.stringify(this.snap(s)) !== JSON.stringify(norm(curP));
+    const NAMES = { mix: 'MIX', inp: 'INPUT', out: 'OUTPUT', hiss: 'HISS', hissOn: 'HISS ON/OFF', step: 'DETUNE', mode: 'FLAVOR', chorus: 'CHORUS', bump: 'BUMP' };
     const otherSlot = s.ab === 'A' ? 'B' : 'A', abDiffNow = s.abOther ? this.diffKeys(this.snap(s), s.abOther) : [];
     const abText = !s.abOther ? 'A / B — two full states. Click ' + otherSlot + ' to start a second one from here.' : abDiffNow.length ? otherSlot + ' differs: ' + abDiffNow.map(k => NAMES[k]).join(', ') + '.' : otherSlot + ' is identical to ' + s.ab + '.';
     const pItem = (p, i) => ({ name: p.name, folder: p.folder, color: i === s.preset ? '#a8712c' : '#40301d', onClick: () => this.applyPreset(i) });
@@ -565,7 +665,19 @@ class Component extends DCLogic {
       scale, frameW: 600 * scale, frameH: 380 * scale, wrapRef: this.wrapRef,
       chrome: !embed, wrapBg: embed ? 'transparent' : '#17120c', wrapPad: embed ? '0' : '52px 24px 64px', wrapMinH: embed ? '0' : '100vh',
       plate: this.plate(),
-      live, steps, step: s.step, mixVal: Math.round(s.mix * 100), inVal: +s.inp.toFixed(1), outVal: +s.out.toFixed(1), bypassStr: s.bypass ? 'true' : 'false',
+      live, steps, step: s.step, mode: s.mode, chorusOn: s.mode === 'chorus',
+      hissVal: Math.round(s.hiss * 100), hissReadout: s.hissOn ? Math.round(s.hiss * 100) + '%' : 'off', hissOp: s.hissOn ? 1 : 0.55, hissOnStr: s.hissOn ? 'true' : 'false',
+      toggleHiss: () => this.commit(st => ({ hissOn: !st.hissOn })), stopDown: (e) => e.stopPropagation(),
+      tipHissOn: this.showTip(s.hissOn ? 'HISS on. Click to switch the hiss off completely, for a quick listen with and without.' : 'HISS off: no noise at all. Click to bring it back at the knob\'s setting.'),
+      hissDown: this.drag('hiss', 0, 1, 160), hissWheel: this.wheel('hiss', 0, 1), hissReset: () => this.commit({ hiss: 0.5 }),
+      tipHiss: this.showTip('HISS 0–100% — the chorus\'s own noise. 50% (12 o\'clock) is the real unit, past that is more, 0 is none. Double-click or ⌥-click resets to 50.'),
+      cellsLabel: s.mode === 'chorus' ? 'Chorus' : 'Detune', cellsValue: s.mode === 'chorus' ? (s.chorus === 2 ? 'II' : 'I') : String(s.step),
+      detuneOnStr: s.mode === 'detune' ? 'true' : 'false', chorusOnStr: s.mode === 'chorus' ? 'true' : 'false',
+      detuneBg: s.mode === 'detune' ? ACC : 'transparent', detuneFg: s.mode === 'detune' ? INK : '#8a7150',
+      chorusBg: s.mode === 'chorus' ? PINK : 'transparent', chorusFg: s.mode === 'chorus' ? INK : '#8a7150',
+      setDetune: () => { if (s.mode !== 'detune') this.commit({ mode: 'detune' }); }, setChorus: () => { if (s.mode !== 'chorus') this.commit({ mode: 'chorus' }); },
+      tipDetuneMode: this.showTip('LOX — the detune schmear: two detuned voices, 3, 6 or 9 cents. Click to switch flavors.'),
+      tipChorusMode: this.showTip('BERRY — the chorus schmear: a vintage bucket-brigade chorus, I or II, with BUMP for a little low-end lift. Click to switch flavors.'), mixVal: Math.round(s.mix * 100), inVal: +s.inp.toFixed(1), outVal: +s.out.toFixed(1), bypassStr: s.bypass ? 'true' : 'false',
       paperWash: cream
         ? 'linear-gradient(158deg, #fdf6e8 0%, #f8ecd6 56%, #f2e2c6 100%)'
         : 'linear-gradient(158deg, #fbeed6 0%, #f2dcb6 56%, #e9cfa4 100%)',
@@ -577,11 +689,11 @@ class Component extends DCLogic {
       outReadout: (s.out >= 0 ? '+' : '−') + Math.abs(s.out).toFixed(1) + ' dB',
       inReadout: (s.inp >= 0 ? '+' : '−') + Math.abs(s.inp).toFixed(1) + ' dB',
       inReset: () => this.commit({ inp: 0 }), inDown: this.drag('inp', -12, 12, 160), inWheel: this.wheel('inp', -12, 12),
-      tipIn: this.showTip('INPUT ±12 dB — trim going in. Double-click resets to 0.'),
+      tipIn: this.showTip('INPUT ±12 dB — trim going in. Double-click or ⌥-click resets to 0.'),
       outReset: () => this.commit({ out: 0 }),
       outDown: this.drag('out', -12, 12, 160), outWheel: this.wheel('out', -12, 12),
-      tipMix: this.showTip('MIX 0–100% — how much bagel gets schmeared. Drag or scroll · ⌘/shift fine · double-click resets to 100.'),
-      tipOut2: this.showTip('OUTPUT ±12 dB — two extra voices add level; trim it back here. Double-click resets to 0.'),
+      tipMix: this.showTip('MIX 0–100% — how much bagel gets schmeared. Drag or scroll · shift or ⌘ fine · double-click or ⌥-click resets to 100.'),
+      tipOut2: this.showTip('OUTPUT ±12 dB — two extra voices add level; trim it back here. Double-click or ⌥-click resets to 0.'),
       tipBypass: this.showTip('BYPASS — the whole box out of circuit.'),
       tipPreset: this.showTip(modified ? 'PRESET — • means you\'ve moved off the saved state. ‹ › step, click to browse, ↑↓ while open.' : 'PRESET — ‹ › step, click to browse, ↑↓ while open.'),
       undo: this.undo, undoOp: s.hist.length ? 1 : .4, tipUndo: this.showTip(s.hist.length ? 'UNDO the last change (⌘/Ctrl-Z).' : 'Nothing to undo yet.'),
@@ -600,6 +712,7 @@ class Component extends DCLogic {
       bypassPlate: s.bypass ? ACC : 'transparent',
       bypassLamp: s.bypass ? '#8a5a23' : 'transparent',
       presetName: (modified ? '• ' : '') + curP.name,
+      presetFs: ((modified ? 2 : 0) + curP.name.length) > 16 ? '9.5px' : ((modified ? 2 : 0) + curP.name.length) > 13 ? '10.5px' : '13px', presetLs: ((modified ? 2 : 0) + curP.name.length) > 13 ? '.02em' : '.06em',
       presetOpen: !embed && s.presetOpen,
       presetPrev: embed ? null : this.presetStep(-1),
       presetNext: embed ? null : this.presetStep(1),
