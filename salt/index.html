@@ -117,7 +117,7 @@
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;embed&quot;:{&quot;editor&quot;:null,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;initHeat&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:4,&quot;min&quot;:-10,&quot;max&quot;:10,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Engine&quot;},&quot;simulate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Engine&quot;},&quot;previewState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;idle&quot;,&quot;loading&quot;,&quot;playing&quot;,&quot;ready&quot;,&quot;unsupported&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preview&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;embed&quot;:{&quot;editor&quot;:null,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;initHeat&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:3.5,&quot;min&quot;:-10,&quot;max&quot;:10,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Engine&quot;},&quot;simulate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Engine&quot;},&quot;previewState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;idle&quot;,&quot;loading&quot;,&quot;playing&quot;,&quot;ready&quot;,&quot;unsupported&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preview&quot;}}">
 const GROUPS = [
   { id: 'vocals', label: 'VOCALS', short: 'VOX', clips: [['female', 'FEMALE VOCAL 1', 'F VOCAL 1', 'FV1'], ['female2', 'FEMALE VOCAL 2', 'F VOCAL 2', 'FV2'], ['female3', 'FEMALE VOCAL 3', 'F VOCAL 3', 'FV3'], ['male', 'MALE VOCAL 1', 'M VOCAL 1', 'MV1'], ['male2', 'MALE VOCAL 2', 'M VOCAL 2', 'MV2'], ['male3', 'MALE VOCAL 3', 'M VOCAL 3', 'MV3'], ['male4', 'MALE VOCAL 4', 'M VOCAL 4', 'MV4'], ['male5', 'MALE VOCAL 5', 'M VOCAL 5', 'MV5'], ['backing', 'BACKING VOCALS', 'BACKING', 'BVS'], ['gang', 'GANG VOCAL', 'GANG', 'GANG']] },
   { id: 'guitars', label: 'GUITARS', short: 'GTRS', clips: [['acoustic', 'ACOUSTIC GUITAR', 'ACOUSTIC', 'ACG'], ['electric', 'ELECTRIC GUITAR', 'ELECTRIC', 'EG'], ['electric2', 'ELECTRIC GUITAR 2', 'ELECTRIC 2', 'EG2'], ['rubber', 'RUBBER BRIDGE', 'RUBBER', 'RBG']] },
@@ -131,7 +131,7 @@ const DEFAULT_FAIL = 'It needs WebAssembly and an AudioWorklet, which means a cu
 
 class Component extends DCLogic {
   state = { status: 'idle', clip: 'female', group: 'vocals', bypass: false, heat: null, failMsg: DEFAULT_FAIL };
-  params = { curve: 'kosher', mode: 'acid', heat: 4, mix: 100, output: 0, bypass: false };
+  params = { curve: 'kosher', mode: 'acid', heat: 3.5, mix: 100, output: 0, bypass: false };   // demo pin: open exactly on the A Pinch preset
   root = React.createRef();
   clipOf(id) { return CLIPS.find(c => c.id === id) || CLIPS[0]; }
   componentDidMount() {
@@ -179,7 +179,7 @@ class Component extends DCLogic {
   pick = (clip) => () => { if (clip === this.state.clip) return; this.setState({ clip }); this.emit('transport', { action: 'clip', clip }); };
   pickGroup = (group) => () => this.setState({ group });
   setBypass = (v) => () => { if (v !== this.state.bypass) this.setState({ bypass: v }); };
-  heatNow() { return this.state.heat ?? this.props.initHeat ?? 4; }
+  heatNow() { return this.state.heat ?? this.props.initHeat ?? 3.5; }
   dots() {
     return React.createElement('span', { style: { display: 'inline-flex', gap: 4 } }, [0, 1, 2].map(i =>
       React.createElement('span', { key: i, style: { width: 6, height: 6, borderRadius: '50%', background: 'currentColor', animation: 'pb-blink 1s ' + (i * 0.18) + 's infinite' } })));
@@ -197,7 +197,7 @@ class Component extends DCLogic {
     const tiny = micro || (s.w ?? 680) < 440;
     return {
       root: this.root, status, clip: s.clip, bypass: s.bypass, onParam: this.onParam,
-      initHeat: this.props.initHeat ?? 4,
+      initHeat: this.props.initHeat ?? 3.5,
       heat: this.heatNow(),
       chrome: !embed, wrapPad: embed ? '0' : '48px 20px 64px', wrapMinH: embed ? '0' : '100vh', wrapBg: embed ? 'transparent' : PAPER,
       unsupported, supported: !unsupported, failMsg: s.failMsg,

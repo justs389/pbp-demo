@@ -238,24 +238,12 @@ const lattice = (n, seed) => {
 const COARSE = lattice(78, 31), FINE = lattice(230, 47);
 const CELL_COARSE = lattice(9, 5), CELL_FINE = lattice(26, 8);
 
-const PRESETS = [
-  { name: 'Init', folder: 0, curve: 'kosher', mode: 'acid', heat: 0, mix: 1, out: 0 },
-  { name: 'A Pinch', folder: 0, curve: 'kosher', mode: 'acid', heat: 3.5, mix: 1, out: 0 },
-  { name: 'Coarse Finish', folder: 0, curve: 'kosher', mode: 'acid', heat: 7, mix: 0.8, out: -1.5 },
-  { name: 'Fat Hand', folder: 0, curve: 'kosher', mode: 'fat', heat: 5, mix: 1, out: 0 },
-  { name: 'Rock Lamp', folder: 0, curve: 'pink', mode: 'acid', heat: 8.5, mix: 1, out: -3 },
-  { name: 'Brined Low', folder: 0, curve: 'pink', mode: 'fat', heat: -6, mix: 1, out: 1.5 },
-  { name: 'Vocal Sheen', folder: 1, curve: 'pink', mode: 'acid', heat: 6, mix: 0.7, out: 0 },
-  { name: 'Drum Glue', folder: 1, curve: 'kosher', mode: 'fat', heat: 4, mix: 0.55, out: -1 }
-];
+// demo/salt/make_presets.py: the plugin's own presets (built-ins + Factory packs)
+const PRESETS = [{"name": "Init", "curve": "kosher", "mode": "acid", "heat": 0.0, "mix": 1.0, "out": 0.0}, {"name": "A Pinch", "curve": "kosher", "mode": "acid", "heat": 3.5, "mix": 1.0, "out": 0.0}, {"name": "Coarse Finish", "curve": "kosher", "mode": "acid", "heat": 7.0, "mix": 0.8, "out": -1.5}, {"name": "Fat Hand", "curve": "kosher", "mode": "fat", "heat": 5.0, "mix": 1.0, "out": 0.0}, {"name": "Rock Lamp", "curve": "pink", "mode": "acid", "heat": 8.5, "mix": 1.0, "out": -3.0}, {"name": "Brined Low", "curve": "pink", "mode": "fat", "heat": -6.0, "mix": 1.0, "out": 1.5}, {"name": "Vocal Sheen", "curve": "pink", "mode": "acid", "heat": 6.0, "mix": 0.7, "out": 0.0}, {"name": "Drum Glue", "curve": "kosher", "mode": "fat", "heat": 4.0, "mix": 0.55, "out": -1.0}, {"name": "Darken Cymbals", "curve": "kosher", "mode": "fat", "heat": 2.4, "mix": 0.533, "out": 0.0, "group": "Al Portera"}, {"name": "Distorted Guitar Sizzle", "curve": "kosher", "mode": "acid", "heat": 2.0, "mix": 1.0, "out": 0.0, "group": "Al Portera"}, {"name": "A Litte on a Vocal goes a Long Way", "curve": "pink", "mode": "acid", "heat": 10.0, "mix": 0.165, "out": 0.0, "group": "Justin Gammella"}, {"name": "Bring Mids Forward", "curve": "kosher", "mode": "acid", "heat": 5.7, "mix": 0.668, "out": 0.0, "group": "Justin Gammella"}, {"name": "Drum Lift", "curve": "kosher", "mode": "acid", "heat": 10.0, "mix": 0.156, "out": 0.0, "group": "Justin Gammella"}, {"name": "Dull My Bass", "curve": "pink", "mode": "fat", "heat": 4.7, "mix": 0.501, "out": 0.0, "group": "Justin Gammella"}, {"name": "Hello Guitar!", "curve": "pink", "mode": "acid", "heat": 3.8, "mix": 0.701, "out": 0.0, "group": "Justin Gammella"}, {"name": "Round Out The Vocal", "curve": "kosher", "mode": "fat", "heat": 10.0, "mix": 0.19, "out": 0.0, "group": "Justin Gammella"}, {"name": "There's The Decay!", "curve": "pink", "mode": "acid", "heat": 10.0, "mix": 0.358, "out": 0.0, "group": "Justin Gammella"}, {"name": "Tighten Me", "curve": "pink", "mode": "fat", "heat": 1.0, "mix": 1.0, "out": 0.0, "group": "Justin Gammella"}, {"name": "Bass Growl", "curve": "kosher", "mode": "acid", "heat": 10.0, "mix": 0.5, "out": 5.0, "group": "Lizzy Campbell"}, {"name": "Darken Guitar", "curve": "pink", "mode": "fat", "heat": 8.0, "mix": 1.0, "out": 6.3, "group": "Lizzy Campbell"}, {"name": "Drum Bus BODY", "curve": "kosher", "mode": "fat", "heat": 10.0, "mix": 0.751, "out": 8.0, "group": "Lizzy Campbell"}, {"name": "GTR BUS", "curve": "pink", "mode": "acid", "heat": 4.0, "mix": 0.45, "out": 0.0, "group": "Lizzy Campbell"}, {"name": "Singer-Songwriter Start", "curve": "kosher", "mode": "acid", "heat": 2.0, "mix": 0.399, "out": 0.0, "group": "Lizzy Campbell"}, {"name": "Warm Doubles", "curve": "pink", "mode": "fat", "heat": 10.0, "mix": 0.94, "out": 7.0, "group": "Lizzy Campbell"}, {"name": "Pink Hut Hut Hike 808", "curve": "pink", "mode": "acid", "heat": 6.9, "mix": 1.0, "out": 0.0, "group": "Lucas Arens"}, {"name": "Pinky Up Vocal", "curve": "pink", "mode": "acid", "heat": 10.0, "mix": 1.0, "out": 0.0, "group": "Lucas Arens"}, {"name": "Saturate Me 808", "curve": "kosher", "mode": "acid", "heat": 6.9, "mix": 1.0, "out": 0.0, "group": "Lucas Arens"}, {"name": "Underwater Boi", "curve": "pink", "mode": "fat", "heat": 10.0, "mix": 1.0, "out": 0.0, "group": "Lucas Arens"}];
 
 class Component extends DCLogic {
   state = { curve: 'kosher', mode: 'acid', heat: 3.5, mix: 1, out: 0, preset: 1, presetOpen: false, folded: {}, pbHover: null, pbMenu: null, tips: false, tip: null, tipX: 0, tipY: 0, tipBelow: false,
-    bypass: false, hist: [], user: [
-      { name: 'Lead vox lift', group: 'Mixes', curve: 'kosher', mode: 'acid', heat: 2.5, mix: 1, out: 0 },
-      { name: 'Drum bus glue', group: 'Mixes', curve: 'pink', mode: 'acid', heat: 5, mix: .7, out: -1 },
-      { name: 'Bass thicken', curve: 'pink', mode: 'acid', heat: 4, mix: 1, out: 0 },
-    ], folders: [], ab: 'A', abOther: null, abDiff: [], t: 0 };
+    bypass: false, hist: [], user: [], folders: [], ab: 'A', abOther: null, abDiff: [], t: 0 };
   snap = (s = this.state) => ({ curve: s.curve, mode: s.mode, heat: s.heat, mix: s.mix, out: s.out });
   commit = (patch) => this.setState(st => ({ ...(typeof patch === 'function' ? patch(st) : patch), hist: [...st.hist.slice(-39), this.snap(st)] }));
   undo = () => this.setState(st => { const hh = st.hist; if (!hh.length) return null; return { ...hh[hh.length - 1], hist: hh.slice(0, -1) }; });
@@ -527,7 +515,7 @@ class Component extends DCLogic {
       plate: C.plate, hairline: C.hairline, hoverTone: C.hoverTone,
       speck: C.speck,
       presetName: (modified ? '• ' : '') + curP.name,
-      presetOpen: !embed && s.presetOpen,
+      presetOpen: s.presetOpen,
       tipPreset: this.showTip(modified ? 'PRESET — • means you\'ve moved off the saved state. ‹ › step, click to browse, ↑↓ while open.' : 'PRESET — ‹ › step, click to browse, ↑↓ while open.'),
       undo: this.undo, undoOp: s.hist.length ? 1 : .4, tipUndo: this.showTip(s.hist.length ? 'UNDO the last change (⌘/Ctrl-Z).' : 'Nothing to undo yet.'),
       savePreset: embed ? null : this.savePreset, saveAsPreset: this.saveAsPreset, delPreset: this.delPreset,
@@ -540,9 +528,9 @@ class Component extends DCLogic {
       bypassBg: s.bypass ? C.accent : C.plate, bypassFg: s.bypass ? C.onText : C.ink, bypassLamp: s.bypass ? C.ink : 'transparent', bypassWash: C.bypassWash || 'rgba(0,0,0,.28)',
       tipBypass: this.showTip('BYPASS — the whole box out of circuit. The panel dims and the arc stops breathing.'),
       heatWord: s.heat === 0 ? 'FLAT' : (s.heat > 0 ? 'OF +10' : 'OF −10'),
-      presetPrev: embed ? null : this.presetStep(-1),
-      presetNext: embed ? null : this.presetStep(1),
-      presetToggle: embed ? null : this.presetToggle,
+      presetPrev: this.presetStep(-1),
+      presetNext: this.presetStep(1),
+      presetToggle: this.presetToggle,
       delOp: s.preset >= PRESETS.length ? 1 : .4, delCursor: s.preset >= PRESETS.length ? 'pointer' : 'default',
       ...(this.pbVals ? this.pbVals({ ink: C.ink, loaded: C.accentInk, muted: C.legend, section: C.accentInk, hoverBg: C.hoverTone, font: "'Patrick Hand', cursive", fontSC: "'Patrick Hand SC', cursive", size: 15, secSize: 11, menuSize: 14, padX: 12, indent: 16, rowPad: '2px', secPad: '4px' }) : {}),
       accentInk: C.accentInk, wash: C.wash,
