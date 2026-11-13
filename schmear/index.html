@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Schmear · try it in your browser</title>
 <meta name="robots" content="noindex">
+<style>html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }</style>
 <script>if (window.parent !== window) document.documentElement.classList.add("pb-embed");</script>
 <style>html.pb-embed, html.pb-embed body { margin: 0 !important; overflow: hidden !important; background: transparent !important; }</style>
 <script>window.__resources={"https://unpkg.com/react@18.3.1/umd/react.production.min.js":"./vendor/react.production.min.js","https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js":"./vendor/react-dom.production.min.js"};</script>
@@ -37,8 +38,13 @@
       <div style="color: #8a8378;">{{ statusLine }}</div>
     </div>
 
-    <div style="position: relative; border: 2px solid #2a2622; box-shadow: 0 18px 40px -18px rgba(42,38,34,.7); line-height: 0; background: #f2dcb6;">
+    <sc-if value="{{ swipe }}" hint-placeholder-val="{{ false }}">
+      <div style="font-family: 'Patrick Hand SC', cursive; font-size: 12px; letter-spacing: .16em; color: #6e675c;">SWIPE THE PANEL SIDEWAYS TO REACH EVERY CONTROL</div>
+    </sc-if>
+    <div style="position: relative; overflow-x: auto; border: 2px solid #2a2622; box-shadow: 0 18px 40px -18px rgba(42,38,34,.7); line-height: 0; background: #f2dcb6;">
+      <div style="min-width: {{ rackMin }};">
       <dc-import name="Schmear Pastel" embed="{{ true }}" fit="{{ true }}" bypass="{{ bypass }}" on-param="{{ onParam }}" hint-size="100%,380px"></dc-import>
+      </div>
       <sc-if value="{{ veil }}" hint-placeholder-val="{{ false }}">
         <div style="position: absolute; inset: 0; background: rgba(251,247,238,.45); pointer-events: none;"></div>
       </sc-if>
@@ -137,7 +143,7 @@ class Component extends DCLogic {
       this.ro = new ResizeObserver(([e]) => {
         const w = e.contentRect.width;
         const cols = w >= 600 ? 5 : w >= 440 ? 3 : 2;
-        this.setState(s => (s.cols === cols ? null : { cols }));
+        this.setState(s => (s.cols === cols && s.w === w ? null : { cols, w }));
       });
       this.ro.observe(el);
     }
@@ -187,6 +193,7 @@ class Component extends DCLogic {
     const primary = idle || loading;
     return {
       clipCols: 'repeat(' + (s.cols ?? 5) + ', minmax(0, 1fr))',
+      swipe: (s.w ?? 900) < 470, rackMin: (s.w ?? 900) < 470 ? '440px' : 'auto',   // demo pin: JJG Vocals' phone layout (2026-11-13, Justin)
       root: this.root, status, clip: s.clip, bypass: s.bypass, onParam: this.onParam,
       chrome: !embed, wrapPad: embed ? '0' : '48px 20px 64px', wrapMinH: embed ? '0' : '100vh', wrapBg: embed ? 'transparent' : PAPER,
       unsupported, supported: !unsupported, failMsg: s.failMsg,
